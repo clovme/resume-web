@@ -1,6 +1,6 @@
 import { createStore } from 'vuex'
 import { defineAsyncComponent, shallowRef } from 'vue'
-import { IBasicInfo, IMenusItem, SkillsExpertise, State } from '@/store/interface'
+import { IBasicInfo, IMenusItem, ISkillsExpertise, State } from '@/store/interface'
 import axios from '@/utils/axios.ts'
 
 const store = createStore<State>({
@@ -14,7 +14,7 @@ const store = createStore<State>({
         '沟通能力': {level: 50, isWord: true },
         '口才': {level: 65, isWord: false }
       }
-    } as SkillsExpertise
+    } as ISkillsExpertise
   },
   mutations: {
     // 设置菜单
@@ -23,12 +23,12 @@ const store = createStore<State>({
     setBasicInfo(state, data: IBasicInfo) {state.basicInfo = data},
     // 自定义基本信息表单
     // 基本信息表单
-    setSkillsExpertise(state, data: SkillsExpertise) {state.skillsExpertise = data}
+    setSkillsExpertise(state, data: ISkillsExpertise) {state.skillsExpertise = data}
   },
   getters: {
     getMenus(state): IMenusItem[] {return state.menus},
     getBasicInfo(state): IBasicInfo {return state.basicInfo},
-    getSkillsExpertise(state): SkillsExpertise {return state.skillsExpertise}
+    getSkillsExpertise(state): ISkillsExpertise {return state.skillsExpertise}
   },
   actions: {
     async fetchMenus({ commit }) {

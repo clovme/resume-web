@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import {getStore} from "@/utils";
-import {BasicInfo} from "@/store/interface";
+import {IBasicInfo} from "@/store/interface";
 import RichText from "@/components/utils/RichText.vue";
 import plus from "@/components/icon/plus.vue";
 
-const data = getStore<BasicInfo>('getBasicInfo');
+const data = getStore<IBasicInfo>('getBasicInfo');
 </script>
 
 <template>

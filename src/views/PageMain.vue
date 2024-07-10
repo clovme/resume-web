@@ -2,13 +2,13 @@
 import {computed} from "vue";
 import LineBox from "@/components/utils/LineBox.vue";
 import {useStore} from "vuex";
-import {MenusItem, State} from "@/store/interface";
+import {IMenusItem, State} from "@/store/interface";
 
 // 加载数据
 const store = useStore<State>();
 // 获取并过滤需要渲染的菜单项
-const menus = computed<MenusItem[]>(() => {
-  return store.getters.getMenus.filter((menu: MenusItem) => menu.isPage);
+const menus = computed<IMenusItem[]>(() => {
+  return store.getters.getMenus.filter((menu: IMenusItem) => menu.isPage);
 });
 </script>
 

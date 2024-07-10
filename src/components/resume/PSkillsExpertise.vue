@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { getStore } from '@/utils'
-import {CheckedTags, SkillsExpertise} from '@/store/interface'
+import {ICheckedTags, ISkillsExpertise} from '@/store/interface'
 import ModuleTitle from "@/components/utils/ModuleTitle.vue";
 import TitleContent from "@/components/utils/TitleContent.vue";
 import form from "@/utils/form.ts";
@@ -14,8 +14,8 @@ const level = form.ProficiencyLevel.reduce((acc: {[key: number]: string}, curr) 
   return acc;
 }, {});
 
-const data = getStore<SkillsExpertise>('getSkillsExpertise');
-function format(tag: CheckedTags) {
+const data = getStore<ISkillsExpertise>('getSkillsExpertise');
+function format(tag: ICheckedTags) {
   return () => (tag.isWord ? level[tag.level] : `${tag.level}%`)
 }
 </script>

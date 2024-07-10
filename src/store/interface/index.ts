@@ -45,7 +45,7 @@ export interface IBasicInfo {
 }
 
 // 技能特长(SkillsExpertise)表单
-export interface SkillsExpertise {
+export interface ISkillsExpertise {
     content: string,                            // html内容
     tags: {[key: string]: boolean}              // 标签
     checkedTags: {[key: string]: ICheckedTags}   // 选中的标签
@@ -55,5 +55,5 @@ export interface SkillsExpertise {
 export interface State {
     menus: IMenusItem[]; // 菜单
     basicInfo: IBasicInfo; // 基础信息
-    skillsExpertise: SkillsExpertise; // 技能特长
+    skillsExpertise: ISkillsExpertise; // 技能特长
 }

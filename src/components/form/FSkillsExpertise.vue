@@ -2,14 +2,14 @@
 import {getStore} from "@/utils";
 import RichText from "@/components/utils/RichText.vue";
 import CheckButton from "@/components/utils/CheckButton.vue";
-import {SkillsExpertise} from "@/store/interface";
+import {ISkillsExpertise} from "@/store/interface";
 import plus from "@/components/icon/plus.vue";
 import form from "@/utils/form.ts";
 import {ref, watch} from "vue";
 import {ElNotification} from "element-plus";
 
 const customTag = ref('')
-const data = getStore<SkillsExpertise>('getSkillsExpertise');
+const data = getStore<ISkillsExpertise>('getSkillsExpertise');
 
 // 监听 tags 属性的变化
 watch(data.value.tags, (newValue) => {
