@@ -1,2 +1,5 @@
-# resume-web
-个人简历web端
+# Vue 3 + TypeScript + Vite
+
+# 环境 
+
+> nodejs v18.18.2
