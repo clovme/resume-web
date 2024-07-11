@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import {ref, watch} from "vue";
+import {ref} from "vue";
 import {BtnType} from "@/components/utils/interface/type.ts";
 
 const props = withDefaults(defineProps<{
@@ -14,15 +14,15 @@ const props = withDefaults(defineProps<{
 const checked = ref(props.modelValue);
 const emit = defineEmits(['update:modelValue']);
 
-watch(checked, (newVal) => {
-  emit('update:modelValue', newVal);
-});
+function updateValue() {
+  emit('update:modelValue', checked);
+}
 </script>
 
 <template>
   <div class="check-button-box">
     <el-button :class="props.class" :type="checked ? props.type : ''" round @click="()=>{checked = !checked}">{{ props.title }}</el-button>
-    <el-checkbox v-model="checked" />
+    <el-checkbox v-model="checked" @change="updateValue" />
   </div>
 </template>
 

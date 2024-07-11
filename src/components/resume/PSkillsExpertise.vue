@@ -3,7 +3,7 @@ import { getStore } from '@/utils'
 import ModuleTitle from "@/components/utils/ModuleTitle.vue";
 import TitleContent from "@/components/utils/TitleContent.vue";
 import form from "@/utils/form.ts";
-import { ICheckedTags, ISkillsExpertise } from '@/store/interface/skillsexpertise.ts'
+import { ICheckedTags, ISkills } from '@/store/interface/skills.ts'
 
 defineProps<{
   title: string
@@ -14,7 +14,7 @@ const level = form.ProficiencyLevel.reduce((acc: {[key: number]: string}, curr) 
   return acc;
 }, {});
 
-const data = getStore<ISkillsExpertise>('getSkillsExpertise');
+const data = getStore<ISkills>('getSkills');
 function format(tag: ICheckedTags) {
   return () => (tag.isWord ? level[tag.level] : `${tag.level}%`)
 }

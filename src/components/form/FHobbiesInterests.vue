@@ -5,19 +5,21 @@ import CheckButton from "@/components/utils/CheckButton.vue";
 import plus from "@/components/icon/plus.vue";
 import {ref, watch} from "vue";
 import {ElNotification} from "element-plus";
-import { ISkillsExpertise } from '@/store/interface/skillsexpertise.ts'
+import { ISkills } from '@/store/interface/skills.ts'
+import { ITags } from '@/store/interface/Tags.ts'
 
 const customTag = ref('')
-const data = getStore<ISkillsExpertise>('getSkillsExpertise');
+const tags = getStore<ITags[]>('getTags');
+const data = getStore<ISkills>('getSkills');
 
 // 监听 tags 属性的变化
-watch(data.value.tags, (newValue) => {
-  for (const sTag of Object.keys(newValue)) {
-    if (newValue[sTag]) {
-      data.value.checkedTags[sTag] = {level: 50, isWord: true}
+watch(tags.value, (newValue) => {
+  for (const sTag of newValue) {
+    if (sTag.isChecked) {
+      data.value.checkedTags[sTag.name] = { level: 50, isWord: true }
     }
     for (const tag of Object.keys(data.value.checkedTags)) {
-      if (tag === sTag && !newValue[sTag]) {
+      if (tag === sTag.name && !sTag.isChecked) {
         delete data.value.checkedTags[tag]
       }
     }
@@ -34,8 +36,12 @@ function addCustomTag() {
 }
 
 function removeCustomTag(tag: string) {
+  for (const t of tags.value) {
+    if (t.name == tag) {
+      t.isChecked = false
+    }
+  }
   delete data.value.checkedTags[tag]
-  data.value.tags[tag] = false
 }
 </script>
 
@@ -49,7 +55,7 @@ function removeCustomTag(tag: string) {
       </el-col>
       <el-col :span="24">
         <div class="split-2">
-          <CheckButton class="el-c-button" v-for="key in Object.keys(data.tags)" v-model="data.tags[key]" :title="key"/>
+          <CheckButton class="el-c-button" v-for="item in tags" v-model="item.isChecked" :title="item.name" :key="item.id" />
         </div>
       </el-col>
       <el-col :span="8">

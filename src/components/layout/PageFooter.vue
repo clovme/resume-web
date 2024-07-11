@@ -132,13 +132,7 @@ window.onload = function () {
       <el-tabs v-model="activeName" @tab-change="handleTabChange">
         <el-tab-pane :name="menu.name" v-for="(menu, index) in menus" :disabled="!menu.isChecked">
           <template #label>
-            <CustomTabsLabel
-                @tab-sore="menuSore"
-                @tab-click="handleClose(false)"
-                v-model="menu.isChecked"
-                :option="menu.isOption"
-                :title="menu.title"
-                :index="index"/>
+            <CustomTabsLabel @tab-sore="menuSore" @tab-click="handleClose(false)" v-model="menu.isChecked" :option="menu.isOption" :title="menu.title" :index="index"/>
           </template>
           <component :is="menu.form" class="pane-form-item"/>
         </el-tab-pane>

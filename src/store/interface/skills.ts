@@ -5,8 +5,7 @@ export interface ICheckedTags {
 }
 
 // 技能特长(SkillsExpertise)表单
-export interface ISkillsExpertise {
+export interface ISkills {
   content: string,                            // html内容
-  tags: {[key: string]: boolean}              // 标签
   checkedTags: {[key: string]: ICheckedTags}   // 选中的标签
 }
