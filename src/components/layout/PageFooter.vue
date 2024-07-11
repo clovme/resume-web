@@ -2,8 +2,8 @@
 import {ref} from "vue";
 import CustomTabsLabel from "@/components/CustomTabsLabel.vue";
 import {$, elemRect, getStore, swapArray} from "@/utils";
-import {IMenusItem} from "@/store/interface";
 import {TabPaneName} from "element-plus";
+import { IMenus } from '@/store/interface/menus.ts'
 
 const closeIcon = ['icon-up', 'icon-down']
 
@@ -12,7 +12,7 @@ const switchActiveName = ref('')
 const closeStyle = ref({display: 'none'})
 const activeName = ref(localStorage.getItem('activeName'))
 
-const menus = getStore<IMenusItem[]>('getMenus')
+const menus = getStore<IMenus[]>('getMenus')
 
 // 执行初始选择标签
 const timer = setTimeout(() => {

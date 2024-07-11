@@ -1,7 +1,10 @@
 import { createStore } from 'vuex'
 import { defineAsyncComponent, shallowRef } from 'vue'
-import { IBasicInfo, IMenusItem, ISkillsExpertise, State } from '@/store/interface'
+import { State } from '@/store/interface'
 import axios from '@/utils/axios.ts'
+import { IBasicInfo } from './interface/basicinfo.ts'
+import { ISkillsExpertise } from './interface/skillsexpertise.ts'
+import { IMenus } from './interface/menus.ts'
 
 const store = createStore<State>({
   state: {
@@ -18,7 +21,7 @@ const store = createStore<State>({
   },
   mutations: {
     // 设置菜单
-    setMenus(state, data: IMenusItem[]) {state.menus = data},
+    setMenus(state, data: IMenus[]) {state.menus = data},
     // 基本信息表单
     setBasicInfo(state, data: IBasicInfo) {state.basicInfo = data},
     // 自定义基本信息表单
@@ -26,7 +29,7 @@ const store = createStore<State>({
     setSkillsExpertise(state, data: ISkillsExpertise) {state.skillsExpertise = data}
   },
   getters: {
-    getMenus(state): IMenusItem[] {return state.menus},
+    getMenus(state): IMenus[] {return state.menus},
     getBasicInfo(state): IBasicInfo {return state.basicInfo},
     getSkillsExpertise(state): ISkillsExpertise {return state.skillsExpertise}
   },
@@ -34,7 +37,7 @@ const store = createStore<State>({
     async fetchMenus({ commit }) {
       try {
         const response = await axios.get(`/menus`)
-        const menus: IMenusItem[] = response.data.data.map((menu: IMenusItem) => {
+        const menus: IMenus[] = response.data.data.map((menu: IMenus) => {
           return {
             ...menu,
             form: shallowRef(defineAsyncComponent(() => import(`@/components/form/F${menu.name}.vue`))),

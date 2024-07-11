@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import {getStore} from "@/utils";
-import {IBasicInfo} from "@/store/interface";
+import { IBasicInfo } from '@/store/interface/basicinfo.ts'
 import plus from "@/components/icon/plus.vue";
 import form from "@/utils/form.js";
 import { ref } from 'vue';

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { getStore } from '@/utils'
-import { IBasicInfo } from '@/store/interface'
 import ModuleTitle from "@/components/utils/ModuleTitle.vue";
+import { IBasicInfo } from '@/store/interface/basicinfo.ts'
 
 defineProps<{
   title: string

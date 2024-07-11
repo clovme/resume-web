@@ -32,7 +32,7 @@ async function onLogin() {
   }
 
   const response = await axios.post('/login', form)
-  if (response.data.code) {
+  if (response.data.code === 200) {
     localStorage.setItem("token", response.data.data.token)
     localStorage.setItem("expires", response.data.data.expires_at)
     window.location.reload()

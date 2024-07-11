@@ -2,11 +2,11 @@
 import {getStore} from "@/utils";
 import RichText from "@/components/utils/RichText.vue";
 import CheckButton from "@/components/utils/CheckButton.vue";
-import {ISkillsExpertise} from "@/store/interface";
 import plus from "@/components/icon/plus.vue";
 import form from "@/utils/form.ts";
 import {ref, watch} from "vue";
 import {ElNotification} from "element-plus";
+import { ISkillsExpertise } from '@/store/interface/skillsexpertise.ts'
 
 const customTag = ref('')
 const data = getStore<ISkillsExpertise>('getSkillsExpertise');

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import form from "@/utils/form.ts";
 import {getStore} from "@/utils";
-import {IBasicInfo} from "@/store/interface";
+import { IBasicInfo } from '@/store/interface/basicinfo.ts'
 
 const data = getStore<IBasicInfo>('getBasicInfo');
 </script>

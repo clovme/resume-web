@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import {getStore} from "@/utils";
-import {IBasicInfo} from "@/store/interface";
 import RichText from "@/components/utils/RichText.vue";
 import plus from "@/components/icon/plus.vue";
+import { IBasicInfo } from '@/store/interface/basicinfo.ts'
 
 const data = getStore<IBasicInfo>('getBasicInfo');
 </script>

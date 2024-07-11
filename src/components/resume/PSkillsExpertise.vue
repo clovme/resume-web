@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { getStore } from '@/utils'
-import {ICheckedTags, ISkillsExpertise} from '@/store/interface'
 import ModuleTitle from "@/components/utils/ModuleTitle.vue";
 import TitleContent from "@/components/utils/TitleContent.vue";
 import form from "@/utils/form.ts";
+import { ICheckedTags, ISkillsExpertise } from '@/store/interface/skillsexpertise.ts'
 
 defineProps<{
   title: string
