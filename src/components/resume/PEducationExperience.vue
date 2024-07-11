@@ -2,17 +2,26 @@
 
 import ModuleTitle from "@/components/utils/ModuleTitle.vue";
 import TitleContent from "@/components/utils/TitleContent.vue";
+import { getStore } from '@/utils'
+import { IEducation } from '@/store/interface/education.ts'
 
 defineProps<{
   title: string
 }>()
 
+const datas = getStore<IEducation[]>('getEducation');
+
+function degree(data: string) {
+  if (data === '不填') {
+    return ''
+  }
+  return `(${data})`
+}
 </script>
 
 <template>
   <ModuleTitle :title="title">
-    <TitleContent time="2024-6-20" title="成都网安科技发展有限公司" name="Python开发工程师" />
-    <TitleContent time="2024-6-20" title="成都网安科技发展有限公司" name="Python开发工程师" />
+    <TitleContent v-for="data in datas" :to-now="data.toNow" :content="data.content" :start-at="data.startAt" :end-at="data.endAt" :name="data.name" :title="`${data.major}${degree(data.degree)}`" />
   </ModuleTitle>
 </template>
 

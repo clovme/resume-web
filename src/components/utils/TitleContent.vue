@@ -16,15 +16,21 @@ const editorStyle = ref({
   lineHeight: '22px'
 })
 
+function isContent(content: string | undefined): boolean {
+  if (content === undefined) {
+    return false
+  }
+  return content !== '<p><br></p>';
+}
 </script>
 
 <template>
-  <ul class="title-content-header" :style="headerStyle" v-if="title">
-    <li v-text="time"></li>
-    <li><b v-text="title"></b></li>
+  <ul class="title-content-header" :style="headerStyle" v-if="name">
+    <li>{{startAt}}~{{toNow ? '至今' : endAt}}</li>
     <li><b v-text="name"></b></li>
+    <li><b v-text="title"></b></li>
   </ul>
-  <div class="ql-editor" v-html="content" :style="editorStyle" v-if="content"></div>
+  <div class="ql-editor" v-html="content" :style="editorStyle" v-if="isContent(content)"></div>
 </template>
 
 <style scoped lang="scss">

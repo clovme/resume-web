@@ -11,5 +11,5 @@ export interface IMenus {
   isOption: boolean;      // 是否可操作
   isChecked: boolean;     // 是否开启模块
   isPage: boolean;        // 模块是否在页面显示
-  sort: number;        // 模块是否在页面显示
+  sort: number;           // 模块是否在页面显示
 }

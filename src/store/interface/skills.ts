@@ -6,6 +6,6 @@ export interface ICheckedTags {
 
 // 技能特长(SkillsExpertise)表单
 export interface ISkills {
-  content: string,                            // html内容
-  checkedTags: {[key: string]: ICheckedTags}   // 选中的标签
+  content: string,                              // html内容
+  checkedTags: {[key: string]: ICheckedTags}    // 选中的标签
 }

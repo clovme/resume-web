@@ -9,10 +9,12 @@ export interface ILineBox {
 }
 
 export interface ITitleContent {
-    time?: string,
-    title?: string,
+    startAt?: string,
+    endAt?: string,
     name?: string,
+    title?: string,
     content?: string,
+    toNow?: boolean,
     margin?: number
 }
 

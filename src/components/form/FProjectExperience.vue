@@ -2,33 +2,33 @@
 import {getStore} from "@/utils";
 import RichText from "@/components/utils/RichText.vue";
 import plus from "@/components/icon/plus.vue";
-import { IBasicInfo } from '@/store/interface/basicinfo.ts'
+import { IProjectExperience } from '@/store/interface/project.ts'
 
-const data = getStore<IBasicInfo>('getBasicInfo');
+const datas = getStore<IProjectExperience[]>('getProject');
 </script>
 
 <template>
   <div>
-    <div class="split-row-module" v-for="_ in 3">
+    <div class="split-row-module" v-for="data in datas">
       <el-row class="split-row-1">
         <el-col :span="5">
           <div class="split-1">
             <label>项目名称</label>
-            <el-input v-model="data.desiredPosition" placeholder="请输入项目名称" clearable />
+            <el-input v-model="data.name" placeholder="请输入项目名称" clearable />
           </div>
         </el-col>
         <el-col :span="4">
           <div class="split-1">
             <label>参与角色</label>
-            <el-input v-model="data.desiredCity" placeholder="请输入角色名称" clearable />
+            <el-input v-model="data.title" placeholder="请输入角色名称" clearable />
           </div>
         </el-col>
         <el-col :span="8">
           <div class="split-1">
             <label>项目时间</label>
-            <el-date-picker v-model="data.birthday" style="width: 130px" type="month" placeholder="请选开始时间" />-
-            <el-date-picker v-model="data.birthday" style="width: 130px" type="month" placeholder="请选结束时间" />
-            <el-checkbox v-model="data.isAge" label="至今" />
+            <el-date-picker v-model="data.startAt" value-format="YYYY-MM" style="width: 130px" type="month" placeholder="请选开始时间" />-
+            <el-date-picker v-model="data.endAt" value-format="YYYY-MM" style="width: 130px" type="month" placeholder="请选结束时间" v-if="!data.toNow" />
+            <el-checkbox v-model="data.toNow" label="至今" />
           </div>
         </el-col>
         <el-col :span="7">
@@ -42,7 +42,7 @@ const data = getStore<IBasicInfo>('getBasicInfo');
       <el-row class="split-row-1">
         <el-col>
           <div class="split-1">
-            <RichText placeholder="请输入项目内容、成果和感悟，简洁突出重点。" />
+            <RichText v-model="data.content" placeholder="请输入项目内容、成果和感悟，简洁突出重点。" />
           </div>
         </el-col>
         <el-col>

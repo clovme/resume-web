@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import {ref, watch} from "vue";
+import {ref} from "vue";
 
 const props = defineProps<{
   modelValue?: string,
@@ -9,13 +9,13 @@ const props = defineProps<{
 const value = ref(props.modelValue)
 const emit = defineEmits(['update:modelValue']);
 
-watch(value, (newVal) => {
-  emit('update:modelValue', newVal);
-});
+function updateValue() {
+  emit('update:modelValue', value);
+}
 </script>
 
 <template>
-  <el-date-picker v-model="value" value-format="YYYY-MM" :clearable="false" :editable="false" type="month" :placeholder="props.placeholder" />
+  <el-date-picker @change="updateValue" v-model="value" value-format="YYYY-MM" :clearable="false" :editable="false" type="month" :placeholder="props.placeholder" />
 </template>
 
 <style scoped lang="scss">

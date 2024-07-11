@@ -33,8 +33,8 @@ function birthday2Age(date: string) {
         <li v-if="basicInfo.isAge"><span>年龄</span>{{ birthday2Age(basicInfo.birthday) }}</li>
         <li v-else><span>生日</span>{{ basicInfo.birthday }}</li>
 
-        <li><span>性别</span>{{ basicInfo.gender }}</li>
-        <li><span>婚姻状况</span>{{ basicInfo.maritalStatus || '-' }}</li>
+        <li v-if="basicInfo.gender !== '不填'"><span>性别</span>{{ basicInfo.gender }}</li>
+        <li v-if="basicInfo.maritalStatus !== '不填'"><span>婚姻状况</span>{{ basicInfo.maritalStatus }}</li>
 
         <li v-if="basicInfo.height && basicInfo.weight"><span>身高体重</span>{{ basicInfo.height }}cm/{{ basicInfo.weight }}kg</li>
         <li v-else-if="basicInfo.height"><span>身高</span>{{ basicInfo.height }}cm</li>
@@ -42,13 +42,13 @@ function birthday2Age(date: string) {
 
         <li v-if="basicInfo.ethnicGroup"><span>民族</span>{{ basicInfo.ethnicGroup }}</li>
         <li v-if="basicInfo.nativePlace"><span>籍贯</span>{{ basicInfo.nativePlace }}</li>
-        <li v-if="basicInfo.politicalStatus"><span>政治面貌</span>{{ basicInfo.politicalStatus }}</li>
-        <li><span>工作年限</span>{{ basicInfo.workExperienceYears || '-' }}</li>
-        <li><span>求职岗位</span>{{ basicInfo.desiredPosition || '-' }}</li>
+        <li v-if="basicInfo.politicalStatus !== '不填'"><span>政治面貌</span>{{ basicInfo.politicalStatus }}</li>
+        <li v-if="basicInfo.workExperienceYears !== '不填'"><span>工作年限</span>{{ basicInfo.workExperienceYears }}</li>
+        <li v-if="basicInfo.desiredPosition"><span>求职岗位</span>{{ basicInfo.desiredPosition }}</li>
         <li v-if="basicInfo.desiredCity"><span>意向城市</span>{{ basicInfo.desiredCity }}</li>
         <li v-if="basicInfo.desiredSalary"><span>期望薪资</span>{{ basicInfo.desiredSalary }}</li>
-        <li v-if="basicInfo.startDate"><span>入职时间</span>{{ basicInfo.startDate }}</li>
-        <li><span>电话</span>{{ basicInfo.phoneNumber || '-' }}</li>
+        <li v-if="basicInfo.startDate !== '不填'"><span>入职时间</span>{{ basicInfo.startDate }}</li>
+        <li v-if="basicInfo.phoneNumber"><span>电话</span>{{ basicInfo.phoneNumber }}</li>
         <li v-if="basicInfo.emailAddress"><span>邮箱</span>{{ basicInfo.emailAddress }}</li>
         <li v-for="(value, key) in basicInfo.customInfo"><span>{{ key }}</span>{{ value }}</li>
       </ul>
