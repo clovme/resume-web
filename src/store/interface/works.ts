@@ -1,6 +1,6 @@
 // 工作经历
 export interface IWorksExperience {
-  id: number,           // 工作经历ID
+  id: string,           // 工作经历ID
   startAt: string,      // 开始时间
   endAt: string,        // 结束时间
   name: string,         // 公司名称

@@ -1,6 +1,6 @@
 // 教育经历
 export interface IEducation {
-  id: number,           // 项目经验ID
+  id: string,           // 项目经验ID
   startAt: string,      // 开始时间
   endAt: string,        // 结束时间
   name: string,         // 学校名称

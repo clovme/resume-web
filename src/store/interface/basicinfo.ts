@@ -1,5 +1,6 @@
 // 基础信息(BasicInfo)表单
 export interface IBasicInfo {
+  id: string,                         // ID
   name: string,                       // 姓名
   isAge: boolean,                     // 年龄
   birthday: string,                   // 生日

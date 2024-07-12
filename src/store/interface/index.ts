@@ -15,6 +15,8 @@ export interface State {
     skills: ISkills;                    // 技能特长
     tags: ITags[];                      // 标签
     works: IWorksExperience[];          // 工作经历
+    internship: IWorksExperience[];     // 实习经历
+    campus: IWorksExperience[];         // 校园经历
     project: IProjectExperience[];      // 项目经验
     education: IEducation[];            // 教育经历
     evaluation: IEvaluation;            // 自我评价

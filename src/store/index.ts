@@ -15,11 +15,13 @@ const store = createStore<State>({
   state: {
     tags: [],
     menus: [],
-    skills: {} as ISkills,
-    basicInfo: {} as IBasicInfo,
     works: [],
+    campus: [],
     project: [],
     education: [],
+    internship: [],
+    skills: {} as ISkills,
+    basicInfo: {} as IBasicInfo,
     evaluation: {} as IEvaluation,
   },
   mutations: {
@@ -28,6 +30,8 @@ const store = createStore<State>({
     setBasicInfo(state, data: IBasicInfo) {state.basicInfo = data},
     setSkills(state, data: ISkills) {state.skills = data},
     setWorks(state, data: IWorksExperience[]) {state.works = data},
+    setInternship(state, data: IWorksExperience[]) {state.internship = data},
+    setCampus(state, data: IWorksExperience[]) {state.campus = data},
     setProject(state, data: IProjectExperience[]) {state.project = data},
     setEducation(state, data: IEducation[]) {state.education = data},
     setEvaluation(state, data: IEvaluation) {state.evaluation = data},
@@ -38,6 +42,8 @@ const store = createStore<State>({
     getBasicInfo(state): IBasicInfo {return state.basicInfo},
     getSkills(state): ISkills {return state.skills},
     getWorks(state): IWorksExperience[] {return state.works},
+    getInternship(state): IWorksExperience[] {return state.internship},
+    getCampus(state): IWorksExperience[] {return state.campus},
     getProject(state): IProjectExperience[] {return state.project},
     getEducation(state): IEducation[] {return state.education},
     getEvaluation(state): IEvaluation {return state.evaluation},
@@ -85,6 +91,20 @@ const store = createStore<State>({
       try {
         const response = await axios.get('/works')
         commit('setWorks', response.data.data)
+      } catch (error) {
+      }
+    },
+    async fetchInternship({ commit }) {
+      try {
+        const response = await axios.get('/internship')
+        commit('setInternship', response.data.data)
+      } catch (error) {
+      }
+    },
+    async fetchCampus({ commit }) {
+      try {
+        const response = await axios.get('/campus')
+        commit('setCampus', response.data.data)
       } catch (error) {
       }
     },

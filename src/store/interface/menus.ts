@@ -2,7 +2,7 @@ import {Ref} from "vue";
 
 // 菜单
 export interface IMenus {
-  id: number;             // 数据ID
+  id: string;             // 数据ID
   title: string;          // 菜单标题
   name: string;           // 菜单名称
   isActivate: boolean;    // 激活选项

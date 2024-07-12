@@ -1,34 +1,34 @@
 <script setup lang="ts">
 import {getStore} from "@/utils";
-import { IBasicInfo } from '@/store/interface/basicinfo.ts'
 import RichText from "@/components/utils/RichText.vue";
 import plus from "@/components/icon/plus.vue";
+import { IWorksExperience } from '@/store/interface/works.ts'
 
-const data = getStore<IBasicInfo>('getBasicInfo');
+const datas = getStore<IWorksExperience[]>('getCampus');
 </script>
 
 <template>
   <div>
-    <div class="split-row-module" v-for="_ in 3">
+    <div class="split-row-module" v-for="data in datas">
       <el-row class="split-row-1">
         <el-col :span="5">
           <div class="split-1">
             <label>经历名称</label>
-            <el-input v-model="data.desiredPosition" placeholder="请输入项目名称" clearable />
+            <el-input v-model="data.name" placeholder="请输入项目名称" clearable />
           </div>
         </el-col>
         <el-col :span="4">
           <div class="split-1">
             <label>角色</label>
-            <el-input v-model="data.desiredCity" placeholder="请输入角色名称" clearable />
+            <el-input v-model="data.title" placeholder="请输入角色名称" clearable />
           </div>
         </el-col>
         <el-col :span="8">
           <div class="split-1">
             <label>时间</label>
-            <el-date-picker v-model="data.birthday" style="width: 130px" type="month" placeholder="请选开始时间" />-
-            <el-date-picker v-model="data.birthday" style="width: 130px" type="month" placeholder="请选结束时间" />
-            <el-checkbox v-model="data.isAge" label="至今" />
+            <el-date-picker v-model="data.startAt" style="width: 130px" type="month" placeholder="请选开始时间" />-
+            <el-date-picker v-if="!data.toNow" v-model="data.endAt" style="width: 130px" type="month" placeholder="请选结束时间" />
+            <el-checkbox v-model="data.toNow" label="至今" />
           </div>
         </el-col>
         <el-col :span="7">
@@ -42,7 +42,7 @@ const data = getStore<IBasicInfo>('getBasicInfo');
       <el-row class="split-row-1">
         <el-col>
           <div class="split-1">
-            <RichText placeholder="描述校园经历的具体行动，内容，成果。" />
+            <RichText v-model="data.content" placeholder="描述校园经历的具体行动，内容，成果。" />
           </div>
         </el-col>
         <el-col>
