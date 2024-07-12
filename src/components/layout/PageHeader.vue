@@ -15,7 +15,7 @@ const newResume = ref(false)
 const drawerData = ref([])
 
 const resume = reactive({
-  id: 0,
+  id: '',
   name: ''
 })
 

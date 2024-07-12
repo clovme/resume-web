@@ -31,7 +31,7 @@ function addCustomTag() {
     ElNotification({title: '提示信息', message: '自定义特长不能为空。', type: 'warning'})
     return
   }
-  data.value.checkedTags[customTag.value] = {level: 50, isWord: true}
+  data.value.checkedTags[customTag.value] = true
   customTag.value = ''
 }
 

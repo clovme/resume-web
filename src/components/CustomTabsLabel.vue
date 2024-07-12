@@ -7,12 +7,16 @@ import {ITabsLabel} from "@/components/utils/interface/interface.ts";
 const props = defineProps<ITabsLabel>()
 
 const isChecked = ref(props.modelValue)
+const tabsLabelTitleStyle = ref({
+  color: "",
+})
 
 // 事件发射器
 const emit = defineEmits(['update:modelValue', 'tab-click', 'tab-sore']);
 
 // 当 props.modelValue 发生变化时，更新 isChecked
 watch(() => props.modelValue, (newVal) => {
+  tabsLabelTitleStyle.value.color = !newVal ? "#a8abb2" : ""
   isChecked.value = newVal;
 });
 
@@ -43,20 +47,20 @@ function onTabSore(flag: boolean) {
   <div class="custom-tabs-label">
     <div class="tabs-label-switch" v-if="props.option">
       <div class="tabs-label-switch-lr">
-        <i class="icon-sliderleft" @click="onTabSore(true)" />
+        <i class="icon-sliderleft" v-show="isChecked" @click="onTabSore(true)" />
       </div>
       <div class="tabs-label-switch-c">
         <el-switch size="small" v-model="isChecked" style="--el-switch-on-color: #13ce66" @input="updateValue"/>
       </div>
       <div class="tabs-label-switch-lr">
-        <i class="icon-sliderright" @click="onTabSore(false)" />
+        <i class="icon-sliderright" v-show="isChecked" @click="onTabSore(false)" />
       </div>
     </div>
     <div class="tabs-label-switch" v-else></div>
     <div class="tabs-label-bottom" @click="onTabClick">
-      <b class="tabs-label-title" v-text="props.title"/>
+      <b class="tabs-label-title" :style="tabsLabelTitleStyle" v-text="props.title"/>
       <div class="tabs-label-edit">
-        <i class="icon-edit" />
+        <i class="icon-edit" v-show="isChecked" />
       </div>
     </div>
   </div>
@@ -64,7 +68,6 @@ function onTabSore(flag: boolean) {
 
 <style scoped lang="scss">
 $el-switch-on-color: #13ce66;
-
 .custom-tabs-label {
   height: 50px;
   width: 100%;

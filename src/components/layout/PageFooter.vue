@@ -63,10 +63,10 @@ function minMaxHeight(winHeight: number) {
 
   winHeight = winHeight - hb.height - hbh.height - close.height - 15
   content.style.maxHeight = `${winHeight}px`;
-  if (winHeight <= 290) {
+  if (winHeight <= 370) {
     content.style.minHeight = content.style.maxHeight
   } else {
-    content.style.minHeight = '390px'
+    content.style.minHeight = '370px'
   }
 }
 
@@ -134,7 +134,7 @@ window.onload = function () {
           <template #label>
             <CustomTabsLabel @tab-sore="menuSore" @tab-click="handleClose(false)" v-model="menu.isChecked" :option="menu.isOption" :title="menu.title" :index="index"/>
           </template>
-          <component :is="menu.form" class="pane-form-item"/>
+          <component v-show="menu.isChecked" :is="menu.form" class="pane-form-item"/>
         </el-tab-pane>
       </el-tabs>
     </div>
@@ -307,6 +307,7 @@ window.onload = function () {
                 opacity: .6;
                 font-size: 18px;
                 transition: .3s;
+                cursor: pointer;
 
                 &:hover {
                   opacity: 1;

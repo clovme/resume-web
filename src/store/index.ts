@@ -12,6 +12,7 @@ import { IEducation } from './interface/education.ts'
 import { IEvaluation } from './interface/evaluation.ts'
 import { IHonors } from './interface/honors.ts'
 import { IIntentions } from './interface/intentions.ts'
+import { IApplicationInfo } from './interface/applicationinfo.ts'
 
 const store = createStore<State>({
   state: {
@@ -22,14 +23,15 @@ const store = createStore<State>({
     education: [],
     skillsTags: [],
     honorsTags: [],
-    hobbiesTags: [],
     internship: [],
+    hobbiesTags: [],
     skills: {} as ISkills,
     honors: {} as IHonors,
     hobbies: {} as IHonors,
     basicInfo: {} as IBasicInfo,
     evaluation: {} as IEvaluation,
     intentions: {} as IIntentions,
+    applicationInfo: {} as IApplicationInfo,
   },
   mutations: {
     setSkillsTags(state, data: ITags[]) {state.skillsTags = data},
@@ -47,6 +49,7 @@ const store = createStore<State>({
     setEducation(state, data: IEducation[]) {state.education = data},
     setEvaluation(state, data: IEvaluation) {state.evaluation = data},
     setIntentions(state, data: IIntentions) {state.intentions = data},
+    setApplicationInfo(state, data: IApplicationInfo) {state.applicationInfo = data},
   },
   getters: {
     getSkillsTags(state): ITags[] {return state.skillsTags},
@@ -64,6 +67,7 @@ const store = createStore<State>({
     getEducation(state): IEducation[] {return state.education},
     getEvaluation(state): IEvaluation {return state.evaluation},
     getIntentions(state): IIntentions {return state.intentions},
+    getApplicationInfo(state): IApplicationInfo {return state.applicationInfo},
   },
   actions: {
     async fetchMenus({ commit }) {
@@ -193,12 +197,19 @@ const store = createStore<State>({
       } catch (error) {
       }
     },
+    async fetchApplicationInfo({ commit }) {
+      try {
+        const response = await axios.get('/applicationinfo')
+        commit('setApplicationInfo', response.data.data)
+      } catch (error) {
+      }
+    },
   }
 })
 
 // 在组件初始化时调用 fetchMenus
 for (const item of Object.keys(store.getters)) {
-  store.dispatch(`fetch${item.slice(3, item.length)}`).catch(error => console.error('Initial fetchMenus error:', error))
+  store.dispatch(`fetch${item.slice(3, item.length)}`).catch(error => console.error(`Initial fetch${item.slice(3, item.length)} error:`, error))
 }
 
 export default store

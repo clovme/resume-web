@@ -8,6 +8,7 @@ import { IEducation } from './education.ts'
 import { IEvaluation } from './evaluation.ts'
 import { IHonors } from './honors.ts'
 import { IIntentions } from './intentions.ts'
+import { IApplicationInfo } from './applicationinfo.ts'
 
 // 定义状态类型
 export interface State {
@@ -25,5 +26,6 @@ export interface State {
   project: IProjectExperience[];      // 项目经验
   education: IEducation[];            // 教育经历
   evaluation: IEvaluation;            // 自我评价
-  intentions: IIntentions;            // 自我评价
+  intentions: IIntentions;            // 求职意向
+  applicationInfo: IApplicationInfo;  // 报考专业
 }
