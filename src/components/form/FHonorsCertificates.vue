@@ -5,18 +5,18 @@ import CheckButton from "@/components/utils/CheckButton.vue";
 import plus from "@/components/icon/plus.vue";
 import {ref, watch} from "vue";
 import {ElNotification} from "element-plus";
-import { ISkills } from '@/store/interface/skills.ts'
 import { ITags } from '@/store/interface/Tags.ts'
+import { IHonors } from '@/store/interface/honors.ts'
 
 const customTag = ref('')
-const tags = getStore<ITags[]>('getTags');
-const data = getStore<ISkills>('getSkills');
+const tags = getStore<ITags[]>('getHonorsTags');
+const data = getStore<IHonors>('getHonors');
 
 // 监听 tags 属性的变化
 watch(tags.value, (newValue) => {
   for (const sTag of newValue) {
     if (sTag.isChecked) {
-      data.value.checkedTags[sTag.name] = { level: 50, isWord: true }
+      data.value.checkedTags[sTag.name] = true
     }
     for (const tag of Object.keys(data.value.checkedTags)) {
       if (tag === sTag.name && !sTag.isChecked) {

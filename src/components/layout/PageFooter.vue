@@ -66,7 +66,7 @@ function minMaxHeight(winHeight: number) {
   if (winHeight <= 290) {
     content.style.minHeight = content.style.maxHeight
   } else {
-    content.style.minHeight = '290px'
+    content.style.minHeight = '390px'
   }
 }
 

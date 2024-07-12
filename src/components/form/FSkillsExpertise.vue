@@ -11,7 +11,7 @@ import { ITags } from '@/store/interface/Tags.ts'
 
 const customTag = ref('')
 const data = getStore<ISkills>('getSkills');
-const tags = getStore<ITags[]>('getTags');
+const tags = getStore<ITags[]>('getSkillsTags');
 
 // 监听 tags 属性的变化
 watch(tags.value, (newValue) => {

@@ -1,7 +1,5 @@
 <script setup lang="ts">
 import {onMounted, watch} from 'vue';
-import "quill/dist/quill.core.css";
-import "quill/dist/quill.snow.css"; // 引入 Snow 主题的样式
 import Quill from "quill";
 import {IRichText} from "@/components/utils/interface/interface.ts";
 import {uuid} from "@/components/utils/options/richtext.ts";

@@ -1,9 +1,9 @@
 <script setup lang="ts">
-// import {getStore} from "@/utils";
-// import {BasicInfo} from "@/store/interface";
 import RichText from "@/components/utils/RichText.vue";
+import { getStore } from '@/utils'
+import { IIntentions } from '@/store/interface/intentions.ts'
 
-// const data = getStore<BasicInfo>('getBasicInfo');
+const data = getStore<IIntentions>("getIntentions")
 </script>
 
 <template>
@@ -12,7 +12,7 @@ import RichText from "@/components/utils/RichText.vue";
       <el-row class="split-row-1">
         <el-col>
           <div class="split-1">
-            <RichText placeholder="请输入您的自定义内容" />
+            <RichText v-model="data.content" placeholder="请输入您的自定义内容" />
           </div>
         </el-col>
       </el-row>
