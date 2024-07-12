@@ -19,6 +19,7 @@ export interface ITitleContent {
 }
 
 export interface ITabsLabel {
+    id: string,         // ID
     title: string,      // 标题
     option: boolean,    // 是否可操作
     modelValue: boolean,// 结果

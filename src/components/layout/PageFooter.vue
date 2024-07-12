@@ -1,15 +1,22 @@
 <script setup lang="ts">
-import {ref} from "vue";
-import CustomTabsLabel from "@/components/CustomTabsLabel.vue";
-import {$, elemRect, getStore, swapArray} from "@/utils";
-import {TabPaneName} from "element-plus";
+import { reactive, ref } from 'vue'
+import CustomTabsLabel from '@/components/CustomTabsLabel.vue'
+import { $, elemRect, getStore, swapArray } from '@/utils'
+import { ElNotification, TabPaneName } from 'element-plus'
 import { IMenus } from '@/store/interface/menus.ts'
+import axios from '@/utils/axios.ts'
 
 const closeIcon = ['icon-up', 'icon-down']
 
+const form = reactive({
+  id: '',
+  title: ''
+})
+const title = ref('')
+const isDialog = ref(false)
 const isClose = ref(false)
 const switchActiveName = ref('')
-const closeStyle = ref({display: 'none'})
+const closeStyle = ref({ display: 'none' })
 const activeName = ref(localStorage.getItem('activeName'))
 
 const menus = getStore<IMenus[]>('getMenus')
@@ -33,7 +40,7 @@ const timer = setTimeout(() => {
 function setInitActiveName() {
   for (const item of menus.value) {
     if (item.isActivate) {
-      activeName.value = item.name;
+      activeName.value = item.name
       localStorage.setItem('activeName', item.name)
       clearTimeout(timer)
       break
@@ -44,25 +51,32 @@ function setInitActiveName() {
 // 切换标签，存储当前激活标签标志
 function handleTabChange(paneName: TabPaneName) {
   if (switchActiveName.value.length > 0) {
-    const timer = setTimeout(function () {
+    const timer = setTimeout(function() {
       activeName.value = switchActiveName.value
       localStorage.setItem('activeName', switchActiveName.value)
       switchActiveName.value = ''
       clearTimeout(timer)
     }, 10)
-  } else if (paneName && typeof paneName === "string") {
+  } else if (paneName && typeof paneName === 'string') {
     localStorage.setItem('activeName', paneName)
+
+    let elem = document.querySelector(`#${paneName}`) as HTMLElement
+    if (!elem) {
+      elem = document.querySelector(`#BasicInfo`) as HTMLElement
+    }
+    const top = elem.getBoundingClientRect().top + window.scrollY - 60
+    window.scrollTo({ top: top, left: 0, behavior: 'smooth' })
   }
 }
 
 function minMaxHeight(winHeight: number) {
-  const content = $('.el-tabs__content')[0];
+  const content = $('.el-tabs__content')[0]
   const hb = elemRect('.header-box')
   const hbh = elemRect('.el-tabs__header')
   const close = elemRect('.close')
 
   winHeight = winHeight - hb.height - hbh.height - close.height - 15
-  content.style.maxHeight = `${winHeight}px`;
+  content.style.maxHeight = `${winHeight}px`
   if (winHeight <= 370) {
     content.style.minHeight = content.style.maxHeight
   } else {
@@ -72,7 +86,7 @@ function minMaxHeight(winHeight: number) {
 
 // 展示tab表单
 function handleClose(active: boolean) {
-  const content = $('.el-tabs__content')[0];
+  const content = $('.el-tabs__content')[0]
   const et = elemRect('.el-tabs__nav')
 
   content.style.transition = '0.3s'
@@ -104,19 +118,49 @@ function menuSore(idx1: number, flag: boolean) {
   for (let i = 0; i < menus.value.length; i++) {
     menus.value[i].sort = i
   }
+  axios.put('/menus/sort', menus.value)
   switchActiveName.value = menus.value[idx2].name
 }
 
-// setTimeout(function () {
-//   handleClose(false)
-// }, 100)
+/**
+ * 编辑模块名称初始化
+ * @param name 标题
+ * @param id id
+ */
+function onEditModuleItem(name: string, id: string) {
+  form.id = id
+  form.title = name
+  title.value = `修改模块（${name}）名称`
+  isDialog.value = true
+}
 
-window.onresize = function (e: Event) {
+// 编辑模块名称
+function onEditModuleName() {
+  if (form.title.trim().length >= 5) {
+    ElNotification({ title: '修改提示', message: `名称（${form.title}）不能超过5个字！`, type: 'warning' })
+    return
+  }
+  axios.put('/menus/edit/name', form).then(res => {
+    if (res.data.code !== 200) {
+      ElNotification({ title: '修改提示', message: res.data.message, type: 'warning' })
+      return
+    }
+    for (const menu of menus.value) {
+      if (menu.id === form.id) {
+        menu.title = form.title
+        isDialog.value = false
+        break
+      }
+    }
+  })
+}
+
+window.onresize = function(e: Event) {
   if (isClose.value) {
     minMaxHeight((e.target as Window).innerHeight)
   }
 }
-window.onload = function () {
+window.onload = function() {
   if (isClose.value) {
     minMaxHeight(window.innerHeight)
   }
@@ -132,13 +176,31 @@ window.onload = function () {
       <el-tabs v-model="activeName" @tab-change="handleTabChange">
         <el-tab-pane :name="menu.name" v-for="(menu, index) in menus" :disabled="!menu.isChecked">
           <template #label>
-            <CustomTabsLabel @tab-sore="menuSore" @tab-click="handleClose(false)" v-model="menu.isChecked" :option="menu.isOption" :title="menu.title" :index="index"/>
+            <CustomTabsLabel @edit="onEditModuleItem" :id="menu.id" @tab-sore="menuSore" @tab-click="handleClose(false)"
+                             v-model="menu.isChecked" :option="menu.isOption" :title="menu.title" :index="index" />
           </template>
-          <component v-show="menu.isChecked" :is="menu.form" class="pane-form-item"/>
+          <component v-show="menu.isChecked" :is="menu.form" class="pane-form-item" />
         </el-tab-pane>
       </el-tabs>
     </div>
   </div>
+  <el-dialog v-model="isDialog" :title="title" width="400" :lock-scroll="false">
+    <el-form label-width="auto">
+      <el-form-item>
+        <el-input v-model="form.title" placeholder="请输入新名称" clearable />
+      </el-form-item>
+      <el-form-item style="margin-bottom: 0">
+        <div style="display: flex;flex:1;justify-content: flex-end;">
+          <div style="width: 200px; display: flex">
+            <el-button style="flex: 1" @click="onEditModuleName" :disabled="title.trim().length <= 0" type="primary">
+              确定
+            </el-button>
+            <el-button style="flex: 1" @click="isDialog = false">取消</el-button>
+          </div>
+        </div>
+      </el-form-item>
+    </el-form>
+  </el-dialog>
 </template>
 
 <style scoped lang="scss">

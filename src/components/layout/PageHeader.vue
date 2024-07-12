@@ -10,6 +10,7 @@ let rid = params.get("rid")
 
 const name = ref('')
 const drawer = ref(!rid)
+const title = ref('新增简历')
 const isResume = ref(false)
 const newResume = ref(false)
 const drawerData = ref([])
@@ -35,6 +36,7 @@ function onShowNewResume() {
 
 // 添加简历
 function onNewResume() {
+  title.value = '新增简历'
   if (name.value.trim().length <= 0) {
     return ElMessage.error("简历名称不能为空")
   }
@@ -70,9 +72,8 @@ function onDeleteResume(data: IResumes) {
   ElMessageBox({
     title: '删除提示',
     message: h('div', {style: 'font-size: 14px'}, [
-      h('span', null, '是否删除'),
-      h('b', { style: 'color: teal' }, data.name),
-      h('span', null, '简历？'),
+      h('span', null, '是否删除简历'),
+      h('b', { style: 'color: teal' }, `（${data.name}）？`)
     ]),
     showCancelButton: true,
     center: true,
@@ -92,6 +93,7 @@ function onDeleteResume(data: IResumes) {
 
 // 编辑简历
 function onEditResume(data: IResumes) {
+  title.value = `修改简历（${data.name}）名称`
   newResume.value = true
   isResume.value = true
   name.value = data.name
@@ -161,7 +163,7 @@ if (!rid) {
     </template>
     <ResumeList @edit="onEditResume" @remove="onDeleteResume" @new-resume="onShowNewResume" :data="drawerData"/>
   </el-drawer>
-  <el-dialog v-model="newResume" title="请输入简历名称" width="400" @closed="name = ''" :lock-scroll="false">
+  <el-dialog v-model="newResume" :title="title" width="400" @closed="name = ''" :lock-scroll="false">
     <el-form label-width="auto">
       <el-form-item>
         <el-input v-model="name" placeholder="请输入简历名称" clearable/>

@@ -36,7 +36,7 @@ instance.interceptors.response.use(response => {
     localStorage.removeItem('expires');
     location.href = `${location.protocol}//${location.host}`
   }
-  if ((response.config.url as '').includes("/menus")) {
+  if ((response.config.url as '').includes("/menus") && response.config.method && response.config.method.toLowerCase() === "get") {
     if (response.data.code !== 200) {
       if (!localStorage.getItem("isHref")) {
         location.href = `${location.protocol}//${location.host}`

@@ -3,6 +3,7 @@
 import {ref, watch} from "vue";
 import {ElNotification} from "element-plus";
 import {ITabsLabel} from "@/components/utils/interface/interface.ts";
+import axios from '@/utils/axios.ts'
 
 const props = defineProps<ITabsLabel>()
 
@@ -12,7 +13,7 @@ const tabsLabelTitleStyle = ref({
 })
 
 // 事件发射器
-const emit = defineEmits(['update:modelValue', 'tab-click', 'tab-sore']);
+const emit = defineEmits(['update:modelValue', 'tab-click', 'tab-sore', 'edit']);
 
 // 当 props.modelValue 发生变化时，更新 isChecked
 watch(() => props.modelValue, (newVal) => {
@@ -23,6 +24,7 @@ watch(() => props.modelValue, (newVal) => {
 // 更新值时改变样式并发射事件
 function updateValue() {
   emit('update:modelValue', isChecked.value);
+  axios.put('/menus/switch/status', {id: props.id, isChecked: isChecked.value})
 }
 
 // 切换标签点击事件
@@ -41,6 +43,10 @@ function onTabClick() {
 function onTabSore(flag: boolean) {
   emit("tab-sore", props.index, flag)
 }
+
+function onClickModuleName(title: string) {
+  emit('edit', title, props.id)
+}
 </script>
 
 <template>
@@ -57,10 +63,10 @@ function onTabSore(flag: boolean) {
       </div>
     </div>
     <div class="tabs-label-switch" v-else></div>
-    <div class="tabs-label-bottom" @click="onTabClick">
-      <b class="tabs-label-title" :style="tabsLabelTitleStyle" v-text="props.title"/>
+    <div class="tabs-label-bottom">
+      <b class="tabs-label-title" @click="onTabClick" :style="tabsLabelTitleStyle" v-text="props.title"/>
       <div class="tabs-label-edit">
-        <i class="icon-edit" v-show="isChecked" />
+        <i @click="onClickModuleName(props.title)" class="icon-edit" v-show="isChecked && props.option" />
       </div>
     </div>
   </div>
@@ -68,6 +74,7 @@ function onTabSore(flag: boolean) {
 
 <style scoped lang="scss">
 $el-switch-on-color: #13ce66;
+
 .custom-tabs-label {
   height: 50px;
   width: 100%;
