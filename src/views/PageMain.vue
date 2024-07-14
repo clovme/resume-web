@@ -1,9 +1,13 @@
 <script setup lang="ts">
-import {computed} from "vue";
+import { computed, ref } from 'vue'
 import LineBox from "@/components/utils/LineBox.vue";
 import {useStore} from "vuex";
 import {State} from "@/store/interface";
 import { IMenus } from '@/store/interface/menus.ts'
+
+const style = ref({
+  height: `${window.innerHeight - 200}px`,
+})
 
 // 加载数据
 const store = useStore<State>();
@@ -11,6 +15,10 @@ const store = useStore<State>();
 const menus = computed<IMenus[]>(() => {
   return store.getters.getMenus.filter((menu: IMenus) => menu.isPage);
 });
+
+window.onresize = () => {
+  style.value.height = `${window.innerHeight - 200}px`
+}
 </script>
 
 <template>
@@ -33,6 +41,7 @@ const menus = computed<IMenus[]>(() => {
     <div class="resume-content-all">
       <component v-for="menu in menus" :is="menu.module" v-show="menu.isChecked" :id="menu.name" :title="menu.title"/>
     </div>
+    <div :style="style"></div>
   </div>
 </template>
 
