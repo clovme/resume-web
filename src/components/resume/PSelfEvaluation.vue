@@ -14,7 +14,7 @@ const data = getStore<IEvaluation>('getEvaluation');
 
 <template>
   <ModuleTitle :title="title">
-    <TitleContent :content="data.content" :margin="0" />
+    <TitleContent v-if="data.id" :content="data.content" :margin="0" />
   </ModuleTitle>
 </template>
 

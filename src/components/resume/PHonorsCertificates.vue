@@ -13,8 +13,8 @@ const data = getStore<IHonors>('getHonors');
 
 <template>
   <ModuleTitle :title="title">
-    <TitleContent :content="data.content" :margin="0" />
-    <el-row style="margin-top: 10px; font-size: 13px">
+    <TitleContent v-if="data.id" :content="data.content" :margin="0" />
+    <el-row v-if="data.id" style="margin-top: 10px; font-size: 13px">
       <el-col>
         <span v-for="key in Object.keys(data.checkedTags)" class="tags-item">{{key}}</span>
       </el-col>

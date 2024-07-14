@@ -56,6 +56,8 @@ function addCourseGrade() {
     isNewDataItem.value = true
     isNewGradeItem.value = true
     courseGrade.value.push(response.data.data)
+    form.name = ""
+    form.score = ""
   })
 }
 

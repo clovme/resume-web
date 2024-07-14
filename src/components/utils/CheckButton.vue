@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import {ref} from "vue";
+import {ref, watch} from "vue";
 import {BtnType} from "@/components/utils/interface/type.ts";
 
 const props = withDefaults(defineProps<{
@@ -13,6 +13,10 @@ const props = withDefaults(defineProps<{
 
 const checked = ref(props.modelValue);
 const emit = defineEmits(['update:modelValue']);
+
+watch(() => props.modelValue, (newValue) => {
+  checked.value = newValue;
+});
 
 function updateValue() {
   emit('update:modelValue', checked);

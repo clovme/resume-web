@@ -101,9 +101,9 @@ function onUpDownMove(index: number, flag: boolean) {
         <el-col :span="8">
           <div class="split-1">
             <label>在职时间</label>
-            <el-date-picker v-model="data.startAt" style="width: 130px" type="month" placeholder="请选开始时间" value-format="YYYY-MM" />
+            <el-date-picker :clearable="false" v-model="data.startAt" style="width: 130px" type="month" placeholder="开始时间" value-format="YYYY-MM" />
             -
-            <el-date-picker v-model="data.endAt" style="width: 130px" type="month" placeholder="请选结束时间" value-format="YYYY-MM" v-if="!data.toNow" />
+            <el-date-picker :clearable="false" v-model="data.endAt" style="width: 130px" type="month" placeholder="结束时间" value-format="YYYY-MM" v-if="!data.toNow" />
             <el-checkbox v-model="data.toNow" label="至今" />
           </div>
         </el-col>

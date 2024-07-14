@@ -422,10 +422,21 @@ window.onload = function() {
 
             .is-disabled {
               cursor: pointer;
+
+              .el-switch__core,
+              .el-switch__action {
+                border-color: rgb(187, 187, 187);
+                background-color: rgb(187, 187, 187);
+              }
             }
 
             .el-tabs__item:not(.is-disabled):hover {
               color: #f60 !important;
+              @include item-block()
+            }
+
+            .el-tabs__item.is-disabled:hover {
+              color: #a8abb2 !important;
               @include item-block()
             }
 

@@ -122,12 +122,12 @@ const store = createStore<State>({
     async fetchSkills({ commit }) {
       try {
         const response = await axios.get('/skills')
+        if (response.data.code !== 200) {
+          response.data.data = {}
+        }
         if (!response.data.data.checkedTags) {
           response.data.data.checkedTags = {}
         }
-
-        delete response.data.data.createdAt
-        delete response.data.data.updatedAt
 
         commit('setSkills', response.data.data)
       } catch (error) {

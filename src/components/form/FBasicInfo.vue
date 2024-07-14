@@ -53,7 +53,7 @@ function addCustomInfo() {
         <div class="split-2">
           <label>出生年月</label>
           <div style="width: 100%;display: flex;align-items: center;gap: 5px;">
-            <DatePicker v-model="data.birthday" placeholder="请选择出生年月" />
+            <DatePicker v-model="data.birthday" placeholder="请选择生日" />
             <el-checkbox v-model="data.isAge" label="转年龄" />
           </div>
         </div>
@@ -78,7 +78,7 @@ function addCustomInfo() {
       <el-col :span="6">
         <div class="split-2">
           <label>联系电话</label>
-          <el-input v-model="data.phoneNumber" placeholder="请输入电话" clearable />
+          <el-input v-model="data.phoneNumber" maxlength="11" placeholder="请输入11位手机号码" clearable />
         </div>
       </el-col>
       <el-col :span="6">
@@ -125,8 +125,8 @@ function addCustomInfo() {
         </div>
       </el-col>
     </el-row>
-    <el-divider v-if="Object.keys(data.customInfo).length > 0"><i class="icon-shoutibao" /></el-divider>
-    <el-row class="split-row-2" v-if="Object.keys(data.customInfo).length > 0">
+    <el-divider v-if="data.customInfo && Object.keys(data.customInfo).length > 0"><i class="icon-shoutibao" /></el-divider>
+    <el-row class="split-row-2" v-if="data.customInfo && Object.keys(data.customInfo).length > 0">
       <el-col v-for="key in Object.keys(data.customInfo)" :span="6">
         <div class="split-2">
           <label v-text="key"></label>

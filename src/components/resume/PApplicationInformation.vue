@@ -22,15 +22,17 @@ if (!courseGrade.value || courseGrade.value.length <= 0) {
 }
 
 watch(courseGrade.value, (newValue) => {
-  if (newValue.length <= 0) {
-    baokaoListStyle.value.padding = '0'
-  }
+  baokaoListStyle.value.padding = newValue.length <= 0 ? '0' : '0 0 10px 0'
+})
+
+watch(data.value, (newValue) => {
+  baokaoListStyle.value.padding = newValue.name || newValue.major ? '0' : '0 0 10px 0'
 })
 </script>
 
 <template>
   <ModuleTitle :title="title">
-    <ul class="baokao-list" :style="baokaoListStyle">
+    <ul v-if="data.name || data.major || courseGrade.length > 0" class="baokao-list" :style="baokaoListStyle">
       <li>报考院校：{{data.name}}</li>
       <li>报考专业：{{data.major}}</li>
     </ul>

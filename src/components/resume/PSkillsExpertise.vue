@@ -22,8 +22,8 @@ function format(tag: ICheckedTags) {
 
 <template>
   <ModuleTitle :title="title">
-    <TitleContent :content="data.content" :margin="0" />
-    <el-row :gutter="20" style="margin-top: 10px; font-size: 13px">
+    <TitleContent v-if="data.content" :content="data.content" :margin="0" />
+    <el-row v-if="Object.keys(data.checkedTags).length > 0" :gutter="20" style="margin-top: 10px; font-size: 13px">
       <el-col v-for="key in Object.keys(data.checkedTags)" :span="8">
         <label v-text="key"></label>
         <el-progress :percentage="data.checkedTags[key].level" :format="format(data.checkedTags[key])" />

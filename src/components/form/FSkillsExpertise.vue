@@ -18,10 +18,13 @@ const tags = getStore<ITags[]>('getSkillsTags');
 watch(tags.value, (newValue) => {
   for (const sTag of newValue) {
     if (sTag.isChecked) {
-      data.value.checkedTags[sTag.name] = { level: 50, isWord: true }
+      if (!data.value.checkedTags[sTag.name]) {
+        data.value.checkedTags[sTag.name] = { level: 50, isWord: true }
+      }
     }
     for (const tag of Object.keys(data.value.checkedTags)) {
       if (tag === sTag.name && !sTag.isChecked) {
+        sTag.isChecked = false
         delete data.value.checkedTags[tag]
       }
     }
@@ -78,7 +81,7 @@ function removeCustomTag(tag: string) {
         </div>
       </el-col>
     </el-row>
-    <el-row class="skills-expertise-row" v-if="Object.keys(data.checkedTags).length > 0">
+    <el-row class="skills-expertise-row" v-if="data.checkedTags && Object.keys(data.checkedTags).length > 0">
       <el-col :span="4" v-for="key in Object.keys(data.checkedTags)">
         <b>{{key}}</b>
         <div class="skills-expertise-row-class">

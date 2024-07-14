@@ -10,10 +10,7 @@ const form = {
         let data = ['不填', '应届生', '半年经验', ]
 
         for (let i = 0; i < 13; i++) {
-            if (i < 9)
-                data.push(`0${i + 1} 年经验`)
-            else
-                data.push(`${i + 1} 年经验`)
+           data.push(`${i + 1}年经验`)
         }
         return data
     }

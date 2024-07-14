@@ -77,7 +77,7 @@ function removeCustomTag(tag: string) {
         </div>
       </el-col>
     </el-row>
-    <el-row v-if="Object.keys(data.checkedTags).length > 0">
+    <el-row v-if="data.checkedTags && Object.keys(data.checkedTags).length > 0">
       <el-col :span="24">
         <ul class="f-honorsc-ertificates-box split-2">
           <li v-for="key in Object.keys(data.checkedTags)">
