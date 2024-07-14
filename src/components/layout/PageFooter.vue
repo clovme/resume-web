@@ -77,10 +77,10 @@ function minMaxHeight(winHeight: number) {
 
   winHeight = winHeight - hb.height - hbh.height - close.height - 15
   content.style.maxHeight = `${winHeight}px`
-  if (winHeight <= 370) {
+  if (winHeight <= 300) {
     content.style.minHeight = content.style.maxHeight
   } else {
-    content.style.minHeight = '370px'
+    content.style.minHeight = '300px'
   }
 }
 
@@ -115,10 +115,11 @@ function handleClose(active: boolean) {
 function menuSore(idx1: number, flag: boolean) {
   const idx2 = flag ? idx1 - 1 : idx1 + 1
   swapArray(menus.value, idx1, idx2)
+  let dataId =  []
   for (let i = 0; i < menus.value.length; i++) {
-    menus.value[i].sort = i
+    dataId.push(menus.value[i].id)
   }
-  axios.put('/menus/sort', menus.value)
+  axios.put('/menus/sort', dataId)
   switchActiveName.value = menus.value[idx2].name
 }
 
@@ -176,8 +177,7 @@ window.onload = function() {
       <el-tabs v-model="activeName" @tab-change="handleTabChange">
         <el-tab-pane :name="menu.name" v-for="(menu, index) in menus" :disabled="!menu.isChecked">
           <template #label>
-            <CustomTabsLabel @edit="onEditModuleItem" :id="menu.id" @tab-sore="menuSore" @tab-click="handleClose(false)"
-                             v-model="menu.isChecked" :option="menu.isOption" :title="menu.title" :index="index" />
+            <CustomTabsLabel @edit="onEditModuleItem" :id="menu.id" @tab-sore="menuSore" @tab-click="handleClose(false)" v-model="menu.isChecked" :option="menu.isOption" :title="menu.title" :index="index" />
           </template>
           <component v-show="menu.isChecked" :is="menu.form" class="pane-form-item" />
         </el-tab-pane>

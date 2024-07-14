@@ -1,14 +1,23 @@
 <script setup lang="ts">
-import {getStore} from "@/utils";
+import { getStore, saveForm } from '@/utils'
 import { IBasicInfo } from '@/store/interface/basicinfo.ts'
 import plus from "@/components/icon/plus.vue";
 import form from "@/utils/form.js";
-import { ref } from 'vue';
-import {ElNotification} from "element-plus";
+import { ref, watch } from 'vue';
+import { ElNotification } from 'element-plus'
 import DatePicker from "@/components/utils/DatePicker.vue";
 
 const customInfo = ref({key: '', value: ''})
 const data = getStore<IBasicInfo>('getBasicInfo');
+
+let timer = 0;
+watch(data.value, (newValue) => {
+  clearTimeout(timer)
+  timer = setTimeout(function() {
+    saveForm("/basicinfo", [newValue])
+    clearTimeout(timer)
+  }, 1000)
+})
 
 function addCustomInfo() {
   if (!customInfo.value.key || customInfo.value.key.trim() === '') {

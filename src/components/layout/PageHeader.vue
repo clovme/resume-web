@@ -62,6 +62,7 @@ function onNewResume() {
       }
       drawer.value = false
       newResume.value = false
+      localStorage.removeItem("activeName")
       location.href = `${location.protocol}//${location.host}?rid=${res.data.data.id}`
     })
   });

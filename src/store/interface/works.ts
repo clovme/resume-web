@@ -6,6 +6,6 @@ export interface IWorksExperience {
   name: string,         // 公司名称
   title: string,        // 职位名称
   content: string,      // 工作内容
-  sort: string,         // 排序
+  sort: number,         // 排序
   toNow: boolean        // 至今
 }

@@ -87,6 +87,10 @@ const store = createStore<State>({
     async fetchBasicInfo({ commit }) {
       try {
         const response = await axios.get('/basicinfo')
+
+        delete response.data.data.createdAt
+        delete response.data.data.updatedAt
+
         commit('setBasicInfo', response.data.data)
       } catch (error) {
       }
@@ -118,6 +122,10 @@ const store = createStore<State>({
         if (!response.data.data.checkedTags) {
           response.data.data.checkedTags = {}
         }
+
+        delete response.data.data.createdAt
+        delete response.data.data.updatedAt
+
         commit('setSkills', response.data.data)
       } catch (error) {
       }
@@ -151,6 +159,10 @@ const store = createStore<State>({
     async fetchWorks({ commit }) {
       try {
         const response = await axios.get('/works')
+
+        delete response.data.data.createdAt
+        delete response.data.data.updatedAt
+
         commit('setWorks', response.data.data)
       } catch (error) {
       }

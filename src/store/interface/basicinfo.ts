@@ -19,6 +19,6 @@ export interface IBasicInfo {
   phoneNumber: string,                // 电话
   emailAddress: string,               // 邮箱
   photo: string,                      // 照片设置
-  iShowPhoto: boolean,                 // 展示照片
+  iShowPhoto: boolean,                // 展示照片
   customInfo: {[key: string]: string} // 自定义信息
 }

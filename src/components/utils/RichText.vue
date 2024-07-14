@@ -6,7 +6,7 @@ import {uuid} from "@/components/utils/options/richtext.ts";
 
 const props = withDefaults(defineProps<IRichText>(), {
   id: uuid,
-  height: '220px',
+  height: '150px',
   placeholder: '输入你的自定义内容'
 })
 const emit = defineEmits(['update:modelValue']);

@@ -1,6 +1,8 @@
 import { useStore } from 'vuex'
 import { State } from '@/store/interface'
 import { computed, ComputedRef } from 'vue'
+import axios from './axios.ts'
+import { ElMessage } from 'element-plus'
 
 /**
  * 类似jQuery选择元素
@@ -56,7 +58,6 @@ export function getStore<T>(obj: string): ComputedRef<T> {
     return computed<T>(() => store.getters[obj]);
 }
 
-
 export function PPI(): number {
     // 获取屏幕分辨率
     const screenWidthPx = window.screen.width;
@@ -88,3 +89,13 @@ export function PPI(): number {
 //     var a4WidthPx = Math.round(a4WidthMm * ppi / inchPerMm);
 //     var a4HeightPx = Math.round(a4HeightMm * ppi / inchPerMm);
 // }
+
+export function saveForm(url: string, data: any) {
+    axios.put(url, data).then((response) => {
+        if (response.data.code !== 200) {
+            ElMessage({ message: response.data.message, grouping: true, type: 'error'})
+            return
+        }
+        ElMessage({ message: response.data.message, grouping: true, type: 'success'})
+    })
+}
