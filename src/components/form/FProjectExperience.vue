@@ -86,13 +86,13 @@ function onUpDownMove(index: number, flag: boolean) {
   <div>
     <div class="split-row-module" v-for="(data, index) in datas">
       <el-row class="split-row-1">
-        <el-col :span="5">
+        <el-col :span="6">
           <div class="split-1">
             <label>项目名称</label>
             <el-input v-model="data.name" placeholder="请输入项目名称" clearable />
           </div>
         </el-col>
-        <el-col :span="4">
+        <el-col :span="5">
           <div class="split-1">
             <label>参与角色</label>
             <el-input v-model="data.title" placeholder="请输入角色名称" clearable />
@@ -106,7 +106,7 @@ function onUpDownMove(index: number, flag: boolean) {
             <el-checkbox v-model="data.toNow" label="至今" />
           </div>
         </el-col>
-        <el-col :span="7">
+        <el-col :span="5">
           <div class="split-1" style="justify-content: flex-end">
             <el-button @click="onUpDownMove(index, true)"  class="el-c-button" type="success" round>上移</el-button>
             <el-button @click="onUpDownMove(index, false)" class="el-c-button" type="success" round>下移</el-button>

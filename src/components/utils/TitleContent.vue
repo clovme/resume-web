@@ -17,7 +17,7 @@ const editorStyle = ref({
 })
 
 function isContent(content: string | undefined): boolean {
-  if (content === undefined) {
+  if (content === undefined || content.trim().length <= 0) {
     return false
   }
   return content !== '<p><br></p>';
@@ -27,8 +27,8 @@ function isContent(content: string | undefined): boolean {
 <template>
   <ul class="title-content-header" :style="headerStyle" v-if="name">
     <li v-if="startAt">{{startAt}}<span v-if="toNow || endAt">~{{toNow ? '至今' : endAt}}</span></li>
-    <li><b v-text="name"></b></li>
-    <li><b v-text="title"></b></li>
+    <li v-if="name"><b v-text="name"></b></li>
+    <li v-if="title"><b v-text="title"></b></li>
   </ul>
   <div class="ql-editor" v-html="content" :style="editorStyle" v-if="isContent(content)"></div>
 </template>

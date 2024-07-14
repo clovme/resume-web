@@ -12,7 +12,7 @@ defineProps<{
 const datas = getStore<IEducation[]>('getEducation');
 
 function degree(data: string) {
-  if (data === '不填') {
+  if (data === '不填' || data.length <= 0) {
     return ''
   }
   return `(${data})`

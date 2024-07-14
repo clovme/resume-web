@@ -2,7 +2,6 @@
 import PageHeader from "@/components/layout/PageHeader.vue";
 import PageMain from "@/views/PageMain.vue";
 import PageFooter from "@/components/layout/PageFooter.vue";
-import Icons from "@/components/Icons.vue";
 import {ref, reactive} from "vue";
 import {ElNotification} from "element-plus";
 import axios from "@/utils/axios.ts";
@@ -78,7 +77,6 @@ function onReset() {
       </el-form>
     </div>
   </el-container>
-  <Icons/>
 </template>
 
 <style scoped lang="scss">
