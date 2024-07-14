@@ -1,9 +1,20 @@
 <script setup lang="ts">
 import RichText from "@/components/utils/RichText.vue";
-import { getStore } from '@/utils'
+import { getStore, saveForm } from '@/utils'
 import { IEvaluation } from '@/store/interface/evaluation.ts'
+import { watch } from 'vue'
 
+let timer = 0
 const data = getStore<IEvaluation>('getEvaluation');
+
+watch(data.value, (newValue) => {
+  clearTimeout(timer)
+
+  timer = setTimeout(function() {
+    saveForm('/evaluation', [newValue])
+    clearTimeout(timer)
+  }, 1000)
+})
 </script>
 
 <template>

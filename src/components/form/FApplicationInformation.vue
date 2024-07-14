@@ -24,8 +24,8 @@ const data = getStore<IApplicationInfo>('getApplicationInfo');
         </el-col>
         <el-col :span="14"></el-col>
       </el-row>
-      <el-row class="split-row-1" v-if="data.gradeGrade.length > 0">
-        <el-col style="margin-bottom: 15px">
+      <el-row class="split-row-1">
+        <el-col style="margin-bottom: 15px" v-if="data.gradeGrade.length > 0">
           <div class="split-1">
             <el-row>
               <el-col :span="24">

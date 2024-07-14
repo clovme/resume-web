@@ -1,16 +1,91 @@
 <script setup lang="ts">
-import {getStore} from "@/utils";
-import RichText from "@/components/utils/RichText.vue";
-import plus from "@/components/icon/plus.vue";
-import form from "@/utils/form.ts";
+import { getStore, saveForm, swapArray } from '@/utils'
+import { ref, watch } from 'vue'
+import RichText from '@/components/utils/RichText.vue'
+import plus from '@/components/icon/plus.vue'
+import axios from '@/utils/axios.ts'
+import { ElMessage } from 'element-plus'
 import { IEducation } from '@/store/interface/education.ts'
+import form from '@/utils/form.ts'
 
+let timer = 0
+const isNewWorkItem = ref<boolean>(false)
 const datas = getStore<IEducation[]>('getEducation');
+
+watch(datas.value, (newValue) => {
+  clearTimeout(timer)
+
+  if (isNewWorkItem.value) {
+    isNewWorkItem.value = false
+    return
+  }
+
+  timer = setTimeout(function() {
+    saveForm('/education', newValue)
+    clearTimeout(timer)
+  }, 1000)
+})
+
+function onPlusWork() {
+  for (const data of datas.value) {
+    if (data.major || data.name || data.content) {
+      if (data.major.trim().length <= 0) {
+        ElMessage({ message: "请先填写完表单关键信息！", grouping: true, type: 'error' })
+        return
+      } else if (data.name.trim().length <= 0) {
+        ElMessage({ message: "请先填写完表单关键信息！", grouping: true, type: 'error' })
+        return
+      } else if (data.content.trim().length <= 0) {
+        ElMessage({ message: "请先填写完表单关键信息！", grouping: true, type: 'error' })
+        return
+      }
+    }
+  }
+
+  axios.post('/education').then((response) => {
+    if (response.data.code !== 200) {
+      ElMessage({ message: response.data.message, grouping: true, type: 'error' })
+      return
+    }
+    datas.value.push(response.data.data)
+    isNewWorkItem.value = true
+  })
+}
+
+function onRemoveWorkItem(id: string) {
+  axios.delete(`/education?id=${id}`).then((response) => {
+    if (response.data.code !== 200) {
+      ElMessage({ message: response.data.message, grouping: true, type: 'error' })
+      return
+    }
+    for (let i = 0; i < datas.value.length; i++) {
+      if (datas.value[i].id === id) {
+        isNewWorkItem.value = true
+        datas.value.splice(i, 1)
+      }
+    }
+  })
+}
+
+function onUpDownMove(index: number, flag: boolean) {
+  const index2 = flag ? index - 1 : index + 1
+  swapArray(datas.value, index, index2)
+  isNewWorkItem.value = true
+
+  let dataId =  []
+  for (let i = 0; i < datas.value.length; i++) {
+    isNewWorkItem.value = true
+    dataId.push(datas.value[i].id)
+  }
+  axios.put('/education/sort', dataId).then(res => {
+    ElMessage({ message: res.data.message, grouping: true, type: 'success' })
+  })
+}
 </script>
 
 <template>
   <div>
-    <div class="split-row-module" v-for="data in datas">
+    <div class="split-row-module" v-for="(data, index) in datas">
       <el-row class="split-row-1">
         <el-col :span="5">
           <div class="split-1">
@@ -42,9 +117,9 @@ const datas = getStore<IEducation[]>('getEducation');
         </el-col>
         <el-col :span="2">
           <div class="split-1">
-            <el-button class="el-c-button" type="success" round>上移</el-button>
-            <el-button class="el-c-button" type="success" round>下移</el-button>
-            <el-button class="el-c-button" type="danger" round>删除</el-button>
+            <el-button @click="onUpDownMove(index, true)"  class="el-c-button" type="success" round>上移</el-button>
+            <el-button @click="onUpDownMove(index, false)" class="el-c-button" type="success" round>下移</el-button>
+            <el-button @click="onRemoveWorkItem(data.id)" class="el-c-button" type="danger" round>删除</el-button>
           </div>
         </el-col>
       </el-row>
@@ -61,7 +136,7 @@ const datas = getStore<IEducation[]>('getEducation');
     </div>
     <el-row>
       <el-col>
-        <el-button type="success" size="large" :icon="plus" round>新增一条教育经历</el-button>
+        <el-button @click="onPlusWork" type="success" size="large" :icon="plus" round>新增一条教育经历</el-button>
       </el-col>
     </el-row>
   </div>

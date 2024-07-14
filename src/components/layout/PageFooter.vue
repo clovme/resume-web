@@ -2,7 +2,7 @@
 import { reactive, ref } from 'vue'
 import CustomTabsLabel from '@/components/CustomTabsLabel.vue'
 import { $, elemRect, getStore, swapArray } from '@/utils'
-import { ElNotification, TabPaneName } from 'element-plus'
+import { ElNotification, TabPaneName, TabsPaneContext } from 'element-plus'
 import { IMenus } from '@/store/interface/menus.ts'
 import axios from '@/utils/axios.ts'
 
@@ -59,14 +59,16 @@ function handleTabChange(paneName: TabPaneName) {
     }, 10)
   } else if (paneName && typeof paneName === 'string') {
     localStorage.setItem('activeName', paneName)
-
-    let elem = document.querySelector(`#${paneName}`) as HTMLElement
-    if (!elem) {
-      elem = document.querySelector(`#BasicInfo`) as HTMLElement
-    }
-    const top = elem.getBoundingClientRect().top + window.scrollY - 60
-    window.scrollTo({ top: top, left: 0, behavior: 'smooth' })
   }
+}
+
+function onTabClick(pane: TabsPaneContext) {
+  let elem = document.querySelector(`#${pane.paneName}`) as HTMLElement
+  if (!elem) {
+    elem = document.querySelector(`#BasicInfo`) as HTMLElement
+  }
+  const top = elem.getBoundingClientRect().top + window.scrollY - 60
+  window.scrollTo({ top: top, left: 0, behavior: 'smooth' })
 }
 
 function minMaxHeight(winHeight: number) {
@@ -174,7 +176,7 @@ window.onload = function() {
       <div class="close" @click="handleClose(true)" :style="closeStyle">
         <i :class="[closeIcon[Number(isClose)]]"></i>
       </div>
-      <el-tabs v-model="activeName" @tab-change="handleTabChange">
+      <el-tabs v-model="activeName" @tab-change="handleTabChange" @tab-click="onTabClick">
         <el-tab-pane :name="menu.name" v-for="(menu, index) in menus" :disabled="!menu.isChecked">
           <template #label>
             <CustomTabsLabel @edit="onEditModuleItem" :id="menu.id" @tab-sore="menuSore" @tab-click="handleClose(false)" v-model="menu.isChecked" :option="menu.isOption" :title="menu.title" :index="index" />

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import {getStore} from "@/utils";
+import { getStore, saveForm } from '@/utils'
 import RichText from "@/components/utils/RichText.vue";
 import CheckButton from "@/components/utils/CheckButton.vue";
 import plus from "@/components/icon/plus.vue";
@@ -8,6 +8,7 @@ import {ElNotification} from "element-plus";
 import { ITags } from '@/store/interface/Tags.ts'
 import { IHonors } from '@/store/interface/honors.ts'
 
+let timer = 0;
 const customTag = ref('')
 const tags = getStore<ITags[]>('getHobbiesTags');
 const data = getStore<IHonors>('getHobbies');
@@ -24,6 +25,17 @@ watch(tags.value, (newValue) => {
       }
     }
   }
+})
+
+watch(data.value, (newValue) => {
+  clearTimeout(timer)
+  timer = setTimeout(function() {
+    saveForm("/hobbies", [{
+      ...newValue,
+      tagsName: Object.keys(data.value.checkedTags)
+    }])
+    clearTimeout(timer)
+  }, 1000)
 })
 
 function addCustomTag() {

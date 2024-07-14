@@ -1,9 +1,20 @@
 <script setup lang="ts">
 import RichText from "@/components/utils/RichText.vue";
-import { getStore } from '@/utils'
+import { getStore, saveForm } from '@/utils'
 import { IIntentions } from '@/store/interface/intentions.ts'
+import { watch } from 'vue'
 
+let timer = 0
 const data = getStore<IIntentions>("getIntentions")
+
+watch(data.value, (newValue) => {
+  clearTimeout(timer)
+
+  timer = setTimeout(function() {
+    saveForm('/intentions', [newValue])
+    clearTimeout(timer)
+  }, 1000)
+})
 </script>
 
 <template>
