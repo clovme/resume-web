@@ -12,7 +12,7 @@ import { IEducation } from './interface/education.ts'
 import { IEvaluation } from './interface/evaluation.ts'
 import { IHonors } from './interface/honors.ts'
 import { IIntentions } from './interface/intentions.ts'
-import { IApplicationInfo } from './interface/applicationinfo.ts'
+import { IApplicationInfo, ICourseGrade } from './interface/applicationinfo.ts'
 
 const store = createStore<State>({
   state: {
@@ -25,6 +25,7 @@ const store = createStore<State>({
     honorsTags: [],
     internship: [],
     hobbiesTags: [],
+    courseGrade: [],
     skills: {} as ISkills,
     honors: {} as IHonors,
     hobbies: {} as IHonors,
@@ -50,6 +51,7 @@ const store = createStore<State>({
     setEvaluation(state, data: IEvaluation) {state.evaluation = data},
     setIntentions(state, data: IIntentions) {state.intentions = data},
     setApplicationInfo(state, data: IApplicationInfo) {state.applicationInfo = data},
+    setCourseGrade(state, data: ICourseGrade[]) {state.courseGrade = data},
   },
   getters: {
     getSkillsTags(state): ITags[] {return state.skillsTags},
@@ -68,6 +70,7 @@ const store = createStore<State>({
     getEvaluation(state): IEvaluation {return state.evaluation},
     getIntentions(state): IIntentions {return state.intentions},
     getApplicationInfo(state): IApplicationInfo {return state.applicationInfo},
+    getCourseGrade(state): ICourseGrade[] {return state.courseGrade},
   },
   actions: {
     async fetchMenus({ commit }) {
@@ -213,6 +216,13 @@ const store = createStore<State>({
       try {
         const response = await axios.get('/applicationinfo')
         commit('setApplicationInfo', response.data.data)
+      } catch (error) {
+      }
+    },
+    async fetchCourseGrade({ commit }) {
+      try {
+        const response = await axios.get('/applicationinfo/grade')
+        commit('setCourseGrade', response.data.data)
       } catch (error) {
       }
     },

@@ -11,5 +11,4 @@ export interface IApplicationInfo {
   name: string,                 // 姓名
   major: string,                // 姓名
   cname: string,                // 姓名
-  gradeGrade: ICourseGrade[],  // 报考专业课程
 }

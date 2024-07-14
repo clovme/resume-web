@@ -40,7 +40,7 @@ watch(data.value, (newValue) => {
 
 function addCustomTag() {
   if (!customTag.value || customTag.value.trim() === '') {
-    ElNotification({title: '提示信息', message: '自定义特长不能为空。', type: 'warning'})
+    ElNotification({title: '提示信息', message: '荣誉证书名称不能为空。', type: 'warning'})
     return
   }
   data.value.checkedTags[customTag.value] = true

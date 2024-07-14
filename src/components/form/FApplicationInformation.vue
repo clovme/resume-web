@@ -1,9 +1,79 @@
 <script setup lang="ts">
-import {getStore} from "@/utils";
+import { getStore, saveForm } from '@/utils'
 import plus from "@/components/icon/plus.vue";
-import { IApplicationInfo } from '@/store/interface/applicationinfo.ts'
+import { IApplicationInfo, ICourseGrade } from '@/store/interface/applicationinfo.ts'
+import { reactive, ref, watch } from 'vue'
+import { ElMessage, ElNotification } from 'element-plus'
+import axios from '@/utils/axios.ts'
 
+const form = reactive({ name: '', score: '' })
+
+let timerData = 0
+let timerGrade = 0
+const isNewDataItem = ref<boolean>(false)
+const isNewGradeItem = ref<boolean>(false)
 const data = getStore<IApplicationInfo>('getApplicationInfo');
+const courseGrade = getStore<ICourseGrade[]>('getCourseGrade');
+
+watch(data.value, (newValue) => {
+  clearTimeout(timerData)
+  if (isNewDataItem.value) {
+    isNewDataItem.value = false
+  }
+
+  timerData = setTimeout(function() {
+    saveForm('/applicationinfo', [newValue])
+    clearTimeout(timerData)
+  }, 1000)
+})
+
+watch(courseGrade.value, (newValue) => {
+  clearTimeout(timerGrade)
+  if (isNewGradeItem.value) {
+    isNewGradeItem.value = false
+  }
+
+  timerGrade = setTimeout(function() {
+    saveForm('/applicationinfo/grade', newValue)
+    clearTimeout(timerGrade)
+  }, 1000)
+})
+
+function addCourseGrade() {
+  if (!form.name || form.name.trim().length <= 0) {
+    ElNotification({title: '提示信息', message: '专业课名称不能为空。', type: 'warning'})
+    return
+  }
+  if (!form.score || form.score.trim().length <= 0) {
+    ElNotification({title: '提示信息', message: '专业课成绩不能为空。', type: 'warning'})
+    return
+  }
+  axios.post('/applicationinfo/grade', form).then((response) => {
+    if (response.data.code !== 200) {
+      ElMessage({ message: response.data.message, grouping: true, type: 'error' })
+      return
+    }
+    isNewDataItem.value = true
+    isNewGradeItem.value = true
+    courseGrade.value.push(response.data.data)
+  })
+}
+
+function removeCourseGrade(id: string) {
+  axios.delete(`/applicationinfo/grade?id=${id}`).then((response) => {
+    if (response.data.code !== 200) {
+      ElMessage({ message: response.data.message, grouping: true, type: 'error' })
+      return
+    }
+    for (let i = 0; i < courseGrade.value.length; i++) {
+      if (courseGrade.value[i].id === id) {
+        isNewDataItem.value = true
+        isNewGradeItem.value = true
+        courseGrade.value.splice(i, 1)
+      }
+    }
+  })
+}
 </script>
 
 <template>
@@ -25,7 +95,7 @@ const data = getStore<IApplicationInfo>('getApplicationInfo');
         <el-col :span="14"></el-col>
       </el-row>
       <el-row class="split-row-1">
-        <el-col style="margin-bottom: 15px" v-if="data.gradeGrade.length > 0">
+        <el-col style="margin-bottom: 15px" v-if="courseGrade.length > 0">
           <div class="split-1">
             <el-row>
               <el-col :span="24">
@@ -34,19 +104,19 @@ const data = getStore<IApplicationInfo>('getApplicationInfo');
                     <td rowspan="2">
                       <input type="text" v-model="data.cname" />
                     </td>
-                    <td v-for="item in data.gradeGrade">
+                    <td v-for="item in courseGrade">
                       <input type="text" v-model="item.name" />
                     </td>
                   </tr>
                   <tr>
-                    <td v-for="item in data.gradeGrade">
+                    <td v-for="item in courseGrade">
                       <input type="text" v-model="item.score" />
                     </td>
                   </tr>
                   <tr>
                     <td>删除</td>
-                    <td v-for="item in data.gradeGrade">
-                      <i class="icon-circle-with-minus" />
+                    <td v-for="item in courseGrade">
+                      <i @click="removeCourseGrade(item.id)" class="icon-circle-with-minus" />
                     </td>
                   </tr>
                 </table>
@@ -59,9 +129,9 @@ const data = getStore<IApplicationInfo>('getApplicationInfo');
         </el-col>
         <el-col :span="11">
           <div class="split-1">
-            <el-input placeholder="专业课名称，例如：英语" clearable/>:
-            <el-input placeholder="专业课成绩，例如：80" clearable/>
-            <el-button class="el-c-button" :icon="plus" plain>添加专业课成绩</el-button>
+            <el-input v-model="form.name" placeholder="专业课名称，例如：英语" clearable/>:
+            <el-input v-model="form.score" placeholder="专业课成绩，例如：80" clearable/>
+            <el-button @click="addCourseGrade" class="el-c-button" :icon="plus" plain>添加专业课成绩</el-button>
           </div>
         </el-col>
       </el-row>

@@ -2,7 +2,7 @@
 
 import ModuleTitle from "@/components/utils/ModuleTitle.vue";
 import { getStore } from '@/utils'
-import { IApplicationInfo } from '@/store/interface/applicationinfo.ts'
+import { IApplicationInfo, ICourseGrade } from '@/store/interface/applicationinfo.ts'
 import { ref, watch } from 'vue'
 
 defineProps<{
@@ -15,13 +15,14 @@ const baokaoListStyle = ref({
 })
 
 const data = getStore<IApplicationInfo>('getApplicationInfo');
+const courseGrade = getStore<ICourseGrade[]>('getCourseGrade');
 
-if (data.value.gradeGrade.length <= 0) {
+if (!courseGrade.value || courseGrade.value.length <= 0) {
   baokaoListStyle.value.padding = '0'
 }
 
-watch(data.value, (newValue) => {
-  if (newValue.gradeGrade.length <= 0) {
+watch(courseGrade.value, (newValue) => {
+  if (newValue.length <= 0) {
     baokaoListStyle.value.padding = '0'
   }
 })
@@ -33,13 +34,13 @@ watch(data.value, (newValue) => {
       <li>报考院校：{{data.name}}</li>
       <li>报考专业：{{data.major}}</li>
     </ul>
-    <table class="baokao-table" v-if="data.gradeGrade.length > 0">
+    <table class="baokao-table" v-if="courseGrade.length > 0">
       <tr>
         <td rowspan="2">{{data.cname}}</td>
-        <td v-for="item in data.gradeGrade">{{ item.name }}</td>
+        <td v-for="item in courseGrade">{{ item.name }}</td>
       </tr>
       <tr>
-        <td v-for="item in data.gradeGrade">{{ item.score }}</td>
+        <td v-for="item in courseGrade">{{ item.score }}</td>
       </tr>
     </table>
   </ModuleTitle>
