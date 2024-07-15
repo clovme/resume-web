@@ -1,6 +1,10 @@
 <script setup lang="ts">
 import {ref} from "vue";
 import {ITitleContent} from "@/components/utils/interface/interface.ts";
+import { getStore } from '@/utils'
+import { ISetting } from '@/store/interface/setting.ts'
+
+const setting = getStore<ISetting>("getSetting")
 
 const props = withDefaults(defineProps<ITitleContent>(), {
   margin: 10
@@ -8,12 +12,6 @@ const props = withDefaults(defineProps<ITitleContent>(), {
 
 const headerStyle = ref({
   marginTop: `${props.margin * 2}px`
-})
-
-const editorStyle = ref({
-  fontSize: '13px',
-  marginTop: `${props.margin}px`,
-  lineHeight: '22px'
 })
 
 function isContent(content: string | undefined): boolean {
@@ -30,7 +28,7 @@ function isContent(content: string | undefined): boolean {
     <li v-if="name"><b v-text="name"></b></li>
     <li v-if="title"><b v-text="title"></b></li>
   </ul>
-  <div class="ql-editor" v-html="content" :style="editorStyle" v-if="isContent(content)"></div>
+  <div class="ql-editor" v-html="content" :style="`font-family: ${setting.fontFamily};font-size: ${setting.fontSize}px; margin-top: ${props.margin}px;line-height: ${setting.lines * setting.fontSize * 2}px`" v-if="isContent(content)"></div>
 </template>
 
 <style scoped lang="scss">

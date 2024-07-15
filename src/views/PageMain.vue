@@ -6,11 +6,13 @@ import {State} from "@/store/interface";
 import { IMenus } from '@/store/interface/menus.ts'
 import { getStore } from '@/utils'
 import { ISlogan } from '@/store/interface/slogan.ts'
+import { ISetting } from '@/store/interface/setting.ts'
 
 const style = ref({
   height: `${window.innerHeight - 200}px`,
 })
 
+const setting = getStore<ISetting>("getSetting")
 const slogan = getStore<ISlogan>("getSlogan")
 // 加载数据
 const store = useStore<State>();
@@ -41,7 +43,7 @@ window.onresize = () => {
       <div class="line-left"></div>
       <div class="line-right"></div>
     </LineBox>
-    <div class="resume-content-all">
+    <div class="resume-content-all" :style="`margin: 0 ${setting.page}px 0 ${setting.page+15}px`">
       <component v-for="menu in menus" :is="menu.module" v-show="menu.isChecked" :id="menu.name" :title="menu.title"/>
     </div>
     <div :style="style"></div>
@@ -146,8 +148,8 @@ window.onresize = () => {
   }
 
   .resume-content-all {
+    color: #555;
     border-left: 1px solid rgb(78, 114, 130);
-    margin: 0 30px 0 40px;
     padding-top: 8px;
   }
 }

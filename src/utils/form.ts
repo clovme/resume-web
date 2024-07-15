@@ -1,7 +1,7 @@
 const form = {
     Gender: ['不填', '男', '女'],
-    FontFamily: ['微软雅黑', '宋体', "楷体"],
-    FontSize: [11, 12, 13, 14, 15],
+    FontFamily: ['微软雅黑', '黑体', '仿宋', '宋体', "楷体"],
+    FontSize: [12, 13, 14, 15, 16],
     isWord: [{label: '文字', value: true}, {label: '百分比', value: false}],
     ProficiencyLevel: [{label: '一般', value: 50}, {label: '良好', value: 65}, {label: '熟练', value: 80}, {label: '擅长', value: 85}, {label: '精通', value: 95}],
     Politics: ['不填', '中共党员', '中共预备党员', '普通公民', '群众'],

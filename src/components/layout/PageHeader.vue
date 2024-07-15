@@ -5,7 +5,7 @@ import axios from "@/utils/axios.ts";
 import {ElMessage, ElMessageBox} from "element-plus";
 import {IResumes} from "@/store/interface/resume.ts";
 import form from '@/utils/form.ts'
-import { getStore, saveForm } from '@/utils'
+import { elemRect, getStore, saveForm } from '@/utils'
 import { ISlogan } from '@/store/interface/slogan.ts'
 import { ISetting } from '@/store/interface/setting.ts'
 
@@ -24,10 +24,11 @@ const isHeaderTitle = ref(false)
 const slogan = getStore<ISlogan>("getSlogan")
 const setting = getStore<ISetting>("getSetting")
 const data = ref<ISlogan>({} as ISlogan)
-const dataSetting = ref<ISetting>({} as ISetting)
+const dataSetting = ref<ISetting>({lines: 0} as ISetting)
 const resume = reactive({ id: '', name: '' })
 
 const tempTemp = setTimeout(function() {
+  if (!setting.value) return
   dataSetting.value.id = setting.value.id
   dataSetting.value.fontFamily = setting.value.fontFamily
   dataSetting.value.fontSize = setting.value.fontSize
@@ -39,9 +40,10 @@ const tempTemp = setTimeout(function() {
     isInit = false
     clearTimeout(temp)
   }, 3000)
-}, 1000)
+}, 200)
 
 const tempTemp1 = setTimeout(function() {
+  if (!slogan.value) return
   data.value.id = slogan.value.id
   data.value.title = slogan.value.title
   data.value.slogan = slogan.value.slogan
@@ -50,7 +52,7 @@ const tempTemp1 = setTimeout(function() {
     isInit1 = false
     clearTimeout(temp)
   }, 3000)
-}, 1000)
+}, 200)
 
 let timer = 0;
 let timerSetting = 0;
@@ -86,7 +88,9 @@ watch(dataSetting.value, (newValue) => {
 // 获取简历列表
 function handleOk() {
   axios.get('/resumes').then(res => {
-    drawerData.value = res.data.data
+    if (res.data.data.length > 0) {
+      drawerData.value = res.data.data
+    }
     drawer.value = true
   });
 }
@@ -194,6 +198,12 @@ function onMouseleave(e: Event) {
   }
 }
 
+function onHeaderTitle() {
+  const top = elemRect('.resume-head').top + window.scrollY - 60
+  window.scrollTo({ top: top, left: 0, behavior: 'smooth' })
+  isHeaderTitle.value = true
+}
+
 if (!rid) {
   handleOk()
 }
@@ -209,24 +219,30 @@ if (!rid) {
           <div class="header-box-content">
             <div class="header-box-content-box">
               <div class="header-box-content-box-item">
-                模块上下间距：18
+                模块上下间距：{{ setting.module }}
                 <div class="header-box-content-box-item-option">
                   <el-slider v-model="dataSetting.module" :min="5" :max="50" size="small" />
-                  <el-button size="small">默认</el-button>
+                  <div style="width: 64px;">
+                    <el-button @click="()=>{dataSetting.module = 18}" v-if="setting.module != 18" size="small">默认</el-button>
+                  </div>
                 </div>
               </div>
               <div class="header-box-content-box-item">
-                行间距：0.70
+                行间距：{{ dataSetting.lines.toFixed(2) }}
                 <div class="header-box-content-box-item-option">
-                  <el-slider v-model="dataSetting.lines" :min="0.30" :max="1.20" :step="0.01" size="small" />
-                  <el-button size="small">默认</el-button>
+                  <el-slider v-model="dataSetting.lines" :min="0.60" :max="1.50" :step="0.01" size="small" />
+                  <div style="width: 64px;">
+                    <el-button @click="()=>{dataSetting.lines = 0.8}" v-if="setting.lines != 0.8" size="small">默认</el-button>
+                  </div>
                 </div>
               </div>
               <div class="header-box-content-box-item">
-                页面边距：30
+                页面边距：{{ dataSetting.page }}
                 <div class="header-box-content-box-item-option">
-                  <el-slider v-model="dataSetting.page" :min="10" :max="50" size="small" />
-                  <el-button size="small">默认</el-button>
+                  <el-slider v-model="dataSetting.page" :min="10" :max="60" size="small" />
+                  <div style="width: 64px;">
+                    <el-button @click="()=>{dataSetting.page = 30}" v-if="setting.page != 30" size="small">默认</el-button>
+                  </div>
                 </div>
               </div>
             </div>
@@ -249,7 +265,7 @@ if (!rid) {
             </div>
           </div>
         </li>
-        <li class="header-toolbar-item" @click="isHeaderTitle = true"><i class="icon-title"></i><b>标题设置</b></li>
+        <li class="header-toolbar-item" @click="onHeaderTitle"><i class="icon-title"></i><b>标题设置</b></li>
         <li class="header-toolbar-item"><i class="icon-tupian"></i><b>下载图片</b></li>
         <li class="header-toolbar-item"><i class="icon-word"></i><b>下载WORD</b></li>
         <li class="header-toolbar-item"><i class="icon-pdf"></i><b>下载PDF</b></li>
@@ -268,8 +284,8 @@ if (!rid) {
           <el-tooltip content="注销">
             <button class="el-drawer__close-btn" @click="signOut"><i class="icon-sign-out-alt" /></button>
           </el-tooltip>
-          <el-tooltip content="关闭">
-            <button class="el-drawer__close-btn" @click="close" v-if="!!rid"><i class="icon-cha" /></button>
+          <el-tooltip v-if="rid" content="关闭">
+            <button class="el-drawer__close-btn" @click="close"><i class="icon-cha" /></button>
           </el-tooltip>
         </div>
       </div>

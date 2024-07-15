@@ -10,7 +10,7 @@ import Icons from '@/components/Icons.vue'
 const params = new URLSearchParams(window.location.search);
 let rid = params.get("rid")
 
-const form = reactive({ username: '', password: '' })
+const form = reactive({ username: 'admin', password: 'admin' })
 
 const regedit = ref(true);
 const drawer = ref(false);

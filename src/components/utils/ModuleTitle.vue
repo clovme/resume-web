@@ -1,10 +1,14 @@
 <script setup lang="ts">
 
 import LineBox from "@/components/utils/LineBox.vue";
+import { getStore } from '@/utils'
+import { ISetting } from '@/store/interface/setting.ts'
 
 defineProps<{
   title: string
 }>()
+
+const setting = getStore<ISetting>("getSetting")
 </script>
 
 <template>
@@ -14,7 +18,7 @@ defineProps<{
       <div class="title-icon"></div>
     </div>
     <LineBox color="#4e7282" margin="0" />
-    <div class="resume-content-main">
+    <div class="resume-content-main" :style="`margin: ${setting.module}px 15px;`">
       <slot></slot>
     </div>
   </div>
@@ -99,10 +103,6 @@ defineProps<{
       top: 100%;
       border-top-color: rgb(38, 74, 90);
     }
-  }
-
-  .resume-content-main {
-    margin:22px 20px;
   }
 }
 </style>
