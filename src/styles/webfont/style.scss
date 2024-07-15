@@ -2,11 +2,11 @@
 
 @font-face {
   font-family: '#{$icomoon-font-family}';
-  src:  url('#{$icomoon-font-path}/#{$icomoon-font-family}.eot?9x3a3u');
-  src:  url('#{$icomoon-font-path}/#{$icomoon-font-family}.eot?9x3a3u#iefix') format('embedded-opentype'),
-    url('#{$icomoon-font-path}/#{$icomoon-font-family}.ttf?9x3a3u') format('truetype'),
-    url('#{$icomoon-font-path}/#{$icomoon-font-family}.woff?9x3a3u') format('woff'),
-    url('#{$icomoon-font-path}/#{$icomoon-font-family}.svg?9x3a3u##{$icomoon-font-family}') format('svg');
+  src:  url('#{$icomoon-font-path}/#{$icomoon-font-family}.eot?xkrsv0');
+  src:  url('#{$icomoon-font-path}/#{$icomoon-font-family}.eot?xkrsv0#iefix') format('embedded-opentype'),
+    url('#{$icomoon-font-path}/#{$icomoon-font-family}.ttf?xkrsv0') format('truetype'),
+    url('#{$icomoon-font-path}/#{$icomoon-font-family}.woff?xkrsv0') format('woff'),
+    url('#{$icomoon-font-path}/#{$icomoon-font-family}.svg?xkrsv0##{$icomoon-font-family}') format('svg');
   font-weight: normal;
   font-style: normal;
   font-display: block;
@@ -27,19 +27,14 @@ i {
   -moz-osx-font-smoothing: grayscale;
 }
 
+.icon-sign-out-alt {
+  &:before {
+    content: $icon-sign-out-alt; 
+  }
+}
 .icon-gerenjianli {
   &:before {
     content: $icon-gerenjianli; 
-  }
-}
-.icon-delete {
-  &:before {
-    content: $icon-delete; 
-  }
-}
-.icon-edit {
-  &:before {
-    content: $icon-edit; 
   }
 }
 .icon-sliderleft {
@@ -65,6 +60,16 @@ i {
 .icon-pdf {
   &:before {
     content: $icon-pdf; 
+  }
+}
+.icon-delete {
+  &:before {
+    content: $icon-delete; 
+  }
+}
+.icon-edit {
+  &:before {
+    content: $icon-edit; 
   }
 }
 .icon-remen {
@@ -125,6 +130,11 @@ i {
 .icon-word {
   &:before {
     content: $icon-word; 
+  }
+}
+.icon-cha {
+  &:before {
+    content: $icon-cha; 
   }
 }
 

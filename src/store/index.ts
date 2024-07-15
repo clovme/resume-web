@@ -71,6 +71,7 @@ const store = createStore<State>({
     getIntentions(state): IIntentions {return state.intentions},
     getApplicationInfo(state): IApplicationInfo {return state.applicationInfo},
     getCourseGrade(state): ICourseGrade[] {return state.courseGrade},
+    getResumesName() {},
   },
   actions: {
     async fetchMenus({ commit }) {
@@ -223,6 +224,17 @@ const store = createStore<State>({
       try {
         const response = await axios.get('/applicationinfo/grade')
         commit('setCourseGrade', response.data.data)
+      } catch (error) {
+      }
+    },
+    async fetchResumesName() {
+      try {
+        const response = await axios.get('/resumes/id')
+        if (response.data.code !== 200) {
+          document.title = "简历列表 - 个人简历"
+          return
+        }
+        document.title = `${response.data.data.name}的简历 - 个人简历`
       } catch (error) {
       }
     },

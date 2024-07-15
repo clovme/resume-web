@@ -15,10 +15,7 @@ const isResume = ref(false)
 const newResume = ref(false)
 const drawerData = ref([])
 
-const resume = reactive({
-  id: '',
-  name: ''
-})
+const resume = reactive({ id: '', name: '' })
 
 // 获取简历列表
 function handleOk() {
@@ -63,7 +60,8 @@ function onNewResume() {
       drawer.value = false
       newResume.value = false
       localStorage.removeItem("activeName")
-      location.href = `${location.protocol}//${location.host}?rid=${res.data.data.id}`
+      localStorage.setItem("title", res.data.data.name)
+      location.href = `?rid=${res.data.data.id}`
     })
   });
 }
@@ -86,7 +84,7 @@ function onDeleteResume(data: IResumes) {
       }
       drawerData.value = res.data.data
       if (drawerData.value.length <= 0) {
-        location.href = `${location.protocol}//${location.host}`
+        location.href = `/`
       }
     })
   })
@@ -102,13 +100,28 @@ function onEditResume(data: IResumes) {
   resume.name = data.name
 }
 
+async function signOut() {
+  const response = await axios.delete('/logout')
+  if (response.data.code === 200) {
+    localStorage.removeItem("token")
+    localStorage.removeItem("expires")
+    ElMessage.success(response.data.message)
+    let timer = setTimeout(() => {
+      window.location.reload()
+      clearTimeout(timer)
+    }, 1000)
+  } else {
+    return ElMessage.error(response.data.message)
+  }
+}
+
 if (!rid) {
   handleOk()
 }
 </script>
 
 <template>
-  <el-header class="header-box">
+  <el-header v-if="rid" class="header-box">
     <div class="header-toolbar-box">
       <ul class="header-toolbar">
         <li><h1>编辑个人简历</h1></li>
@@ -119,10 +132,6 @@ if (!rid) {
         <li class="header-toolbar-item">
           <i class="icon-font"></i>
           <b>字体设置</b>
-        </li>
-        <li class="header-toolbar-item">
-          <i class="icon-title"></i>
-          <b>标题设置</b>
         </li>
         <li class="header-toolbar-item">
           <i class="icon-title"></i>
@@ -140,11 +149,15 @@ if (!rid) {
           <i class="icon-pdf"></i>
           <b>下载PDF</b>
         </li>
-      </ul>
-      <ul class="header-toolbar">
         <li class="header-toolbar-item" @click="handleOk">
           <i class="icon-gerenjianli"/>
           <b>简历列表</b>
+        </li>
+      </ul>
+      <ul class="header-toolbar">
+        <li class="header-toolbar-item" @click="signOut">
+          <i class="icon-sign-out-alt" />
+          <b>退出用户</b>
         </li>
       </ul>
     </div>
@@ -154,11 +167,7 @@ if (!rid) {
       <div class="resume-list-header">
         <h4 :id="titleId" :class="titleClass">简历列表</h4>
         <button class="el-drawer__close-btn" @click="close" v-if="!!rid">
-          <i class="el-icon el-drawer__close">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024">
-              <path fill="currentColor" d="M764.288 214.592 512 466.88 259.712 214.592a31.936 31.936 0 0 0-45.12 45.12L466.752 512 214.528 764.224a31.936 31.936 0 1 0 45.12 45.184L512 557.184l252.288 252.288a31.936 31.936 0 0 0 45.12-45.12L557.12 512.064l252.288-252.352a31.936 31.936 0 1 0-45.12-45.184z"></path>
-            </svg>
-          </i>
+          <i class="icon-cha" />
         </button>
       </div>
     </template>

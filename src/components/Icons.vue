@@ -31,7 +31,7 @@ async function copyTextToClipboard(icon: string) {
   const timer = setTimeout(function () {
     copyStatus.value = ""
     clearTimeout(timer);
-  }, 1000)
+  }, 2000)
 }
 
 function iconsBoxStatus() {

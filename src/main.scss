@@ -56,3 +56,25 @@ html, body, #app {
     padding: 10px !important;
   }
 }
+
+
+
+@mixin autofill-reset {
+  box-shadow: 0 0 0 1000px white inset;
+  -webkit-box-shadow: 0 0 0 1000px white inset;
+  -moz-box-shadow: 0 0 0 1000px white inset;
+  text-fill-color: #000;
+  -webkit-text-fill-color: #000;
+}
+
+input:-webkit-autofill {
+  @include autofill-reset;
+}
+
+input:-moz-autofill {
+  @include autofill-reset;
+}
+
+input:-ms-input-placeholder {
+  @include autofill-reset;
+}

@@ -3,19 +3,18 @@ import PageHeader from "@/components/layout/PageHeader.vue";
 import PageMain from "@/views/PageMain.vue";
 import PageFooter from "@/components/layout/PageFooter.vue";
 import {ref, reactive} from "vue";
-import {ElNotification} from "element-plus";
+import { ElMessage, ElNotification } from 'element-plus'
 import axios from "@/utils/axios.ts";
+import Icons from '@/components/Icons.vue'
 
-const form = reactive({
-  username: '',
-  password: ''
-})
+const params = new URLSearchParams(window.location.search);
+let rid = params.get("rid")
+
+const form = reactive({ username: '', password: '' })
 
 const regedit = ref(true);
 const drawer = ref(false);
-const styleForm = ref({
-  height: `${window.innerHeight}px`
-});
+const styleForm = ref({ height: `${window.innerHeight}px` });
 
 const token = localStorage.getItem("token")
 drawer.value = token != null && token.length > 0
@@ -33,8 +32,14 @@ async function onLogin() {
   const response = await axios.post('/login', form)
   if (response.data.code === 200) {
     localStorage.setItem("token", response.data.data.token)
-    localStorage.setItem("expires", response.data.data.expires_at)
-    window.location.reload()
+    localStorage.setItem("expires", response.data.data.expiresAt)
+    ElMessage.success(response.data.message)
+    let timer = setTimeout(() => {
+      window.location.reload()
+      clearTimeout(timer)
+    }, 1000)
+  } else {
+    ElMessage.error(response.data.message)
   }
 }
 
@@ -42,15 +47,19 @@ function onReset() {
   form.username = ''
   form.password = ''
 }
+
+window.onresize = function() {
+  styleForm.value.height = `${window.innerHeight}px`
+}
 </script>
 
 <template>
   <el-container v-if="drawer">
     <PageHeader/>
-    <el-main class="resume-container">
+    <el-main v-if="rid" class="resume-container">
       <PageMain/>
     </el-main>
-    <PageFooter/>
+    <PageFooter v-if="rid"/>
   </el-container>
   <el-container v-else>
     <div class="resume-form" :style="styleForm">
@@ -77,6 +86,7 @@ function onReset() {
       </el-form>
     </div>
   </el-container>
+  <Icons />
 </template>
 
 <style scoped lang="scss">
@@ -97,7 +107,7 @@ function onReset() {
     padding: 20px;
     background-color: #fff;
     border-radius: 5px;
-    width: 450px !important;
+    width: 350px !important;
 
     h1 {
       text-align: center;

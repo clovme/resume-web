@@ -21,7 +21,7 @@ instance.interceptors.request.use(config => {
   if (expires && new Date(expires).getTime() < new Date().getTime()) {
     localStorage.removeItem('token');
     localStorage.removeItem('expires');
-    location.href = `${location.protocol}//${location.host}`
+    location.href = '/'
   }
   return config;
 }, error => {
@@ -34,12 +34,12 @@ instance.interceptors.response.use(response => {
   if (token && response.data.code === 401) {
     localStorage.removeItem('token');
     localStorage.removeItem('expires');
-    location.href = `${location.protocol}//${location.host}`
+    location.href = '/'
   }
   if ((response.config.url as '').includes("/menus") && response.config.method && response.config.method.toLowerCase() === "get") {
     if (response.data.code !== 200) {
       if (!localStorage.getItem("isHref")) {
-        location.href = `${location.protocol}//${location.host}`
+        location.href = `/`
         localStorage.setItem("isHref", new Date().getTime().toString())
       }
     } else {

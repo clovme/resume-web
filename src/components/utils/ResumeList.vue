@@ -19,6 +19,10 @@ function onClickEdit(data: IResumes) {
 function onClickRemove(data: IResumes) {
   emit("remove", data)
 }
+
+function href(uri: string) {
+  location.href = `?rid=${uri}`
+}
 </script>
 
 <template>
@@ -29,7 +33,7 @@ function onClickRemove(data: IResumes) {
           <i class="icon-edit" @click="onClickEdit(item)" />
           <i class="icon-delete" @click="onClickRemove(item)" />
         </div>
-        <a :href="`?rid=${item.id}`">
+        <a @click.prevent="href(item.id)" :href="`?rid=${item.id}`">
           <div class="resume-list-item-icon"><i class="icon-word" /></div>
           <div class="resume-list-item-option resume-list-item-option-name" v-text="item.name"></div>
         </a>
