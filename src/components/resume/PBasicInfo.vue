@@ -69,7 +69,7 @@ function birthday2Age(date: string) {
     list-style: none;
     display: grid;
     font-size: 13px;
-    gap: 10px;
+    gap: 6px 0;
     grid-template-columns: repeat(2, 1fr);
 
     li {

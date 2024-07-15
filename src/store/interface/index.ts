@@ -9,6 +9,8 @@ import { IEvaluation } from './evaluation.ts'
 import { IHonors } from './honors.ts'
 import { IIntentions } from './intentions.ts'
 import { IApplicationInfo, ICourseGrade } from './applicationinfo.ts'
+import { ISlogan } from './slogan.ts'
+import { ISetting } from './setting.ts'
 
 // 定义状态类型
 export interface State {
@@ -28,5 +30,7 @@ export interface State {
   evaluation: IEvaluation;            // 自我评价
   intentions: IIntentions;            // 求职意向
   applicationInfo: IApplicationInfo;  // 报考专业
-  courseGrade: ICourseGrade[];        // 报考专业
+  courseGrade: ICourseGrade[];        // 报考课程
+  slogan: ISlogan;                    // 简历标题
+  setting: ISetting;                  // 简历设置
 }

@@ -34,8 +34,8 @@ function href(uri: string) {
           <i class="icon-delete" @click="onClickRemove(item)" />
         </div>
         <a @click.prevent="href(item.id)" :href="`?rid=${item.id}`">
-          <div class="resume-list-item-icon"><i class="icon-word" /></div>
-          <div class="resume-list-item-option resume-list-item-option-name" v-text="item.name"></div>
+          <div class="resume-list-item-icon" style="background-image: url(/assets/1004.png);"></div>
+          <div class="resume-list-item-option-name" v-text="item.name"></div>
         </a>
       </div>
     </el-col>
@@ -56,6 +56,7 @@ function href(uri: string) {
 
   .el-col {
     .resume-list-item {
+      position: relative;
       cursor: pointer;
       user-select: none;
       height: 160px;
@@ -69,7 +70,6 @@ function href(uri: string) {
       justify-content: center;
       align-items: center;
       flex-direction: column;
-      position: relative;
 
       a {
         color:#13a783;
@@ -95,11 +95,14 @@ function href(uri: string) {
       .resume-list-item-option {
         display: flex;
         width: 120px;
+        position: absolute;
+        top: 0;
         justify-content: space-between;
         opacity: 0;
         transition: all .3s;
         border-bottom: 1px solid #ecedf1;
         padding: 3px 5px;
+        background-color: #fff;
 
         i {
           font-size: 20px;
@@ -122,19 +125,26 @@ function href(uri: string) {
       }
 
       .resume-list-item-option-name {
+        display: flex;
+        width: 120px;
+        transition: all .3s;
+        border-bottom: 1px solid #ecedf1;
+        padding: 3px 5px;
         font-size: 13px;
         justify-content: center;
         opacity: 1;
         border-bottom: unset;
         height: 18px;
+        background-color: #fff;
       }
 
       .resume-list-item-icon {
-        height: 108px;
-        width: 120px;
+        height: 130px;
+        width: 130px;
         display: flex;
         align-items: center;
         justify-content: center;
+        background-size: cover;
 
         i {
           font-size: 100px;

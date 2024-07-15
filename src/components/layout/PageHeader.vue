@@ -1,21 +1,87 @@
 <script setup lang="ts">
-import {ref, h, reactive} from "vue";
+import {ref, h, reactive, watch} from "vue";
 import ResumeList from "@/components/utils/ResumeList.vue";
 import axios from "@/utils/axios.ts";
 import {ElMessage, ElMessageBox} from "element-plus";
 import {IResumes} from "@/store/interface/resume.ts";
+import form from '@/utils/form.ts'
+import { getStore, saveForm } from '@/utils'
+import { ISlogan } from '@/store/interface/slogan.ts'
+import { ISetting } from '@/store/interface/setting.ts'
 
 const params = new URLSearchParams(window.location.search);
 let rid = params.get("rid")
-
+let isInit = true
+let isInit1 = true
 const name = ref('')
 const drawer = ref(!rid)
 const title = ref('新增简历')
 const isResume = ref(false)
 const newResume = ref(false)
 const drawerData = ref([])
+const isHeaderTitle = ref(false)
 
+const slogan = getStore<ISlogan>("getSlogan")
+const setting = getStore<ISetting>("getSetting")
+const data = ref<ISlogan>({} as ISlogan)
+const dataSetting = ref<ISetting>({} as ISetting)
 const resume = reactive({ id: '', name: '' })
+
+const tempTemp = setTimeout(function() {
+  dataSetting.value.id = setting.value.id
+  dataSetting.value.fontFamily = setting.value.fontFamily
+  dataSetting.value.fontSize = setting.value.fontSize
+  dataSetting.value.module = setting.value.module
+  dataSetting.value.lines = setting.value.lines
+  dataSetting.value.page = setting.value.page
+  clearTimeout(tempTemp)
+  const temp = setTimeout(function() {
+    isInit = false
+    clearTimeout(temp)
+  }, 3000)
+}, 1000)
+
+const tempTemp1 = setTimeout(function() {
+  data.value.id = slogan.value.id
+  data.value.title = slogan.value.title
+  data.value.slogan = slogan.value.slogan
+  clearTimeout(tempTemp1)
+  const temp = setTimeout(function() {
+    isInit1 = false
+    clearTimeout(temp)
+  }, 3000)
+}, 1000)
+
+let timer = 0;
+let timerSetting = 0;
+watch(data.value, (newValue) => {
+  if (isInit) return
+  slogan.value.id = newValue.id
+  slogan.value.title = newValue.title
+  slogan.value.slogan = newValue.slogan
+
+  clearTimeout(timer)
+  timer = setTimeout(function() {
+    saveForm("/slogan", [newValue])
+    clearTimeout(timer)
+  }, 1000)
+})
+
+watch(dataSetting.value, (newValue) => {
+  if (isInit1) return
+  setting.value.id = newValue.id
+  setting.value.fontFamily = newValue.fontFamily
+  setting.value.fontSize = newValue.fontSize
+  setting.value.module = newValue.module
+  setting.value.lines = newValue.lines
+  setting.value.page = newValue.page
+
+  clearTimeout(timerSetting)
+  timerSetting = setTimeout(function() {
+    saveForm("/setting", [newValue])
+    clearTimeout(timerSetting)
+  }, 1000)
+})
 
 // 获取简历列表
 function handleOk() {
@@ -60,7 +126,6 @@ function onNewResume() {
       drawer.value = false
       newResume.value = false
       localStorage.removeItem("activeName")
-      localStorage.setItem("title", res.data.data.name)
       location.href = `?rid=${res.data.data.id}`
     })
   });
@@ -115,6 +180,20 @@ async function signOut() {
   }
 }
 
+function onMouseenter(e: Event) {
+  const classList = ((e.target as HTMLElement).querySelector('.header-box-content') as HTMLElement).classList
+  if (!classList.contains('header-box-content-active')) {
+    classList.add('header-box-content-active')
+  }
+}
+
+function onMouseleave(e: Event) {
+  const classList = ((e.target as HTMLElement).querySelector('.header-box-content') as HTMLElement).classList
+  if (classList.contains('header-box-content-active')) {
+    classList.remove('header-box-content-active')
+  }
+}
+
 if (!rid) {
   handleOk()
 }
@@ -125,40 +204,59 @@ if (!rid) {
     <div class="header-toolbar-box">
       <ul class="header-toolbar">
         <li><h1>编辑个人简历</h1></li>
-        <li class="header-toolbar-item">
-          <i class="icon-page"></i>
-          <b>间距设置</b>
+        <li class="header-toolbar-item" @mouseenter="onMouseenter" @mouseleave="onMouseleave">
+          <i class="icon-page"></i><b>间距设置</b>
+          <div class="header-box-content">
+            <div class="header-box-content-box">
+              <div class="header-box-content-box-item">
+                模块上下间距：18
+                <div class="header-box-content-box-item-option">
+                  <el-slider v-model="dataSetting.module" :min="5" :max="50" size="small" />
+                  <el-button size="small">默认</el-button>
+                </div>
+              </div>
+              <div class="header-box-content-box-item">
+                行间距：0.70
+                <div class="header-box-content-box-item-option">
+                  <el-slider v-model="dataSetting.lines" :min="0.30" :max="1.20" :step="0.01" size="small" />
+                  <el-button size="small">默认</el-button>
+                </div>
+              </div>
+              <div class="header-box-content-box-item">
+                页面边距：30
+                <div class="header-box-content-box-item-option">
+                  <el-slider v-model="dataSetting.page" :min="10" :max="50" size="small" />
+                  <el-button size="small">默认</el-button>
+                </div>
+              </div>
+            </div>
+          </div>
         </li>
-        <li class="header-toolbar-item">
-          <i class="icon-font"></i>
-          <b>字体设置</b>
+        <li class="header-toolbar-item" @mouseenter="onMouseenter" @mouseleave="onMouseleave">
+          <i class="icon-font"></i><b>字体设置</b>
+          <div class="header-box-content" style="width: unset;padding: 5px;align-items: flex-start;gap: 5px">
+            <div class="header-box-content-font-size">
+              <span>字体</span>
+              <el-radio-group v-model="dataSetting.fontFamily" style="display: flex;flex-direction: column;align-items: flex-start;">
+                <el-radio v-for="item in form.FontFamily" :value="item">{{ item }}</el-radio>
+              </el-radio-group>
+            </div>
+            <div class="header-box-content-font-size">
+              <span>文字大小</span>
+              <el-radio-group v-model="dataSetting.fontSize" style="display: flex;flex-direction: column;align-items: flex-start;">
+                <el-radio v-for="item in form.FontSize" :value="item">{{ item }}</el-radio>
+              </el-radio-group>
+            </div>
+          </div>
         </li>
-        <li class="header-toolbar-item">
-          <i class="icon-title"></i>
-          <b>标题设置</b>
-        </li>
-        <li class="header-toolbar-item">
-          <i class="icon-tupian"></i>
-          <b>下载图片</b>
-        </li>
-        <li class="header-toolbar-item">
-          <i class="icon-word"></i>
-          <b>下载WORD</b>
-        </li>
-        <li class="header-toolbar-item">
-          <i class="icon-pdf"></i>
-          <b>下载PDF</b>
-        </li>
-        <li class="header-toolbar-item" @click="handleOk">
-          <i class="icon-gerenjianli"/>
-          <b>简历列表</b>
-        </li>
+        <li class="header-toolbar-item" @click="isHeaderTitle = true"><i class="icon-title"></i><b>标题设置</b></li>
+        <li class="header-toolbar-item"><i class="icon-tupian"></i><b>下载图片</b></li>
+        <li class="header-toolbar-item"><i class="icon-word"></i><b>下载WORD</b></li>
+        <li class="header-toolbar-item"><i class="icon-pdf"></i><b>下载PDF</b></li>
+        <li class="header-toolbar-item" @click="handleOk"><i class="icon-gerenjianli"/><b>简历列表</b></li>
       </ul>
       <ul class="header-toolbar">
-        <li class="header-toolbar-item" @click="signOut">
-          <i class="icon-sign-out-alt" />
-          <b>退出用户</b>
-        </li>
+        <li class="header-toolbar-item" @click="signOut"><i class="icon-sign-out-alt" /><b>退出用户</b></li>
       </ul>
     </div>
   </el-header>
@@ -166,9 +264,14 @@ if (!rid) {
     <template #header="{ close, titleId, titleClass }">
       <div class="resume-list-header">
         <h4 :id="titleId" :class="titleClass">简历列表</h4>
-        <button class="el-drawer__close-btn" @click="close" v-if="!!rid">
-          <i class="icon-cha" />
-        </button>
+        <div style="display: flex; gap: 5px">
+          <el-tooltip content="注销">
+            <button class="el-drawer__close-btn" @click="signOut"><i class="icon-sign-out-alt" /></button>
+          </el-tooltip>
+          <el-tooltip content="关闭">
+            <button class="el-drawer__close-btn" @click="close" v-if="!!rid"><i class="icon-cha" /></button>
+          </el-tooltip>
+        </div>
       </div>
     </template>
     <ResumeList @edit="onEditResume" @remove="onDeleteResume" @new-resume="onShowNewResume" :data="drawerData"/>
@@ -185,6 +288,17 @@ if (!rid) {
             <el-button style="flex: 1" @click="newResume = false">取消</el-button>
           </div>
         </div>
+      </el-form-item>
+    </el-form>
+  </el-dialog>
+
+  <el-dialog v-model="isHeaderTitle" title="简历标题/Slogan设置" width="550" align-center>
+    <el-form label-position="top">
+      <el-form-item label="简历标题">
+        <el-input v-model="data.title" placeholder="简历标题" />
+      </el-form-item>
+      <el-form-item label="简历 Slogan">
+        <el-input v-model="data.slogan" type="textarea" resize="none" placeholder="我们的口号是：好好当牛做马" rows="4" />
       </el-form-item>
     </el-form>
   </el-dialog>
@@ -235,6 +349,50 @@ if (!rid) {
         align-items: center;
         flex-direction: column;
         cursor: pointer;
+        position: relative;
+
+        .header-box-content {
+          position: absolute;
+          top: 50px;
+          width: 300px;
+          border-radius: 5px;
+          background-color: #FFF;
+          align-items: center;
+          justify-content: center;
+          display: none;
+          transition: all 0.3s;
+          box-shadow: 0 0 12px rgba(57, 57, 77, .66);
+
+          .header-box-content-font-size{
+            display: flex;
+            width: 100px;
+            align-items: flex-start;
+            flex-direction: column;
+            border: 1px solid #dcdfe6;
+            height: 180px;
+            padding: 5px 10px;
+            border-radius: 5px;
+          }
+
+          .header-box-content-box {
+            width: 100%;
+            margin: 20px 30px;
+
+            .header-box-content-box-item {
+              text-align: center;
+              font-size: 13px;
+
+              .header-box-content-box-item-option {
+                display: flex;
+                gap: 10px;
+              }
+            }
+          }
+        }
+
+        .header-box-content-active {
+          display: flex;
+        }
 
         i {
           cursor: pointer;

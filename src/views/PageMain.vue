@@ -4,11 +4,14 @@ import LineBox from "@/components/utils/LineBox.vue";
 import {useStore} from "vuex";
 import {State} from "@/store/interface";
 import { IMenus } from '@/store/interface/menus.ts'
+import { getStore } from '@/utils'
+import { ISlogan } from '@/store/interface/slogan.ts'
 
 const style = ref({
   height: `${window.innerHeight - 200}px`,
 })
 
+const slogan = getStore<ISlogan>("getSlogan")
 // 加载数据
 const store = useStore<State>();
 // 获取并过滤需要渲染的菜单项
@@ -24,9 +27,9 @@ window.onresize = () => {
 <template>
   <div class="resume-box">
     <div class="resume-head">
-      <div class="resume-head-title">个人简历</div>
+      <div class="resume-head-title" v-text="slogan.title"></div>
       <div class="personal-resume">
-        <p>-----------------------求职意向：Python开发工程师---------------------</p>
+        <p v-text="slogan.slogan"></p>
         Personal resume
       </div>
       <div class="right-box">

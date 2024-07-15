@@ -13,6 +13,8 @@ import { IEvaluation } from './interface/evaluation.ts'
 import { IHonors } from './interface/honors.ts'
 import { IIntentions } from './interface/intentions.ts'
 import { IApplicationInfo, ICourseGrade } from './interface/applicationinfo.ts'
+import { ISlogan } from './interface/slogan.ts'
+import { ISetting } from './interface/setting.ts'
 
 const store = createStore<State>({
   state: {
@@ -27,6 +29,8 @@ const store = createStore<State>({
     hobbiesTags: [],
     courseGrade: [],
     skills: {} as ISkills,
+    slogan: {} as ISlogan,
+    setting: {} as ISetting,
     honors: {} as IHonors,
     hobbies: {} as IHonors,
     basicInfo: {} as IBasicInfo,
@@ -41,6 +45,8 @@ const store = createStore<State>({
     setMenus(state, data: IMenus[]) {state.menus = data},
     setBasicInfo(state, data: IBasicInfo) {state.basicInfo = data},
     setSkills(state, data: ISkills) {state.skills = data},
+    setSlogan(state, data: ISlogan) {state.slogan = data},
+    setSetting(state, data: ISetting) {state.setting = data},
     setHonors(state, data: IHonors) {state.honors = data},
     setHobbies(state, data: IHonors) {state.hobbies = data},
     setWorks(state, data: IWorksExperience[]) {state.works = data},
@@ -60,6 +66,8 @@ const store = createStore<State>({
     getMenus(state): IMenus[] {return state.menus},
     getBasicInfo(state): IBasicInfo {return state.basicInfo},
     getSkills(state): ISkills {return state.skills},
+    getSlogan(state): ISlogan {return state.slogan},
+    getSetting(state): ISetting {return state.setting},
     getHonors(state): IHonors {return state.honors},
     getHobbies(state): IHonors {return state.hobbies},
     getWorks(state): IWorksExperience[] {return state.works},
@@ -224,6 +232,20 @@ const store = createStore<State>({
       try {
         const response = await axios.get('/applicationinfo/grade')
         commit('setCourseGrade', response.data.data)
+      } catch (error) {
+      }
+    },
+    async fetchSlogan({ commit }) {
+      try {
+        const response = await axios.get('/slogan')
+        commit('setSlogan', response.data.data)
+      } catch (error) {
+      }
+    },
+    async fetchSetting({ commit }) {
+      try {
+        const response = await axios.get('/setting')
+        commit('setSetting', response.data.data)
       } catch (error) {
       }
     },
