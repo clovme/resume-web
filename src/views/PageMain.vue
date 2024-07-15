@@ -28,33 +28,55 @@ window.onresize = () => {
 
 <template>
   <div class="resume-box">
-    <div class="resume-head">
-      <div class="resume-head-title" v-text="slogan.title"></div>
-      <div class="personal-resume">
-        <p v-text="slogan.slogan"></p>
-        Personal resume
+    <div class="resume-box-content">
+      <div class="resume-head">
+        <div class="resume-head-title" v-text="slogan.title"></div>
+        <div class="personal-resume">
+          <p v-text="slogan.slogan"></p>
+          Personal resume
+        </div>
+        <div class="right-box">
+          <i class="icon-xueshimao"></i>
+          <i class="icon-shoutibao"></i>
+        </div>
       </div>
-      <div class="right-box">
-        <i class="icon-xueshimao"></i>
-        <i class="icon-shoutibao"></i>
+      <LineBox size="0" color="#fff" style="display: flex;">
+        <div class="line-left"></div>
+        <div class="line-right"></div>
+      </LineBox>
+      <div class="resume-content-all" :style="`margin: 0 ${setting.page}px 0 ${setting.page+15}px`">
+        <component v-for="menu in menus" :is="menu.module" v-show="menu.isChecked" :id="menu.name" :title="menu.title"/>
       </div>
-    </div>
-    <LineBox size="0" color="#fff" style="display: flex;">
-      <div class="line-left"></div>
-      <div class="line-right"></div>
-    </LineBox>
-    <div class="resume-content-all" :style="`margin: 0 ${setting.page}px 0 ${setting.page+15}px`">
-      <component v-for="menu in menus" :is="menu.module" v-show="menu.isChecked" :id="menu.name" :title="menu.title"/>
     </div>
     <div :style="style"></div>
   </div>
 </template>
 
-<style scoped>
+<style lang="scss">
 .resume-box {
-  width: 820px;
   margin: 60px 0 100px 0;
   background-color: #fff;
+}
+
+.resume-box-content {
+  width: 820px;
+  margin: 0 auto;
+  background-color: #fff;
+
+
+  .ql-editor ol, .ql-editor ul {
+    padding-left: 0 !important;
+  }
+
+  .ql-editor li {
+    padding-left: 1.3em;
+  }
+
+  @for $i from 1 through 8 {
+    .ql-editor li.ql-indent-#{$i}:not(.ql-direction-rtl) {
+      padding-left: calc(1.5em + #{$i}em);
+    }
+  }
 
   .resume-head {
     display: flex;
@@ -151,6 +173,160 @@ window.onresize = () => {
     color: #555;
     border-left: 1px solid rgb(78, 114, 130);
     padding-top: 8px;
+
+    .resume-content {
+      position: relative;
+      font-size: 14px;
+
+      .module-title {
+        position: relative;
+        margin-left: -16px;
+        display: inline-block;
+        vertical-align: top;
+        min-width: 140px;
+        height: 24px;
+        line-height: 24px;
+        font-size: 16px;
+        font-weight: 400;
+        background-color: #4e7282;
+        color: #fff;
+
+        span {
+          display: block;
+          width: calc(100% - 25px);
+          height: 100%;
+          padding-left: 25px;
+          background-color: #4e7282;
+          color: #fff;
+          white-space: nowrap;
+          position: relative;
+        }
+
+        .title-icon {
+          height: 100%;
+          width: 50px;
+          position: absolute;
+          right: -1px;
+          top: 0;
+          overflow: hidden;
+
+          &:after {
+            border: 2px solid #fff;
+            display: block;
+            content: "";
+            width: 3px;
+            height: 50px;
+            position: absolute;
+            right: 25px;
+            top: -12px;
+            transform: rotate(-45deg);
+          }
+
+          &:before {
+            content: "";
+            display: block;
+            width: 27px;
+            height: 50px;
+            overflow: hidden;
+            border-style: solid;
+            border-width: 26px 0 0 26px;
+            background-color: #4e7282;
+            position: absolute;
+            right: -22px;
+            top: -50px;
+            transform: rotate(-45deg);
+          }
+        }
+
+        &:after {
+          content: "";
+          display: block;
+          width: 0;
+          height: 0;
+          overflow: hidden;
+          border-style: solid;
+          border-width: 9px 0 0 16px;
+          border-color: #4e7282 transparent transparent;
+          position: absolute;
+          left: 0;
+          top: 100%;
+          border-top-color: rgb(38, 74, 90);
+        }
+      }
+    }
+
+    .tags-item {
+      display: inline-block;
+      margin: 3px 15px 5px 0;
+      padding: 5px 15px;
+      border-radius: 18px;
+      color: #555;
+      position: relative;
+      border: 1px solid rgba(78, 114, 130, 0.3);
+      background-color: rgba(78, 114, 130, 0.04);
+    }
+
+    .basic-info-box {
+      display: flex;
+      align-items: flex-start;
+
+      .basic-info-list {
+        flex: 1;
+        list-style: none;
+        display: grid;
+        font-size: 13px;
+        gap: 6px 0;
+        grid-template-columns: repeat(2, 1fr);
+
+        li {
+          span {
+            display: inline-block;
+            vertical-align: top;
+            min-width: 60px;
+            text-align-last: justify;
+            position: relative;
+            margin-right: 8px;
+
+            &:after {
+              content: ":";
+              right: -4px;
+              position: absolute;
+            }
+          }
+        }
+      }
+
+      .photo-box {
+        width: 91px;
+
+        img {
+          height: 98px;
+        }
+      }
+    }
+
+    ul.baokao-list {
+      list-style: none;
+      display: flex;
+      padding: 0 0 10px 0;
+
+      li {
+        flex: 1;
+      }
+    }
+
+    table.baokao-table {
+      border-collapse: collapse;
+
+      td {
+        border: 1px solid #aaa;
+        padding: 5px;
+        text-align: center;
+        font-weight: 400;
+        min-width: 70px;
+        white-space: nowrap;
+      }
+    }
   }
 }
 </style>

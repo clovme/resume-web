@@ -49,25 +49,5 @@ watch(data.value, (newValue) => {
 </template>
 
 <style scoped lang="scss">
-ul.baokao-list {
-  list-style: none;
-  display: flex;
-  padding: 0 0 10px 0;
 
-  li {
-    flex: 1;
-  }
-}
-table.baokao-table {
-  border-collapse: collapse;
-
-  td {
-    border: 1px solid #aaa;
-    padding: 5px;
-    text-align: center;
-    font-weight: 400;
-    min-width: 70px;
-    white-space: nowrap;
-  }
-}
 </style>

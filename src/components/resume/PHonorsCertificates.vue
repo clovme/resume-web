@@ -23,14 +23,5 @@ const data = getStore<IHonors>('getHonors');
 </template>
 
 <style scoped lang="scss">
-.tags-item {
-  display: inline-block;
-  margin: 3px 15px 5px 0;
-  padding: 5px 15px;
-  border-radius: 18px;
-  color: #555;
-  position: relative;
-  border: 1px solid rgba(78, 114, 130, 0.3);
-  background-color: rgba(78, 114, 130, 0.04);
-}
+
 </style>

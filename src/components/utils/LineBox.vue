@@ -13,14 +13,12 @@ const props = withDefaults(defineProps<ILineBox>(), {
 
 const mp = VLineBox.margin(props)
 
-let lineBoxStyleValue: { [key: string]: string } = {
+const lineBoxStyle = ref<CSSProperties>({
   [`border-${props.position}`]: `${props.size}px ${props.lineStyle} ${props.color}`,
   margin: mp.margin,
   padding: mp.padding,
   position: 'relative'
-};
-
-const lineBoxStyle = ref<CSSProperties>(lineBoxStyleValue)
+})
 </script>
 
 <template>

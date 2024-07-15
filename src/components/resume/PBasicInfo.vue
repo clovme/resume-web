@@ -60,42 +60,5 @@ function birthday2Age(date: string) {
 </template>
 
 <style scoped lang="scss">
-.basic-info-box {
-  display: flex;
-  align-items: flex-start;
 
-  .basic-info-list {
-    flex: 1;
-    list-style: none;
-    display: grid;
-    font-size: 13px;
-    gap: 6px 0;
-    grid-template-columns: repeat(2, 1fr);
-
-    li {
-      span {
-        display: inline-block;
-        vertical-align: top;
-        min-width: 60px;
-        text-align-last: justify;
-        position: relative;
-        margin-right: 8px;
-
-        &:after {
-          content: ":";
-          right: -4px;
-          position: absolute;
-        }
-      }
-    }
-  }
-
-  .photo-box {
-    width: 91px;
-
-    img {
-      height: 98px;
-    }
-  }
-}
 </style>
