@@ -110,9 +110,7 @@ function onUpDownMove(index: number, flag: boolean) {
         <el-col :span="4">
           <div class="split-1">
             <label>学历</label>
-            <el-select style="width: 100px" v-model="data.degree" placeholder="请选择学历">
-              <el-option v-for="item in form.xueli" :key="item" :label="item" :value="item"/>
-            </el-select>
+            <el-select-v2 v-model="data.degree" :options="form.degree" placeholder="请选择学历" />
           </div>
         </el-col>
         <el-col :span="2">

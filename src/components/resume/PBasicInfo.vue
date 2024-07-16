@@ -2,6 +2,7 @@
 import { getStore } from '@/utils'
 import ModuleTitle from "@/components/utils/ModuleTitle.vue";
 import { IBasicInfo } from '@/store/interface/basicinfo.ts'
+import form from '@/utils/form.ts'
 
 defineProps<{
   title: string
@@ -53,7 +54,7 @@ function birthday2Age(date: string) {
         <li v-for="(value, key) in basicInfo.customInfo"><span>{{ key }}</span>{{ value }}</li>
       </ul>
       <div class="photo-box">
-        <img v-if="basicInfo.iShowPhoto" :src="basicInfo.photo && basicInfo.photo.length > 0 ? basicInfo.photo : `/assets/${basicInfo.gender === '女' ? 'woman' : 'man'}.png`" :alt="basicInfo.gender">
+        <img v-if="basicInfo.iShowPhoto" :src="basicInfo.photo && basicInfo.photo.length > 0 ? basicInfo.photo : form.photo(basicInfo.gender)" :alt="basicInfo.gender">
       </div>
     </div>
   </ModuleTitle>

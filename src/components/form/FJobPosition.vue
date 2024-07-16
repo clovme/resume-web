@@ -30,9 +30,7 @@ const data = getStore<IBasicInfo>('getBasicInfo');
       <el-col :span="6">
         <div class="split-2">
           <label>入职时间</label>
-          <el-select v-model="data.startDate" placeholder="请选择入职时间">
-            <el-option v-for="item in form.startDate" :key="item" :label="item" :value="item"/>
-          </el-select>
+          <el-select-v2 v-model="data.startDate" :options="form.startDate" placeholder="请选择入职时间" />
         </div>
       </el-col>
     </el-row>

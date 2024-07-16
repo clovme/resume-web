@@ -44,9 +44,7 @@ function addCustomInfo() {
       <el-col :span="6">
         <div class="split-2">
           <label>性别</label>
-          <el-select v-model="data.gender" placeholder="请选择性别">
-            <el-option v-for="item in form.Gender" :key="item" :label="item" :value="item"/>
-          </el-select>
+          <el-select-v2 v-model="data.gender" :options="form.Gender" placeholder="请选择性别" />
         </div>
       </el-col>
       <el-col :span="6">
@@ -70,9 +68,7 @@ function addCustomInfo() {
       <el-col :span="6">
         <div class="split-2">
           <label>工作年限</label>
-          <el-select v-model="data.workExperienceYears" placeholder="请选择工作年限">
-            <el-option v-for="item in form.WorkExperienceYears()" :key="item" :label="item" :value="item"/>
-          </el-select>
+          <el-select-v2 v-model="data.workExperienceYears" :options="form.WorkExperienceYears()" placeholder="请选择工作年限" />
         </div>
       </el-col>
       <el-col :span="6">
@@ -90,9 +86,7 @@ function addCustomInfo() {
       <el-col :span="6">
         <div class="split-2">
           <label>婚姻状况</label>
-          <el-select v-model="data.maritalStatus" placeholder="请选择婚姻状况">
-            <el-option v-for="item in form.MaritalStatus" :key="item" :label="item" :value="item"/>
-          </el-select>
+          <el-select-v2 v-model="data.maritalStatus" :options="form.MaritalStatus" placeholder="请选择婚姻状况" />
         </div>
       </el-col>
       <el-col :span="6">
@@ -119,9 +113,7 @@ function addCustomInfo() {
       <el-col :span="6">
         <div class="split-2">
           <label>政治面貌</label>
-          <el-select v-model="data.politicalStatus" placeholder="请选择政治面貌">
-            <el-option v-for="item in form.Politics" :key="item" :label="item" :value="item"/>
-          </el-select>
+          <el-select-v2 v-model="data.politicalStatus" :options="form.Politics" placeholder="请选择政治面貌" />
         </div>
       </el-col>
     </el-row>
