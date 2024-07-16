@@ -224,49 +224,45 @@ if (!rid) {
           <div class="header-box-content">
             <div class="header-box-content-box">
               <div class="header-box-content-box-item">
-                模块上下间距：{{ setting.module }}
                 <div class="header-box-content-box-item-option">
-                  <el-slider v-model="dataSetting.module" :min="5" :max="50" size="small" />
-                  <div style="width: 64px;">
+                  <div style="flex: 1">模块上下间距：{{ setting.module }}</div>
+                  <div class="header-box-content-box-item-default">
                     <el-button @click="()=>{dataSetting.module = 18}" v-if="setting.module != 18" size="small">默认</el-button>
                   </div>
                 </div>
+                <el-slider v-model="dataSetting.module" :min="5" :max="50" size="small" />
               </div>
               <div class="header-box-content-box-item">
-                行间距：{{ dataSetting.lines.toFixed(2) }}
                 <div class="header-box-content-box-item-option">
-                  <el-slider v-model="dataSetting.lines" :min="0.60" :max="1.50" :step="0.01" size="small" />
-                  <div style="width: 64px;">
+                  <div style="flex: 1">行间距：{{ dataSetting.lines.toFixed(2) }}</div>
+                  <div class="header-box-content-box-item-default">
                     <el-button @click="()=>{dataSetting.lines = 0.8}" v-if="setting.lines != 0.8" size="small">默认</el-button>
                   </div>
                 </div>
+                <el-slider v-model="dataSetting.lines" :min="0.60" :max="1.50" :step="0.01" size="small" />
               </div>
               <div class="header-box-content-box-item">
-                页面边距：{{ dataSetting.page }}
                 <div class="header-box-content-box-item-option">
-                  <el-slider v-model="dataSetting.page" :min="10" :max="60" size="small" />
-                  <div style="width: 64px;">
+                  <div style="flex: 1">页面边距：{{ dataSetting.page }}</div>
+                  <div class="header-box-content-box-item-default">
                     <el-button @click="()=>{dataSetting.page = 30}" v-if="setting.page != 30" size="small">默认</el-button>
                   </div>
                 </div>
+                <el-slider v-model="dataSetting.page" :min="10" :max="60" size="small" />
               </div>
             </div>
           </div>
         </li>
         <li class="header-toolbar-item" @mouseenter="onMouseenter" @mouseleave="onMouseleave">
           <i class="icon-font"></i><b>字体设置</b>
-          <div class="header-box-content" style="width: unset;padding: 5px;align-items: flex-start;gap: 5px">
-            <div class="header-box-content-font-size">
-              <span>字体</span>
-              <el-radio-group v-model="dataSetting.fontFamily" style="display: flex;flex-direction: column;align-items: flex-start;">
-                <el-radio v-for="item in form.FontFamily" :value="item">{{ item }}</el-radio>
-              </el-radio-group>
-            </div>
+          <div class="header-box-content" style="width: 460px;padding: 10px;align-items: flex-start;gap: 10px;flex-direction: column;">
             <div class="header-box-content-font-size">
               <span>文字大小</span>
-              <el-radio-group v-model="dataSetting.fontSize" style="display: flex;flex-direction: column;align-items: flex-start;">
-                <el-radio v-for="item in form.FontSize" :value="item">{{ item }}</el-radio>
-              </el-radio-group>
+              <el-segmented block v-model="dataSetting.fontSize" :options="form.FontSize" size="large" />
+            </div>
+            <div class="header-box-content-font-size">
+              <span>字体</span>
+              <el-segmented block v-model="dataSetting.fontFamily" :options="form.FontFamily" size="large" />
             </div>
           </div>
         </li>
@@ -384,28 +380,44 @@ if (!rid) {
           transition: all 0.3s;
           box-shadow: 0 0 12px rgba(57, 57, 77, .66);
 
-          .header-box-content-font-size{
+          .header-box-content-font-size {
             display: flex;
-            width: 100px;
-            align-items: flex-start;
             flex-direction: column;
+            gap: 10px;
+            width: calc(100% - 22px);
             border: 1px solid #dcdfe6;
-            height: 180px;
-            padding: 5px 10px;
+            padding: 10px;
             border-radius: 5px;
+
+            span {
+              font-size: 15px;
+              font-weight: bold;
+            }
           }
 
           .header-box-content-box {
             width: 100%;
-            margin: 20px 30px;
+            margin: 10px;
+            gap: 5px;
+            display: flex;
+            flex-direction: column;
 
             .header-box-content-box-item {
-              text-align: center;
+              padding: 5px;
               font-size: 13px;
+              text-align: center;
+              border-radius: 3px;
+              border: 1px solid #dcdfe6;
 
               .header-box-content-box-item-option {
                 display: flex;
-                gap: 10px;
+                height: 26px;
+                align-items: center;
+
+                .header-box-content-box-item-default {
+                  width: 50px;
+                  height: 24px;
+                }
               }
             }
           }
