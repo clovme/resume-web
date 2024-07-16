@@ -7,6 +7,7 @@ import axios from '@/utils/axios.ts'
 import { ElMessage } from 'element-plus'
 import { IEducation } from '@/store/interface/education.ts'
 import form from '@/utils/form.ts'
+import DatePicker from '@/components/utils/DatePicker.vue'
 
 let timer = 0
 const isNewWorkItem = ref<boolean>(false)
@@ -102,15 +103,16 @@ function onUpDownMove(index: number, flag: boolean) {
         <el-col :span="6">
           <div class="split-1" style="width: 330px">
             <label>就读时间</label>
-            <el-date-picker value-format="YYYY-MM" :clearable="false" v-model="data.startAt" style="width: 120px" type="month" placeholder="开始时间" />-
-            <el-date-picker value-format="YYYY-MM" :clearable="false" v-if="!data.toNow" v-model="data.endAt" style="width: 120px" type="month" placeholder="结束时间" />
+            <DatePicker v-model="data.startAt" placeholder="开始时间" style="width: 120px" />
+            -
+            <DatePicker v-model="data.endAt" v-if="!data.toNow" placeholder="结束时间" style="width: 120px" />
             <el-checkbox v-model="data.toNow" label="至今" />
           </div>
         </el-col>
         <el-col :span="4">
           <div class="split-1">
             <label>学历</label>
-            <el-select-v2 v-model="data.degree" :options="form.degree" placeholder="请选择学历" />
+            <el-select-v2 v-model="data.degree" :options="form.degree" placeholder="请选择学历" style="width: 100px" />
           </div>
         </el-col>
         <el-col :span="2">

@@ -6,6 +6,7 @@ import plus from '@/components/icon/plus.vue'
 import { IWorksExperience } from '@/store/interface/works.ts'
 import axios from '@/utils/axios.ts'
 import { ElMessage } from 'element-plus'
+import DatePicker from '@/components/utils/DatePicker.vue'
 
 let timer = 0
 const isNewWorkItem = ref<boolean>(false)
@@ -101,8 +102,9 @@ function onUpDownMove(index: number, flag: boolean) {
         <el-col :span="8">
           <div class="split-1">
             <label>时间</label>
-            <el-date-picker :clearable="false" v-model="data.startAt" style="width: 130px" type="month" placeholder="开始时间" />-
-            <el-date-picker :clearable="false" v-if="!data.toNow" v-model="data.endAt" style="width: 130px" type="month" placeholder="结束时间" />
+            <DatePicker v-model="data.startAt" placeholder="开始时间" style="width: 130px" />
+            -
+            <DatePicker v-model="data.endAt" v-if="!data.toNow" placeholder="结束时间" style="width: 130px" />
             <el-checkbox v-model="data.toNow" label="至今" />
           </div>
         </el-col>

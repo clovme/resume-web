@@ -100,6 +100,10 @@ const store = createStore<State>({
       try {
         const response = await axios.get('/basicinfo')
 
+        if (!response.data.data.customInfo) {
+          response.data.data.customInfo = {}
+        }
+
         delete response.data.data.createdAt
         delete response.data.data.updatedAt
 
