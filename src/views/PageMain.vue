@@ -63,8 +63,12 @@ window.onresize = () => {
     padding-left: 0 !important;
   }
 
-  .ql-editor li {
+  .ql-editor li[data-list="ordered"] {
     padding-left: 1.3em;
+  }
+
+  .ql-editor li[data-list="bullet"] {
+    padding-left: 1em;
   }
 
   @for $i from 1 through 8 {

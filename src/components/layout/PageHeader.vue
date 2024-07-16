@@ -206,7 +206,9 @@ function onHeaderTitle() {
 
 function exportPDF() {
   const content = document.querySelector('.resume-box-content')
-  console.log(content)
+  if (!content) return;
+
+
 }
 
 if (!rid) {
