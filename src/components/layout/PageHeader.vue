@@ -205,8 +205,32 @@ function onHeaderTitle() {
 }
 
 function exportPDF() {
-  const content = document.querySelector('.resume-box-content')
-  console.log(content)
+  const element = document.querySelector('.resume-box-content') as HTMLElement
+  // const opt = {
+  //   scale: 3, // 提高缩放比例以增加清晰度
+  // };
+
+  // html2canvas(element, opt).then(canvas => {
+  //   const imgData = canvas.toDataURL('image/png');
+  //   const pdf = new jsPDF('p', 'mm', 'a4');
+  //   const imgWidth = 210; // A4纸的宽度，单位为mm
+  //   const pageHeight = 295; // A4纸的高度，单位为mm
+  //   const imgHeight = canvas.height * imgWidth / canvas.width;
+  //   let heightLeft = imgHeight;
+  //   let position = 0;
+  //
+  //   pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight, undefined, 'FAST');
+  //   heightLeft -= pageHeight;
+  //
+  //   while (heightLeft >= 0) {
+  //     position = heightLeft - imgHeight;
+  //     pdf.addPage();
+  //     pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight, undefined, 'FAST');
+  //     heightLeft -= pageHeight;
+  //   }
+  //   const name = document.title.split(" - ")[0]
+  //   pdf.save(`${name}.pdf`); // 保存PDF文件
+  // });
 }
 
 if (!rid) {
@@ -239,7 +263,7 @@ if (!rid) {
                     <el-button @click="()=>{dataSetting.lines = 0.8}" v-if="setting.lines != 0.8" size="small">默认</el-button>
                   </div>
                 </div>
-                <el-slider v-model="dataSetting.lines" :min="0.60" :max="1.50" :step="0.01" size="small" />
+                <el-slider v-model="dataSetting.lines" :min="0.61" :max="1.50" :step="0.01" size="small" />
               </div>
               <div class="header-box-content-box-item">
                 <div class="header-box-content-box-item-option">
@@ -267,8 +291,8 @@ if (!rid) {
           </div>
         </li>
         <li class="header-toolbar-item" @click="onHeaderTitle"><i class="icon-title"></i><b>标题设置</b></li>
-        <li class="header-toolbar-item"><i class="icon-tupian"></i><b>下载图片</b></li>
-        <li class="header-toolbar-item"><i class="icon-word"></i><b>下载WORD</b></li>
+<!--        <li class="header-toolbar-item"><i class="icon-tupian"></i><b>下载图片</b></li>-->
+<!--        <li class="header-toolbar-item"><i class="icon-word"></i><b>下载WORD</b></li>-->
         <li class="header-toolbar-item" @click="exportPDF"><i class="icon-pdf"></i><b>下载PDF</b></li>
         <li class="header-toolbar-item" @click="handleOk"><i class="icon-gerenjianli"/><b>简历列表</b></li>
       </ul>

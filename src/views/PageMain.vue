@@ -68,9 +68,14 @@ window.onresize = () => {
     padding-left: 0 !important;
   }
 
-  .ql-editor li {
+  .ql-editor li[data-list="bullet"] {
+    padding-left: 1em;
+  }
+
+  .ql-editor li[data-list="ordered"] {
     padding-left: 1.3em;
   }
+
 
   @for $i from 1 through 8 {
     .ql-editor li.ql-indent-#{$i}:not(.ql-direction-rtl) {
@@ -173,6 +178,12 @@ window.onresize = () => {
     color: #555;
     border-left: 1px solid rgb(78, 114, 130);
     padding-top: 8px;
+
+    .resume-content:last-child {
+      .resume-content-main {
+        padding-bottom: 5px !important;
+      }
+    }
 
     .resume-content {
       position: relative;

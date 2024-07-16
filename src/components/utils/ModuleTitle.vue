@@ -18,7 +18,7 @@ const setting = getStore<ISetting>("getSetting")
       <div class="title-icon"></div>
     </div>
     <LineBox color="#4e7282" margin="0" />
-    <div class="resume-content-main" :style="`margin: ${setting.module}px 15px;`">
+    <div class="resume-content-main" :style="`padding: ${setting.module}px 15px;`">
       <slot></slot>
     </div>
   </div>
