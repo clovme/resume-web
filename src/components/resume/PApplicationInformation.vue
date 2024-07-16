@@ -11,7 +11,9 @@ defineProps<{
 
 const baokaoListStyle = ref({
   fontSize: '14px',
-  padding: '0 0 10px 0'
+  padding: '0 0 10px 0',
+  listStyle: 'none',
+  display: 'flex'
 })
 
 const data = getStore<IApplicationInfo>('getApplicationInfo');
@@ -33,16 +35,16 @@ watch(data.value, (newValue) => {
 <template>
   <ModuleTitle :title="title">
     <ul v-if="data.name || data.major || courseGrade.length > 0" class="baokao-list" :style="baokaoListStyle">
-      <li>报考院校：{{data.name}}</li>
-      <li>报考专业：{{data.major}}</li>
+      <li style="flex: 1">报考院校：{{data.name}}</li>
+      <li style="flex: 1">报考专业：{{data.major}}</li>
     </ul>
-    <table class="baokao-table" v-if="courseGrade.length > 0">
+    <table style="border-collapse: collapse;" v-if="courseGrade.length > 0">
       <tr>
-        <td rowspan="2">{{data.cname}}</td>
-        <td v-for="item in courseGrade">{{ item.name }}</td>
+        <td style="border: 1px solid #aaa;padding: 5px;text-align: center;font-weight: 400;min-width: 70px;white-space: nowrap;" rowspan="2">{{data.cname}}</td>
+        <td style="border: 1px solid #aaa;padding: 5px;text-align: center;font-weight: 400;min-width: 70px;white-space: nowrap;" v-for="item in courseGrade">{{ item.name }}</td>
       </tr>
       <tr>
-        <td v-for="item in courseGrade">{{ item.score }}</td>
+        <td style="border: 1px solid #aaa;padding: 5px;text-align: center;font-weight: 400;min-width: 70px;white-space: nowrap;" v-for="item in courseGrade">{{ item.score }}</td>
       </tr>
     </table>
   </ModuleTitle>

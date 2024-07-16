@@ -267,8 +267,8 @@ if (!rid) {
           </div>
         </li>
         <li class="header-toolbar-item" @click="onHeaderTitle"><i class="icon-title"></i><b>标题设置</b></li>
-        <li class="header-toolbar-item"><i class="icon-tupian"></i><b>下载图片</b></li>
-        <li class="header-toolbar-item"><i class="icon-word"></i><b>下载WORD</b></li>
+<!--        <li class="header-toolbar-item"><i class="icon-tupian"></i><b>下载图片</b></li>-->
+<!--        <li class="header-toolbar-item"><i class="icon-word"></i><b>下载WORD</b></li>-->
         <li class="header-toolbar-item" @click="exportPDF"><i class="icon-pdf"></i><b>下载PDF</b></li>
         <li class="header-toolbar-item" @click="handleOk"><i class="icon-gerenjianli"/><b>简历列表</b></li>
       </ul>
