@@ -8,9 +8,7 @@ import { getStore } from '@/utils'
 import { ISlogan } from '@/store/interface/slogan.ts'
 import { ISetting } from '@/store/interface/setting.ts'
 
-const style = ref({
-  height: `${window.innerHeight - 200}px`,
-})
+const style = ref({ height: `${window.innerHeight - 200}px` })
 
 const setting = getStore<ISetting>("getSetting")
 const slogan = getStore<ISlogan>("getSlogan")
@@ -32,12 +30,12 @@ window.onresize = () => {
       <div class="resume-head">
         <div class="resume-head-title" v-text="slogan.title"></div>
         <div class="personal-resume">
-          <p v-text="slogan.slogan"></p>
+          <p v-text="slogan.slogan" style="font-family: 微软雅黑, serif"></p>
           Personal resume
         </div>
         <div class="right-box">
-          <i class="icon-xueshimao"></i>
-          <i class="icon-shoutibao"></i>
+          <i class="header-icon"><svg version="1.1" xmlns="http://www.w3.org/2000/svg" width="1024" height="1024" viewBox="0 0 1024 1024"><path d="M513.001 661.882c-19.688 0-38.822-4.632-53.88-13.034l-410.512-229.879c-22.074-12.284-34.746-32.027-34.746-54.074 0-22.102 12.672-41.845 34.773-54.184l410.484-229.796c30.031-16.831 77.644-16.859 107.785 0l410.512 229.796c22.074 12.367 34.718 32.11 34.718 54.212 0 22.074-12.672 41.789-34.746 54.129l-410.512 229.796c-15.030 8.429-34.162 13.061-53.88 13.061zM116.326 364.84l382.172 213.964c2.495 1.386 7.931 2.774 14.502 2.774 7.514 0 12.672-1.748 14.502-2.774l382.2-213.964-382.172-213.936c-2.495-1.386-7.959-2.774-14.53-2.774-7.486 0-12.644 1.72-14.475 2.774l-382.2 213.936zM513.14 955.597c-169.623 0-341.854-54.074-349.562-157.506-0.352-1.984-0.556-4.268-0.556-6.599 0-0.019 0-0.039 0-0.058v0.003-305.25c0-22.185 18.025-40.152 40.235-40.152 0.008 0 0.018 0 0.028 0 22.188 0 40.176 17.971 40.208 40.149v300.483c0.166 1.413 0.277 2.884 0.277 4.353 0.332 29.726 102.849 84.298 269.34 84.298 166.517 0 269.007-54.572 269.312-84.298l0.055-1.637v-303.226c0-22.185 18.025-40.152 40.235-40.152 22.24 0 40.235 17.998 40.235 40.152v305.305c0 1.054-0.028 2.080-0.111 3.133-4.049 105.706-178.22 160.999-349.729 160.999zM966.107 851.194c0 0 0 0 0 0-22.188 0-40.176-17.971-40.208-40.149v-318.702c0-22.185 17.998-40.152 40.208-40.152 22.24 0 40.235 17.97 40.235 40.152v318.699c0 22.185-18.025 40.152-40.208 40.152z"></path></svg></i>
+          <i class="header-icon"><svg version="1.1" xmlns="http://www.w3.org/2000/svg" width="1024" height="1024" viewBox="0 0 1024 1024"><path d="M393.985 160.445c0-19.494 15.904-35.398 35.398-35.398h163.648c19.494 0 35.398 15.904 35.398 35.398v97.47h62.074v-97.47c0-53.866-43.606-97.47-97.47-97.47h-163.648c-53.866 0-97.47 43.606-97.47 97.47v97.47h62.074v-97.47zM853.121 263.045h-683.318c-63.1 0-113.886 50.788-113.886 113.886v137.484h354.484c15.904-38.988 55.404-66.69 101.062-66.69 46.17 0 85.672 27.702 101.062 66.69h354.484v-137.484c0-63.1-50.788-113.886-113.886-113.886zM511.462 637.536c44.118 0 80.542-33.858 80.542-75.924s-35.91-75.924-80.542-75.924-80.542 33.858-80.542 75.924c0 42.066 35.91 75.924 80.542 75.924zM620.219 563.663c0 57.456-48.736 104.652-108.756 104.652s-108.756-46.684-108.756-104.652c0-3.592 0-7.182 0.514-11.286h-347.302v303.697c0 63.1 50.788 113.886 113.886 113.886h683.318c63.1 0 113.886-50.788 113.886-113.886v-303.697h-347.815c0.514 3.592 1.026 7.182 1.026 11.286z"></path></svg></i>
         </div>
       </div>
       <LineBox size="0" color="#fff" style="display: flex;">
@@ -47,6 +45,11 @@ window.onresize = () => {
       <div class="resume-content-all" :style="`margin: 0 ${setting.page}px 0 ${setting.page+15}px`">
         <component v-for="menu in menus" :is="menu.module" v-show="menu.isChecked" :id="menu.name" :title="menu.title"/>
       </div>
+      <ul class="page-line">
+        <li><div class="page-num">第1页 (共<b class="orange">3</b>页)</div></li>
+        <li><div class="page-num">第2页 (共<b class="orange">3</b>页)</div></li>
+        <li><div class="page-num">第3页 (共<b class="orange">3</b>页)</div></li>
+      </ul>
     </div>
     <div :style="style"></div>
   </div>
@@ -62,7 +65,40 @@ window.onresize = () => {
   width: 820px;
   margin: 0 auto;
   background-color: #fff;
+  position: relative;
+  page-break-before: always;
 
+  .page-line {
+    list-style: none;
+    color: #FFF;
+
+    li {
+      position: absolute;
+      left: 0;
+      top: 1042px;
+      text-align: center;
+      width: 100%;
+      height: 18px;
+      font-size: 12px;
+      background-color: #39394d;
+
+      &:first-child {
+        display: block;
+      }
+
+      &:nth-child(2) {
+        top: 2084px;
+      }
+
+      &:nth-child(3) {
+        top: 3126px;
+      }
+
+      &:last-child {
+        margin-top: 10px;
+      }
+    }
+  }
 
   .ql-editor ol, .ql-editor ul {
     padding-left: 0 !important;
@@ -117,16 +153,22 @@ window.onresize = () => {
       gap: 10px;
       display: flex;
 
-      i {
+      i.header-icon {
         font-size: 22px;
         display: inline-block;
         width: 40px;
         height: 40px;
-        line-height: 40px;
+        line-height: 44px;
         text-align: center;
         border-radius: 50%;
         color: #fff;
         background-color: #c19f67;
+        fill: currentColor;
+
+        svg {
+          height: 1em;
+          width: 1em;
+        }
       }
     }
   }
@@ -188,6 +230,41 @@ window.onresize = () => {
     .resume-content {
       position: relative;
       font-size: 14px;
+
+      .resume-content-main{
+        ul.title-content-header {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          list-style: none;
+
+          &:first-child {
+            margin-top: 0 !important;
+          }
+
+          li {
+            flex: 1;
+          }
+
+          li:first-child {
+            text-align: left;
+            font-weight: 400;
+          }
+          li:nth-child(2) {
+            text-align: center;
+            font-weight: 700;
+            white-space: nowrap;
+          }
+          li:last-child {
+            text-align: right;
+            white-space: nowrap;
+            font-weight: 700;
+          }
+        }
+        .ql-editor {
+          padding: 0;
+        }
+      }
 
       .module-title {
         position: relative;

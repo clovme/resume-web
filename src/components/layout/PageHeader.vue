@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import {ref, h, reactive, watch} from "vue";
+import {ref, h, reactive, watch, onMounted} from "vue";
 import ResumeList from "@/components/utils/ResumeList.vue";
 import axios from "@/utils/axios.ts";
 import {ElMessage, ElMessageBox} from "element-plus";
@@ -40,7 +40,7 @@ const tempTemp = setTimeout(function() {
     isInit = false
     clearTimeout(temp)
   }, 3000)
-}, 200)
+}, 300)
 
 const tempTemp1 = setTimeout(function() {
   if (!slogan.value) return
@@ -52,7 +52,7 @@ const tempTemp1 = setTimeout(function() {
     isInit1 = false
     clearTimeout(temp)
   }, 3000)
-}, 200)
+}, 300)
 
 let timer = 0;
 let timerSetting = 0;
@@ -205,32 +205,29 @@ function onHeaderTitle() {
 }
 
 function exportPDF() {
-  const element = document.querySelector('.resume-box-content') as HTMLElement
-  // const opt = {
-  //   scale: 3, // 提高缩放比例以增加清晰度
-  // };
+  const title = document.title.split(' - ')[0]
+  const element = (document.querySelector('.resume-box-content') as HTMLElement).cloneNode(true) as HTMLElement;
+  (element.querySelector('.page-line') as HTMLElement).remove()
 
-  // html2canvas(element, opt).then(canvas => {
-  //   const imgData = canvas.toDataURL('image/png');
-  //   const pdf = new jsPDF('p', 'mm', 'a4');
-  //   const imgWidth = 210; // A4纸的宽度，单位为mm
-  //   const pageHeight = 295; // A4纸的高度，单位为mm
-  //   const imgHeight = canvas.height * imgWidth / canvas.width;
-  //   let heightLeft = imgHeight;
-  //   let position = 0;
-  //
-  //   pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight, undefined, 'FAST');
-  //   heightLeft -= pageHeight;
-  //
-  //   while (heightLeft >= 0) {
-  //     position = heightLeft - imgHeight;
-  //     pdf.addPage();
-  //     pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight, undefined, 'FAST');
-  //     heightLeft -= pageHeight;
-  //   }
-  //   const name = document.title.split(" - ")[0]
-  //   pdf.save(`${name}.pdf`); // 保存PDF文件
-  // });
+  axios.post('/pdf', { htmlContent: element.outerHTML }, { responseType: 'blob' }).then(response => {
+    if (response.status !== 200) {
+      return ElMessage.error(response.data.message)
+    }
+    const url = window.URL.createObjectURL(new Blob([response.data], { type: 'application/pdf' }));
+    const link = document.createElement('a');
+    link.href = url;
+    link.setAttribute('download', `${title}.pdf`);
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  }).catch(() => {
+    return ElMessage.error("请求失败，请重试！")
+  })
+}
+
+function linesText(lines: number) {
+  if (!lines) return '0.00'
+  return lines.toFixed(2)
 }
 
 if (!rid) {
@@ -258,7 +255,7 @@ if (!rid) {
               </div>
               <div class="header-box-content-box-item">
                 <div class="header-box-content-box-item-option">
-                  <div style="flex: 1">行间距：{{ dataSetting.lines.toFixed(2) }}</div>
+                  <div style="flex: 1">行间距：{{ linesText(dataSetting.lines) }}</div>
                   <div class="header-box-content-box-item-default">
                     <el-button @click="()=>{dataSetting.lines = 0.8}" v-if="setting.lines != 0.8" size="small">默认</el-button>
                   </div>
@@ -269,7 +266,7 @@ if (!rid) {
                 <div class="header-box-content-box-item-option">
                   <div style="flex: 1">页面边距：{{ dataSetting.page }}</div>
                   <div class="header-box-content-box-item-default">
-                    <el-button @click="()=>{dataSetting.page = 30}" v-if="setting.page != 30" size="small">默认</el-button>
+                    <el-button @click="()=>{dataSetting.page = 34}" v-if="setting.page != 34" size="small">默认</el-button>
                   </div>
                 </div>
                 <el-slider v-model="dataSetting.page" :min="10" :max="60" size="small" />

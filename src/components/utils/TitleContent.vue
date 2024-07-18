@@ -32,36 +32,5 @@ function isContent(content: string | undefined): boolean {
 </template>
 
 <style scoped lang="scss">
-ul.title-content-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  list-style: none;
 
-  &:first-child {
-    margin-top: 0 !important;
-  }
-
-  li {
-    flex: 1;
-  }
-
-  li:first-child {
-    text-align: left;
-    font-weight: 400;
-  }
-  li:nth-child(2) {
-    text-align: center;
-    font-weight: 700;
-    white-space: nowrap;
-  }
-  li:last-child {
-    text-align: right;
-    white-space: nowrap;
-    font-weight: 700;
-  }
-}
-.ql-editor {
-  padding: 0;
-}
 </style>
