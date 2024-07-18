@@ -9,7 +9,7 @@ import axios from "@/utils/axios.ts";
 const params = new URLSearchParams(window.location.search);
 let rid = params.get("rid")
 
-const form = reactive({ username: 'admin', password: 'admin', confirmPassword: 'admin' })
+const form = reactive({ username: '', password: '', confirmPassword: '' })
 
 const regedit = ref(true);
 const drawer = ref(false);
