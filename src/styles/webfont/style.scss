@@ -2,11 +2,11 @@
 
 @font-face {
   font-family: '#{$icomoon-font-family}';
-  src:  url('#{$icomoon-font-path}/#{$icomoon-font-family}.eot?1t2vpo');
-  src:  url('#{$icomoon-font-path}/#{$icomoon-font-family}.eot?1t2vpo#iefix') format('embedded-opentype'),
-    url('#{$icomoon-font-path}/#{$icomoon-font-family}.ttf?1t2vpo') format('truetype'),
-    url('#{$icomoon-font-path}/#{$icomoon-font-family}.woff?1t2vpo') format('woff'),
-    url('#{$icomoon-font-path}/#{$icomoon-font-family}.svg?1t2vpo##{$icomoon-font-family}') format('svg');
+  src:  url('#{$icomoon-font-path}/#{$icomoon-font-family}.eot?dayn1y');
+  src:  url('#{$icomoon-font-path}/#{$icomoon-font-family}.eot?dayn1y#iefix') format('embedded-opentype'),
+    url('#{$icomoon-font-path}/#{$icomoon-font-family}.ttf?dayn1y') format('truetype'),
+    url('#{$icomoon-font-path}/#{$icomoon-font-family}.woff?dayn1y') format('woff'),
+    url('#{$icomoon-font-path}/#{$icomoon-font-family}.svg?dayn1y##{$icomoon-font-family}') format('svg');
   font-weight: normal;
   font-style: normal;
   font-display: block;
@@ -120,6 +120,11 @@ i {
 .icon-word {
   &:before {
     content: $icon-word; 
+  }
+}
+.icon-fuzhi {
+  &:before {
+    content: $icon-fuzhi; 
   }
 }
 .icon-cha {

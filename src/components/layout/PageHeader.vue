@@ -18,7 +18,7 @@ const drawer = ref(!rid)
 const title = ref('新增简历')
 const isResume = ref(false)
 const newResume = ref(false)
-const drawerData = ref([])
+const drawerData = ref<IResumes[]>([])
 const isHeaderTitle = ref(false)
 
 const slogan = getStore<ISlogan>("getSlogan")
@@ -127,10 +127,13 @@ function onNewResume() {
       if (res.data.code !== 200) {
         return ElMessage.error({ message: res.data.message, offset: 55 })
       }
+      ElMessage.success({ message: res.data.message, offset: 55 })
       drawer.value = false
       newResume.value = false
       localStorage.removeItem("activeName")
-      location.href = `?rid=${res.data.data.id}`
+      setTimeout(function() {
+        location.href = `?rid=${res.data.data.id}`
+      }, 1000)
     })
   });
 }
@@ -151,8 +154,13 @@ function onDeleteResume(data: IResumes) {
       if (res.data.code !== 200) {
         return ElMessage.error({ message: res.data.message, offset: 55 })
       }
-      drawerData.value = res.data.data
-      if (drawerData.value.length <= 0) {
+      for (let i = 0; i < drawerData.value.length; i++) {
+        if (drawerData.value[i].id === data.id) {
+          drawerData.value.splice(i, 1)
+        }
+      }
+      const params = new URLSearchParams(location.search);
+      if (drawerData.value.length <= 0 || params.get("rid") === data.id) {
         location.href = `/`
       }
     })
@@ -234,6 +242,21 @@ async function exportPDF() {
 function linesText(lines: number) {
   if (!lines) return '0.00'
   return lines.toFixed(2)
+}
+
+async function onCopyResume(data: IResumes) {
+  let response = await axios.post('/resumes/copy', data)
+  if (response.data.code !== 200) {
+    return ElMessage.error({ message: response.data.message, offset: 55 })
+  }
+  ElMessage.success({ message: response.data.message, offset: 55 })
+  drawerData.value = response.data.data
+  drawer.value = false
+  newResume.value = false
+  localStorage.removeItem("activeName")
+  setTimeout(function() {
+    location.href = `?rid=${response.data.data.id}`
+  }, 1000)
 }
 
 if (!rid) {
@@ -318,7 +341,7 @@ if (!rid) {
         </div>
       </div>
     </template>
-    <ResumeList @edit="onEditResume" @remove="onDeleteResume" @new-resume="onShowNewResume" :data="drawerData"/>
+    <ResumeList @copy="onCopyResume" @edit="onEditResume" @remove="onDeleteResume" @new-resume="onShowNewResume" :data="drawerData"/>
   </el-drawer>
   <el-dialog v-model="newResume" :title="title" width="400" @closed="name = ''" :lock-scroll="false">
     <el-form label-width="auto">
