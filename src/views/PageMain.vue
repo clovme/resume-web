@@ -43,7 +43,7 @@ const handleResize = (entries: any) => {
         // 给新子节点添加一些内容或样式
         li.id = `page-num-${i}`
         li.className = "page-num"
-        li.innerHTML = `第${i}页 (共<b class="orange">${pageNum}</b>页)`;
+        li.innerHTML = `第${i}页(共<b class="orange">${pageNum}</b>页)`;
         li.style.top = `${i * pageHeight}px`
 
         // 将新子节点添加到 pageLine 元素中
@@ -96,7 +96,10 @@ window.onresize = () => {
       </div>
       <ul class="page-line"></ul>
     </div>
-    <div :style="style"></div>
+    <div class="page-footer" :style="style">
+      <p>末页之下为占位页，不参与文档导出</p>
+      <p>分页标签遮挡的文字，在文档导出后分页标签是不存在的</p>
+    </div>
   </div>
 </template>
 
@@ -104,6 +107,15 @@ window.onresize = () => {
 .resume-box {
   margin: 60px 0 100px 0;
   background-color: #fff;
+
+  .page-footer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    color: #4e7282;
+    user-select: none;
+  }
 }
 
 .resume-box-content {
@@ -119,24 +131,13 @@ window.onresize = () => {
 
     li {
       position: absolute;
-      left: 0;
       text-align: center;
-      width: 100%;
       height: 18px;
+      left: 0;
+      width: 100%;
       font-size: 12px;
+      padding: 1px 5px;
       background-color: #39394d;
-
-      &:first-child {
-        display: block;
-      }
-
-      &:nth-child(2) {
-        top: 2084px;
-      }
-
-      &:nth-child(3) {
-        top: 3126px;
-      }
     }
   }
 
