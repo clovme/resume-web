@@ -105,18 +105,18 @@ function onShowNewResume() {
 function onNewResume() {
   title.value = '新增简历'
   if (name.value.trim().length <= 0) {
-    return ElMessage.error("简历名称不能为空")
+    return ElMessage.error({ message: '简历名称不能为空', offset: 55 })
   }
 
   axios.get(`/resumes/check?name=${name.value}`).then(res => {
     if (res.data.code !== 200) {
-      return ElMessage.error(res.data.message)
+      return ElMessage.error({ message: res.data.message, offset: 55 })
     }
     if (isResume.value) {
       resume.name = name.value
       axios.put('/resumes', resume).then(res => {
         if (res.data.code !== 200) {
-          return ElMessage.error(res.data.message)
+          return ElMessage.error({ message: res.data.message, offset: 55 })
         }
         newResume.value = false
         drawerData.value = res.data.data
@@ -125,7 +125,7 @@ function onNewResume() {
     }
     axios.post('/resumes', {name: name.value}).then(res => {
       if (res.data.code !== 200) {
-        return ElMessage.error(res.data.message)
+        return ElMessage.error({ message: res.data.message, offset: 55 })
       }
       drawer.value = false
       newResume.value = false
@@ -149,7 +149,7 @@ function onDeleteResume(data: IResumes) {
   }).then(() => {
     axios.delete(`/resumes?rid=${data.id}`).then(res => {
       if (res.data.code !== 200) {
-        return ElMessage.error(res.data.message)
+        return ElMessage.error({ message: res.data.message, offset: 55 })
       }
       drawerData.value = res.data.data
       if (drawerData.value.length <= 0) {
@@ -174,13 +174,13 @@ async function signOut() {
   if (response.data.code === 200) {
     localStorage.removeItem("token")
     localStorage.removeItem("expires")
-    ElMessage.success(response.data.message)
+    ElMessage.success({ message: response.data.message, offset: 55 })
     let timer = setTimeout(() => {
       window.location.reload()
       clearTimeout(timer)
     }, 1000)
   } else {
-    return ElMessage.error(response.data.message)
+    return ElMessage.error({ message: response.data.message, offset: 55 })
   }
 }
 
@@ -210,7 +210,7 @@ async function exportPDF() {
 
   let response = await axios.post('/pdf', { htmlContent: element.outerHTML })
   if (response.data.code && response.data.code !== 200) {
-    return ElMessage.error(response.data.message)
+    return ElMessage.error({ message: response.data.message, offset: 55 })
   }
 
   const link = document.createElement('a');
@@ -226,7 +226,7 @@ async function exportPDF() {
 
       response = await axios.delete("/pdf/delete")
       if (response.data.code && response.data.code !== 200) {
-        return ElMessage.error(response.data.message)
+        return ElMessage.error({ message: response.data.message, offset: 55 })
       }
     })
 }
@@ -263,7 +263,7 @@ if (!rid) {
                 <div class="header-box-content-box-item-option">
                   <div style="flex: 1">行间距：{{ linesText(dataSetting.lines) }}</div>
                   <div class="header-box-content-box-item-default">
-                    <el-button @click="()=>{dataSetting.lines = 0.8}" v-if="setting.lines != 0.8" size="small">默认</el-button>
+                    <el-button @click="()=>{dataSetting.lines = 0.87}" v-if="setting.lines != 0.87" size="small">默认</el-button>
                   </div>
                 </div>
                 <el-slider v-model="dataSetting.lines" :min="0.61" :max="1.50" :step="0.01" size="small" />
@@ -430,7 +430,7 @@ if (!rid) {
             flex-direction: column;
 
             .header-box-content-box-item {
-              padding: 5px;
+              padding: 5px 15px;
               font-size: 13px;
               text-align: center;
               border-radius: 3px;

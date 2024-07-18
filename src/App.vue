@@ -33,13 +33,13 @@ async function onLogin() {
   if (response.data.code === 200) {
     localStorage.setItem("token", response.data.data.token)
     localStorage.setItem("expires", response.data.data.expiresAt)
-    ElMessage.success(response.data.message)
+    ElMessage.success({ message: response.data.message, offset: 55 })
     let timer = setTimeout(() => {
       window.location.reload()
       clearTimeout(timer)
     }, 1000)
   } else {
-    ElMessage.error(response.data.message)
+    ElMessage.error({ message: response.data.message, offset: 55 })
   }
 }
 

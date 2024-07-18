@@ -30,13 +30,13 @@ function onPlusWork() {
   for (const data of datas.value) {
     if (data.major || data.name || data.content) {
       if (data.major.trim().length <= 0) {
-        ElMessage({ message: "请先填写完表单关键信息！", grouping: true, type: 'error' })
+        ElMessage({ message: "请先填写完表单关键信息！", offset: 55, grouping: true, type: 'error' })
         return
       } else if (data.name.trim().length <= 0) {
-        ElMessage({ message: "请先填写完表单关键信息！", grouping: true, type: 'error' })
+        ElMessage({ message: "请先填写完表单关键信息！", offset: 55, grouping: true, type: 'error' })
         return
       } else if (data.content.trim().length <= 0) {
-        ElMessage({ message: "请先填写完表单关键信息！", grouping: true, type: 'error' })
+        ElMessage({ message: "请先填写完表单关键信息！", offset: 55, grouping: true, type: 'error' })
         return
       }
     }
@@ -44,7 +44,7 @@ function onPlusWork() {
 
   axios.post('/education').then((response) => {
     if (response.data.code !== 200) {
-      ElMessage({ message: response.data.message, grouping: true, type: 'error' })
+      ElMessage({ message: response.data.message, offset: 55, grouping: true, type: 'error' })
       return
     }
     datas.value.push(response.data.data)
@@ -55,7 +55,7 @@ function onPlusWork() {
 function onRemoveWorkItem(id: string) {
   axios.delete(`/education?id=${id}`).then((response) => {
     if (response.data.code !== 200) {
-      ElMessage({ message: response.data.message, grouping: true, type: 'error' })
+      ElMessage({ message: response.data.message, offset: 55, grouping: true, type: 'error' })
       return
     }
     for (let i = 0; i < datas.value.length; i++) {
@@ -78,7 +78,7 @@ function onUpDownMove(index: number, flag: boolean) {
     dataId.push(datas.value[i].id)
   }
   axios.put('/education/sort', dataId).then(res => {
-    ElMessage({ message: res.data.message, grouping: true, type: 'success' })
+    ElMessage({ message: res.data.message, offset: 55, grouping: true, type: 'success' })
   })
 }
 </script>

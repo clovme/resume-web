@@ -1,14 +1,17 @@
 <script setup lang="ts">
-import { computed, ref } from 'vue'
+import { computed, ref, onMounted, onUnmounted } from 'vue'
 import LineBox from "@/components/utils/LineBox.vue";
 import {useStore} from "vuex";
 import {State} from "@/store/interface";
 import { IMenus } from '@/store/interface/menus.ts'
-import { getStore } from '@/utils'
+import { calculatePageNumber, getStore } from '@/utils'
 import { ISlogan } from '@/store/interface/slogan.ts'
 import { ISetting } from '@/store/interface/setting.ts'
 
+const resumeBoxContent = ref(null);
+const resumeBoxContentStyle = ref({ height: '1122px' });
 const style = ref({ height: `${window.innerHeight - 200}px` })
+let observer: ResizeObserver | null = null;
 
 const setting = getStore<ISetting>("getSetting")
 const slogan = getStore<ISlogan>("getSlogan")
@@ -19,6 +22,52 @@ const menus = computed<IMenus[]>(() => {
   return store.getters.getMenus.filter((menu: IMenus) => menu.isPage);
 });
 
+let pageNumTimer = 0
+
+const handleResize = (entries: any) => {
+  clearTimeout(pageNumTimer)
+  const pageHeight = 1120
+  const { height } = entries[0].contentRect;
+  const pageNum = calculatePageNumber(height, pageHeight)
+  resumeBoxContentStyle.value.height = `${pageNum * pageHeight}px`;
+
+  pageNumTimer = setTimeout(function() {
+    const pageLine = document.querySelector('.page-line') as HTMLElement
+    while (pageLine.firstChild) {
+      pageLine.removeChild(pageLine.firstChild);
+    }
+    for (let i = 1; i <= pageNum; i++) {
+      if (!document.getElementById(`#page-num-${i}`)) {
+        const li = document.createElement('li');
+
+        // 给新子节点添加一些内容或样式
+        li.id = `page-num-${i}`
+        li.className = "page-num"
+        li.innerHTML = `第${i}页 (共<b class="orange">${pageNum}</b>页)`;
+        li.style.top = `${i * pageHeight}px`
+
+        // 将新子节点添加到 pageLine 元素中
+        pageLine.appendChild(li);
+      }
+    }
+    clearTimeout(pageNumTimer)
+  }, 500)
+};
+
+onMounted(() => {
+  observer = new ResizeObserver(handleResize);
+  if (resumeBoxContent.value) {
+    observer.observe(resumeBoxContent.value);
+  }
+});
+
+onUnmounted(() => {
+  // 在组件销毁前取消观察
+  if (observer) {
+    observer.disconnect();
+  }
+});
+
 window.onresize = () => {
   style.value.height = `${window.innerHeight - 200}px`
 }
@@ -26,7 +75,7 @@ window.onresize = () => {
 
 <template>
   <div class="resume-box">
-    <div class="resume-box-content">
+    <div class="resume-box-content" :style="resumeBoxContentStyle">
       <div class="resume-head">
         <div class="resume-head-title" v-text="slogan.title"></div>
         <div class="personal-resume">
@@ -42,14 +91,10 @@ window.onresize = () => {
         <div class="line-left"></div>
         <div class="line-right"></div>
       </LineBox>
-      <div class="resume-content-all" :style="`margin: 0 ${setting.page}px 0 ${setting.page+15}px`">
+      <div class="resume-content-all" ref="resumeBoxContent" :style="`margin: 0 ${setting.page}px 0 ${setting.page+15}px`">
         <component v-for="menu in menus" :is="menu.module" v-show="menu.isChecked" :id="menu.name" :title="menu.title"/>
       </div>
-      <ul class="page-line">
-        <li><div class="page-num">第1页 (共<b class="orange">3</b>页)</div></li>
-        <li><div class="page-num">第2页 (共<b class="orange">3</b>页)</div></li>
-        <li><div class="page-num">第3页 (共<b class="orange">3</b>页)</div></li>
-      </ul>
+      <ul class="page-line"></ul>
     </div>
     <div :style="style"></div>
   </div>
@@ -71,12 +116,10 @@ window.onresize = () => {
   .page-line {
     list-style: none;
     color: #FFF;
-    display: none;
 
     li {
       position: absolute;
       left: 0;
-      top: 1042px;
       text-align: center;
       width: 100%;
       height: 18px;
@@ -93,10 +136,6 @@ window.onresize = () => {
 
       &:nth-child(3) {
         top: 3126px;
-      }
-
-      &:last-child {
-        margin-top: 10px;
       }
     }
   }
@@ -364,7 +403,6 @@ window.onresize = () => {
         list-style: none;
         display: grid;
         font-size: 13px;
-        gap: 6px 0;
         grid-template-columns: repeat(2, 1fr);
 
         li {

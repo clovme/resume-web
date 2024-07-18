@@ -3,11 +3,13 @@ import { getStore } from '@/utils'
 import ModuleTitle from "@/components/utils/ModuleTitle.vue";
 import { IBasicInfo } from '@/store/interface/basicinfo.ts'
 import form from '@/utils/form.ts'
+import { ISetting } from '@/store/interface/setting.ts'
 
 defineProps<{
   title: string
 }>()
 
+const setting = getStore<ISetting>("getSetting")
 const basicInfo = getStore<IBasicInfo>('getBasicInfo');
 
 function birthday2Age(date: string) {
@@ -28,7 +30,7 @@ function birthday2Age(date: string) {
 <template>
   <ModuleTitle :title="title">
     <div class="basic-info-box">
-      <ul class="basic-info-list">
+      <ul class="basic-info-list" :style="`font-family: ${setting.fontFamily};font-size: ${setting.fontSize}px;line-height: ${setting.lines * setting.fontSize * 2}px`">
         <li v-if="basicInfo.name"><span>姓名</span>{{ basicInfo.name }}</li>
 
         <li v-if="basicInfo.birthday && basicInfo.isAge"><span>年龄</span>{{ birthday2Age(basicInfo.birthday) }}岁</li>
