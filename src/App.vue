@@ -5,7 +5,7 @@ import PageFooter from "@/components/layout/PageFooter.vue";
 import {ref, reactive} from "vue";
 import { ElMessage, ElNotification } from 'element-plus'
 import axios from "@/utils/axios.ts";
-import Icons from '@/components/Icons.vue'
+// import Icons from '@/components/Icons.vue'
 
 const params = new URLSearchParams(window.location.search);
 let rid = params.get("rid")
@@ -86,7 +86,7 @@ window.onresize = function() {
       </el-form>
     </div>
   </el-container>
-  <Icons />
+<!--  <Icons />-->
 </template>
 
 <style scoped lang="scss">

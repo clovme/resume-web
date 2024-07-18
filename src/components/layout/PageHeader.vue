@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import {ref, h, reactive, watch, onMounted} from "vue";
+import {ref, h, reactive, watch} from "vue";
 import ResumeList from "@/components/utils/ResumeList.vue";
 import axios from "@/utils/axios.ts";
 import {ElMessage, ElMessageBox} from "element-plus";
@@ -204,25 +204,31 @@ function onHeaderTitle() {
   isHeaderTitle.value = true
 }
 
-function exportPDF() {
-  const title = document.title.split(' - ')[0]
+async function exportPDF() {
   const element = (document.querySelector('.resume-box-content') as HTMLElement).cloneNode(true) as HTMLElement;
   (element.querySelector('.page-line') as HTMLElement).remove()
 
-  axios.post('/pdf', { htmlContent: element.outerHTML }, { responseType: 'blob' }).then(response => {
-    if (response.status !== 200) {
-      return ElMessage.error(response.data.message)
-    }
-    const url = window.URL.createObjectURL(new Blob([response.data], { type: 'application/pdf' }));
-    const link = document.createElement('a');
-    link.href = url;
-    link.setAttribute('download', `${title}.pdf`);
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-  }).catch(() => {
-    return ElMessage.error("请求失败，请重试！")
-  })
+  let response = await axios.post('/pdf', { htmlContent: element.outerHTML })
+  if (response.data.code && response.data.code !== 200) {
+    return ElMessage.error(response.data.message)
+  }
+
+  const link = document.createElement('a');
+  link.setAttribute('download', response.data.message);
+
+  fetch(`${import.meta.env.VITE_API_URL}${response.data.data}`.replace('/api', ''))
+    .then(response => response.blob())
+    .then(async blob => {
+      const url = window.URL.createObjectURL(blob);
+      link.href = url;
+      link.click();
+      window.URL.revokeObjectURL(url); // 释放内存
+
+      response = await axios.delete("/pdf/delete")
+      if (response.data.code && response.data.code !== 200) {
+        return ElMessage.error(response.data.message)
+      }
+    })
 }
 
 function linesText(lines: number) {

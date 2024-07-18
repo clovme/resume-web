@@ -71,6 +71,7 @@ window.onresize = () => {
   .page-line {
     list-style: none;
     color: #FFF;
+    display: none;
 
     li {
       position: absolute;
@@ -217,7 +218,7 @@ window.onresize = () => {
   }
 
   .resume-content-all {
-    color: #555;
+    color: #333;
     border-left: 1px solid rgb(78, 114, 130);
     padding-top: 8px;
 
