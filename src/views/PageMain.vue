@@ -99,6 +99,8 @@ window.onresize = () => {
     <div class="page-footer" :style="style">
       <p>末页之下为占位页，不参与文档导出</p>
       <p>分页标签遮挡的文字，在文档导出后分页标签是不存在的</p>
+      <p>GitHub 后端 <a href="https://github.com/clovme/resume-api.git">https://github.com/clovme/resume-api.git</a></p>
+      <p>GitHub Web <a href="https://github.com/clovme/resume-web.git">https://github.com/clovme/resume-web.git</a></p>
     </div>
   </div>
 </template>
