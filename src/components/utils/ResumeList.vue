@@ -6,7 +6,7 @@ const props = defineProps<{
 }>()
 
 // 事件发射器
-const emit = defineEmits(['NewResume', 'selectItem', 'edit', 'remove']);
+const emit = defineEmits(['NewResume', 'selectItem', 'edit', 'remove', 'copy']);
 
 function onNewResume(e: Event) {
   emit("NewResume", e)
@@ -23,6 +23,10 @@ function onClickRemove(data: IResumes) {
 function href(uri: string) {
   location.href = `?rid=${uri}`
 }
+
+function onClickCopy(data: IResumes) {
+  emit('copy', data)
+}
 </script>
 
 <template>
@@ -31,6 +35,7 @@ function href(uri: string) {
       <div class="resume-list-item">
         <div class="resume-list-item-option">
           <i class="icon-edit" @click="onClickEdit(item)" />
+          <i class="icon-fuzhi" @click="onClickCopy(item)" />
           <i class="icon-delete" @click="onClickRemove(item)" />
         </div>
         <a @click.prevent="href(item.id)" :href="`?rid=${item.id}`">
@@ -97,8 +102,9 @@ function href(uri: string) {
         width: 120px;
         position: absolute;
         top: 0;
-        justify-content: space-between;
+        justify-content: flex-end;
         opacity: 0;
+        gap: 10px;
         transition: all .3s;
         border-bottom: 1px solid #ecedf1;
         padding: 3px 5px;

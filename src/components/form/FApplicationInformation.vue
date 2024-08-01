@@ -50,7 +50,7 @@ function addCourseGrade() {
   }
   axios.post('/applicationinfo/grade', form).then((response) => {
     if (response.data.code !== 200) {
-      ElMessage({ message: response.data.message, grouping: true, type: 'error' })
+      ElMessage({ message: response.data.message, offset: 55, grouping: true, type: 'error' })
       return
     }
     isNewDataItem.value = true
@@ -64,7 +64,7 @@ function addCourseGrade() {
 function removeCourseGrade(id: string) {
   axios.delete(`/applicationinfo/grade?id=${id}`).then((response) => {
     if (response.data.code !== 200) {
-      ElMessage({ message: response.data.message, grouping: true, type: 'error' })
+      ElMessage({ message: response.data.message, offset: 55, grouping: true, type: 'error' })
       return
     }
     for (let i = 0; i < courseGrade.value.length; i++) {

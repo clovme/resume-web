@@ -39,10 +39,6 @@ html, body, #app {
     padding-left: 0 !important;
 }
 
-.ql-editor li {
-  padding-left: 1.3em;
-}
-
 @for $i from 1 through 8 {
   .ql-editor li.ql-indent-#{$i}:not(.ql-direction-rtl) {
     padding-left: calc(1.5em + #{$i}em);
@@ -55,6 +51,12 @@ html, body, #app {
     box-shadow: 0 0 5px rgba(57, 57, 77, .66);
     padding: 10px !important;
   }
+}
+
+
+.el-message {
+  left: unset;
+  right: -50px !important;
 }
 
 @mixin autofill-reset {

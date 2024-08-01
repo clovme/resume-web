@@ -77,25 +77,22 @@ export function PPI(): number {
     return Number(screenPpi.toFixed(2));
 }
 
-// export function calculateA4PixelSize() {
-//     // A4纸的标准尺寸（毫米）
-//     var a4WidthMm = 210;
-//     var a4HeightMm = 297;
-//
-//     // 毫米转换成英寸
-//     var inchPerMm = 25.4;
-//
-//     // 计算A4纸的像素尺寸
-//     var a4WidthPx = Math.round(a4WidthMm * ppi / inchPerMm);
-//     var a4HeightPx = Math.round(a4HeightMm * ppi / inchPerMm);
-// }
+export function calculatePageNumber(height: number, pageHeight: number): number {
+    // 如果高度正好是 1090 的倍数，返回 1
+    if (height % pageHeight === 0) {
+        return height / pageHeight;
+    }
+
+    // 否则，返回 (高度 / 1090) 向上取整的结果
+    return Math.ceil(height / pageHeight);
+}
 
 export function saveForm(url: string, data: any) {
     axios.put(url, data).then((response) => {
         if (response.data.code !== 200) {
-            ElMessage({ message: response.data.message, grouping: true, type: 'error'})
+            ElMessage({ message: response.data.message, offset: 55, grouping: true, type: 'error'})
             return
         }
-        ElMessage({ message: response.data.message, grouping: true, type: 'success'})
+        ElMessage({ message: response.data.message, offset: 55, grouping: true, type: 'success'})
     })
 }

@@ -7,7 +7,6 @@ import axios from '@/utils/axios.ts'
 import { ElMessage } from 'element-plus'
 import { IEducation } from '@/store/interface/education.ts'
 import form from '@/utils/form.ts'
-import DatePicker from '@/components/utils/DatePicker.vue'
 
 let timer = 0
 const isNewWorkItem = ref<boolean>(false)
@@ -31,13 +30,13 @@ function onPlusWork() {
   for (const data of datas.value) {
     if (data.major || data.name || data.content) {
       if (data.major.trim().length <= 0) {
-        ElMessage({ message: "请先填写完表单关键信息！", grouping: true, type: 'error' })
+        ElMessage({ message: "请先填写完表单关键信息！", offset: 55, grouping: true, type: 'error' })
         return
       } else if (data.name.trim().length <= 0) {
-        ElMessage({ message: "请先填写完表单关键信息！", grouping: true, type: 'error' })
+        ElMessage({ message: "请先填写完表单关键信息！", offset: 55, grouping: true, type: 'error' })
         return
       } else if (data.content.trim().length <= 0) {
-        ElMessage({ message: "请先填写完表单关键信息！", grouping: true, type: 'error' })
+        ElMessage({ message: "请先填写完表单关键信息！", offset: 55, grouping: true, type: 'error' })
         return
       }
     }
@@ -45,7 +44,7 @@ function onPlusWork() {
 
   axios.post('/education').then((response) => {
     if (response.data.code !== 200) {
-      ElMessage({ message: response.data.message, grouping: true, type: 'error' })
+      ElMessage({ message: response.data.message, offset: 55, grouping: true, type: 'error' })
       return
     }
     datas.value.push(response.data.data)
@@ -56,7 +55,7 @@ function onPlusWork() {
 function onRemoveWorkItem(id: string) {
   axios.delete(`/education?id=${id}`).then((response) => {
     if (response.data.code !== 200) {
-      ElMessage({ message: response.data.message, grouping: true, type: 'error' })
+      ElMessage({ message: response.data.message, offset: 55, grouping: true, type: 'error' })
       return
     }
     for (let i = 0; i < datas.value.length; i++) {
@@ -79,7 +78,7 @@ function onUpDownMove(index: number, flag: boolean) {
     dataId.push(datas.value[i].id)
   }
   axios.put('/education/sort', dataId).then(res => {
-    ElMessage({ message: res.data.message, grouping: true, type: 'success' })
+    ElMessage({ message: res.data.message, offset: 55, grouping: true, type: 'success' })
   })
 }
 </script>
@@ -103,16 +102,15 @@ function onUpDownMove(index: number, flag: boolean) {
         <el-col :span="6">
           <div class="split-1" style="width: 330px">
             <label>就读时间</label>
-            <DatePicker v-model="data.startAt" placeholder="开始时间" style="width: 120px" />
-            -
-            <DatePicker v-model="data.endAt" v-if="!data.toNow" placeholder="结束时间" style="width: 120px" />
+            <el-date-picker value-format="YYYY-MM" :clearable="false" v-model="data.startAt" style="width: 120px" type="month" placeholder="开始时间" />-
+            <el-date-picker value-format="YYYY-MM" :clearable="false" v-if="!data.toNow" v-model="data.endAt" style="width: 120px" type="month" placeholder="结束时间" />
             <el-checkbox v-model="data.toNow" label="至今" />
           </div>
         </el-col>
         <el-col :span="4">
           <div class="split-1">
             <label>学历</label>
-            <el-select-v2 v-model="data.degree" :options="form.degree" placeholder="请选择学历" style="width: 100px" />
+            <el-select-v2 v-model="data.degree" :options="form.degree" placeholder="请选择学历" />
           </div>
         </el-col>
         <el-col :span="2">

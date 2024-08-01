@@ -18,7 +18,7 @@ const drawer = ref(!rid)
 const title = ref('新增简历')
 const isResume = ref(false)
 const newResume = ref(false)
-const drawerData = ref([])
+const drawerData = ref<IResumes[]>([])
 const isHeaderTitle = ref(false)
 
 const slogan = getStore<ISlogan>("getSlogan")
@@ -40,7 +40,7 @@ const tempTemp = setTimeout(function() {
     isInit = false
     clearTimeout(temp)
   }, 3000)
-}, 200)
+}, 300)
 
 const tempTemp1 = setTimeout(function() {
   if (!slogan.value) return
@@ -52,7 +52,7 @@ const tempTemp1 = setTimeout(function() {
     isInit1 = false
     clearTimeout(temp)
   }, 3000)
-}, 200)
+}, 300)
 
 let timer = 0;
 let timerSetting = 0;
@@ -105,18 +105,18 @@ function onShowNewResume() {
 function onNewResume() {
   title.value = '新增简历'
   if (name.value.trim().length <= 0) {
-    return ElMessage.error("简历名称不能为空")
+    return ElMessage.error({ message: '简历名称不能为空', offset: 55 })
   }
 
   axios.get(`/resumes/check?name=${name.value}`).then(res => {
     if (res.data.code !== 200) {
-      return ElMessage.error(res.data.message)
+      return ElMessage.error({ message: res.data.message, offset: 55 })
     }
     if (isResume.value) {
       resume.name = name.value
       axios.put('/resumes', resume).then(res => {
         if (res.data.code !== 200) {
-          return ElMessage.error(res.data.message)
+          return ElMessage.error({ message: res.data.message, offset: 55 })
         }
         newResume.value = false
         drawerData.value = res.data.data
@@ -125,12 +125,15 @@ function onNewResume() {
     }
     axios.post('/resumes', {name: name.value}).then(res => {
       if (res.data.code !== 200) {
-        return ElMessage.error(res.data.message)
+        return ElMessage.error({ message: res.data.message, offset: 55 })
       }
+      ElMessage.success({ message: res.data.message, offset: 55 })
       drawer.value = false
       newResume.value = false
       localStorage.removeItem("activeName")
-      location.href = `?rid=${res.data.data.id}`
+      setTimeout(function() {
+        location.href = `?rid=${res.data.data.id}`
+      }, 1000)
     })
   });
 }
@@ -149,10 +152,15 @@ function onDeleteResume(data: IResumes) {
   }).then(() => {
     axios.delete(`/resumes?rid=${data.id}`).then(res => {
       if (res.data.code !== 200) {
-        return ElMessage.error(res.data.message)
+        return ElMessage.error({ message: res.data.message, offset: 55 })
       }
-      drawerData.value = res.data.data
-      if (drawerData.value.length <= 0) {
+      for (let i = 0; i < drawerData.value.length; i++) {
+        if (drawerData.value[i].id === data.id) {
+          drawerData.value.splice(i, 1)
+        }
+      }
+      const params = new URLSearchParams(location.search);
+      if (drawerData.value.length <= 0 || params.get("rid") === data.id) {
         location.href = `/`
       }
     })
@@ -174,13 +182,13 @@ async function signOut() {
   if (response.data.code === 200) {
     localStorage.removeItem("token")
     localStorage.removeItem("expires")
-    ElMessage.success(response.data.message)
+    ElMessage.success({ message: response.data.message, offset: 55 })
     let timer = setTimeout(() => {
       window.location.reload()
       clearTimeout(timer)
     }, 1000)
   } else {
-    return ElMessage.error(response.data.message)
+    return ElMessage.error({ message: response.data.message, offset: 55 })
   }
 }
 
@@ -204,11 +212,51 @@ function onHeaderTitle() {
   isHeaderTitle.value = true
 }
 
-function exportPDF() {
-  const content = document.querySelector('.resume-box-content')
-  if (!content) return;
+async function exportPDF() {
+  const element = (document.querySelector('.resume-box-content') as HTMLElement).cloneNode(true) as HTMLElement;
+  (element.querySelector('.page-line') as HTMLElement).remove()
 
+  let response = await axios.post('/pdf', { htmlContent: element.outerHTML })
+  if (response.data.code && response.data.code !== 200) {
+    return ElMessage.error({ message: response.data.message, offset: 55 })
+  }
 
+  const link = document.createElement('a');
+  link.setAttribute('download', response.data.message);
+
+  fetch(`${import.meta.env.VITE_API_URL}${response.data.data}`.replace('/api', ''))
+    .then(response => response.blob())
+    .then(async blob => {
+      const url = window.URL.createObjectURL(blob);
+      link.href = url;
+      link.click();
+      window.URL.revokeObjectURL(url); // 释放内存
+
+      response = await axios.delete("/pdf/delete")
+      if (response.data.code && response.data.code !== 200) {
+        return ElMessage.error({ message: response.data.message, offset: 55 })
+      }
+    })
+}
+
+function linesText(lines: number) {
+  if (!lines) return '0.00'
+  return lines.toFixed(2)
+}
+
+async function onCopyResume(data: IResumes) {
+  let response = await axios.post('/resumes/copy', data)
+  if (response.data.code !== 200) {
+    return ElMessage.error({ message: response.data.message, offset: 55 })
+  }
+  ElMessage.success({ message: response.data.message, offset: 55 })
+  drawerData.value = response.data.data
+  drawer.value = false
+  newResume.value = false
+  localStorage.removeItem("activeName")
+  setTimeout(function() {
+    location.href = `?rid=${response.data.data.id}`
+  }, 1000)
 }
 
 if (!rid) {
@@ -236,18 +284,18 @@ if (!rid) {
               </div>
               <div class="header-box-content-box-item">
                 <div class="header-box-content-box-item-option">
-                  <div style="flex: 1">行间距：{{ dataSetting.lines.toFixed(2) }}</div>
+                  <div style="flex: 1">行间距：{{ linesText(dataSetting.lines) }}</div>
                   <div class="header-box-content-box-item-default">
-                    <el-button @click="()=>{dataSetting.lines = 0.8}" v-if="setting.lines != 0.8" size="small">默认</el-button>
+                    <el-button @click="()=>{dataSetting.lines = 0.87}" v-if="setting.lines != 0.87" size="small">默认</el-button>
                   </div>
                 </div>
-                <el-slider v-model="dataSetting.lines" :min="0.60" :max="1.50" :step="0.01" size="small" />
+                <el-slider v-model="dataSetting.lines" :min="0.61" :max="1.50" :step="0.01" size="small" />
               </div>
               <div class="header-box-content-box-item">
                 <div class="header-box-content-box-item-option">
                   <div style="flex: 1">页面边距：{{ dataSetting.page }}</div>
                   <div class="header-box-content-box-item-default">
-                    <el-button @click="()=>{dataSetting.page = 30}" v-if="setting.page != 30" size="small">默认</el-button>
+                    <el-button @click="()=>{dataSetting.page = 34}" v-if="setting.page != 34" size="small">默认</el-button>
                   </div>
                 </div>
                 <el-slider v-model="dataSetting.page" :min="10" :max="60" size="small" />
@@ -293,7 +341,7 @@ if (!rid) {
         </div>
       </div>
     </template>
-    <ResumeList @edit="onEditResume" @remove="onDeleteResume" @new-resume="onShowNewResume" :data="drawerData"/>
+    <ResumeList @copy="onCopyResume" @edit="onEditResume" @remove="onDeleteResume" @new-resume="onShowNewResume" :data="drawerData"/>
   </el-drawer>
   <el-dialog v-model="newResume" :title="title" width="400" @closed="name = ''" :lock-scroll="false">
     <el-form label-width="auto">
@@ -405,7 +453,7 @@ if (!rid) {
             flex-direction: column;
 
             .header-box-content-box-item {
-              padding: 5px;
+              padding: 5px 15px;
               font-size: 13px;
               text-align: center;
               border-radius: 3px;
