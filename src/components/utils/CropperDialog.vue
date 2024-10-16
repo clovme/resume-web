@@ -1,32 +1,40 @@
 <script setup lang="ts">
-import { ref, watch } from 'vue'
-import 'vue-cropper/dist/index.css'
-import { VueCropper }  from "vue-cropper";
+import { ref, watch } from 'vue';
+import 'vue-cropper/dist/index.css';
+import { VueCropper } from "vue-cropper";
+
+// 定义 Cropper 的接口
+interface CropperInstance {
+  getCropData(callback: (data: string) => void): void; // 假设 getCropData 接受一个回调函数
+}
 
 const props = defineProps<{
-  imgUrl?: string
-  modelValue?: boolean
-}>()
+  imgUrl?: string;
+  modelValue?: boolean;
+}>();
 
-const cropperRef = ref({
-  getCropData: (data)=>{}
-});
+// 指定 cropperRef 的类型
+const cropperRef = ref<CropperInstance | null>(null); // 初始为 null
 const option = ref({
   img: props.imgUrl,
-  modelValue: props.modelValue
-})
+  modelValue: props.modelValue,
+});
 
 watch(props, (newValue) => {
-  option.value.img = newValue.imgUrl
-  option.value.modelValue = newValue.modelValue
-})
+  option.value.img = newValue.imgUrl;
+  option.value.modelValue = newValue.modelValue;
+});
 
-const emit = defineEmits(['closed', "save"]);
+const emit = defineEmits(['closed', 'save']);
 
 function getCropData() {
-  cropperRef.value.getCropData(data => {
-    emit("save", data)
-  });
+  if (cropperRef.value) { // 确保 cropperRef.value 不为 null
+    cropperRef.value.getCropData((data: string) => {
+      emit("save", data);
+    });
+  } else {
+    console.warn('cropperRef is null');
+  }
 }
 
 function closed() {

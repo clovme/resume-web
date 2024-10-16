@@ -41,7 +41,7 @@ function elUploadFile(file: UploadFile) {
   const reader = new FileReader(); // 创建 FileReader 实例
 
   reader.onload = (e) => {
-    if (typeof e.target.result != 'string') {
+    if (e.target === null || typeof e.target.result != 'string') {
       return
     }
     cropperDialogImgUrl.value = e.target.result
@@ -56,7 +56,7 @@ function CropperClosed() {
   cropperDialogVisible.value = false
 }
 
-function CropperSave(imgUrl) {
+function CropperSave(imgUrl: string) {
   data.value.photo = imgUrl
   CropperClosed()
 }
