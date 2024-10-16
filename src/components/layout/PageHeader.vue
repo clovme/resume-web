@@ -348,6 +348,7 @@ if (!rid) {
     </template>
     <ResumeList @copy="onCopyResume" @edit="onEditResume" @remove="onDeleteResume" @new-resume="onShowNewResume" :data="drawerData"/>
   </el-drawer>
+
   <el-dialog v-model="newResume" :title="title" width="400" @closed="name = ''" :lock-scroll="false">
     <el-form label-width="auto">
       <el-form-item>
