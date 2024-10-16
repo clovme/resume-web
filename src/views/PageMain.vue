@@ -10,7 +10,6 @@ import { ISetting } from '@/store/interface/setting.ts'
 
 const resumeBoxContent = ref(null);
 const resumeBoxContentStyle = ref({ height: '1122px' });
-const style = ref({ height: `${window.innerHeight - 200}px` })
 let observer: ResizeObserver | null = null;
 
 const setting = getStore<ISetting>("getSetting")
@@ -67,10 +66,6 @@ onUnmounted(() => {
     observer.disconnect();
   }
 });
-
-window.onresize = () => {
-  style.value.height = `${window.innerHeight - 200}px`
-}
 </script>
 
 <template>
@@ -96,12 +91,7 @@ window.onresize = () => {
       </div>
       <ul class="page-line"></ul>
     </div>
-    <div class="page-footer" :style="style">
-      <p>末页之下为占位页，不参与文档导出</p>
-      <p>分页标签遮挡的文字，在文档导出后分页标签是不存在的</p>
-      <p style="user-select: text">GitHub 后端 <a target="_blank" href="https://github.com/clovme/resume-api.git">https://github.com/clovme/resume-api.git</a></p>
-      <p style="user-select: text">GitHub Web <a target="_blank" href="https://github.com/clovme/resume-web.git">https://github.com/clovme/resume-web.git</a></p>
-    </div>
+    <div class="page-footer"></div>
   </div>
 </template>
 
@@ -118,6 +108,8 @@ window.onresize = () => {
     color: #4e7282;
     user-select: none;
     gap: 5px;
+    height: 100px;
+    background-color: #39394d;
   }
 }
 
@@ -428,10 +420,13 @@ window.onresize = () => {
       }
 
       .photo-box {
-        width: 91px;
+        width: 90px;
+        overflow: hidden;
 
         img {
-          height: 98px;
+          height: 142px;
+          border-radius: 2px;
+          zoom: 0.8;
         }
       }
     }

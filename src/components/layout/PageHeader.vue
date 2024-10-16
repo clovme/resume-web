@@ -259,6 +259,10 @@ async function onCopyResume(data: IResumes) {
   }, 1000)
 }
 
+function openSource() {
+  open('https://github.com/clovme/resume-api.git', '_blank')
+}
+
 if (!rid) {
   handleOk()
 }
@@ -323,7 +327,8 @@ if (!rid) {
         <li class="header-toolbar-item" @click="handleOk"><i class="icon-gerenjianli"/><b>简历列表</b></li>
       </ul>
       <ul class="header-toolbar">
-        <li class="header-toolbar-item" @click="signOut"><i class="icon-sign-out-alt" /><b>退出用户</b></li>
+        <li class="header-toolbar-item" @click="openSource"><i class="icon-github" /><b>GitHub</b></li>
+        <li class="header-toolbar-item" @click="signOut"><i class="icon-sign-out" /><b>退出</b></li>
       </ul>
     </div>
   </el-header>

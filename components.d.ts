@@ -8,6 +8,7 @@ export {}
 declare module 'vue' {
   export interface GlobalComponents {
     CheckButton: typeof import('./src/components/utils/CheckButton.vue')['default']
+    CropperDialog: typeof import('./src/components/utils/CropperDialog.vue')['default']
     CustomTabsLabel: typeof import('./src/components/CustomTabsLabel.vue')['default']
     DatePicker: typeof import('./src/components/utils/DatePicker.vue')['default']
     ElButton: typeof import('element-plus/es')['ElButton']

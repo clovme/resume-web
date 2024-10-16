@@ -4,11 +4,14 @@ import { IBasicInfo } from '@/store/interface/basicinfo.ts'
 import plus from "@/components/icon/plus.vue";
 import form from "@/utils/form.js";
 import { ref, watch } from 'vue';
-import { ElNotification } from 'element-plus'
+import { ElNotification, UploadFile } from 'element-plus'
 import DatePicker from "@/components/utils/DatePicker.vue";
+import CropperDialog from '@/components/utils/CropperDialog.vue'
 
 const customInfo = ref({key: '', value: ''})
 const data = getStore<IBasicInfo>('getBasicInfo');
+const cropperDialogImgUrl = ref("")
+const cropperDialogVisible = ref(false)
 
 let timer = 0;
 watch(data.value, (newValue) => {
@@ -30,6 +33,32 @@ function addCustomInfo() {
   }
   data.value.customInfo[customInfo.value.key] = customInfo.value.value;
   customInfo.value = {key: '', value: ''}
+}
+
+function elUploadFile(file: UploadFile) {
+  if (!file || !file.raw) return; // 检查文件对象是否存在
+
+  const reader = new FileReader(); // 创建 FileReader 实例
+
+  reader.onload = (e) => {
+    if (typeof e.target.result != 'string') {
+      return
+    }
+    cropperDialogImgUrl.value = e.target.result
+    cropperDialogVisible.value = true
+  };
+
+  reader.readAsDataURL(file.raw); // 读取文件为 Data URL (Base64)
+}
+
+function CropperClosed() {
+  cropperDialogImgUrl.value = ""
+  cropperDialogVisible.value = false
+}
+
+function CropperSave(imgUrl) {
+  data.value.photo = imgUrl
+  CropperClosed()
 }
 </script>
 
@@ -60,7 +89,9 @@ function addCustomInfo() {
         <div class="split-2">
           <label>照片设置</label>
           <div style="width: calc(100% - 10px);display: flex;align-items: center;gap: 5px;">
-            <el-upload v-model="data.photo" accept="image/png,image/jpeg"><el-button class="el-c-button" type="success" round>上传照片</el-button></el-upload>
+            <el-upload v-model="data.photo" accept="image/png,image/jpeg" :show-file-list="false" :auto-upload="false" @change="elUploadFile">
+              <el-button class="el-c-button" type="success" round>上传照片</el-button>
+            </el-upload>
             <el-checkbox v-model="data.iShowPhoto" label="展示照片" />
           </div>
         </div>
@@ -137,6 +168,7 @@ function addCustomInfo() {
         </div>
       </el-col>
     </el-row>
+    <CropperDialog @closed="CropperClosed" @save="CropperSave" v-model="cropperDialogVisible" :img-url="cropperDialogImgUrl" />
   </div>
 </template>
 

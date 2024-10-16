@@ -2,17 +2,17 @@
 
 @font-face {
   font-family: '#{$icomoon-font-family}';
-  src:  url('#{$icomoon-font-path}/#{$icomoon-font-family}.eot?dayn1y');
-  src:  url('#{$icomoon-font-path}/#{$icomoon-font-family}.eot?dayn1y#iefix') format('embedded-opentype'),
-    url('#{$icomoon-font-path}/#{$icomoon-font-family}.ttf?dayn1y') format('truetype'),
-    url('#{$icomoon-font-path}/#{$icomoon-font-family}.woff?dayn1y') format('woff'),
-    url('#{$icomoon-font-path}/#{$icomoon-font-family}.svg?dayn1y##{$icomoon-font-family}') format('svg');
+  src:  url('#{$icomoon-font-path}/#{$icomoon-font-family}.eot?dtvvmw');
+  src:  url('#{$icomoon-font-path}/#{$icomoon-font-family}.eot?dtvvmw#iefix') format('embedded-opentype'),
+    url('#{$icomoon-font-path}/#{$icomoon-font-family}.ttf?dtvvmw') format('truetype'),
+    url('#{$icomoon-font-path}/#{$icomoon-font-family}.woff?dtvvmw') format('woff'),
+    url('#{$icomoon-font-path}/#{$icomoon-font-family}.svg?dtvvmw##{$icomoon-font-family}') format('svg');
   font-weight: normal;
   font-style: normal;
   font-display: block;
 }
 
-i {
+[class^="icon-"], [class*=" icon-"] {
   /* use !important to prevent issues with browser extensions that change fonts */
   font-family: '#{$icomoon-font-family}' !important;
   speak: never;
@@ -27,14 +27,24 @@ i {
   -moz-osx-font-smoothing: grayscale;
 }
 
-.icon-sign-out-alt {
+.icon-github {
   &:before {
-    content: $icon-sign-out-alt; 
+    content: $icon-github; 
+  }
+}
+.icon-sign-out {
+  &:before {
+    content: $icon-sign-out; 
   }
 }
 .icon-gerenjianli {
   &:before {
     content: $icon-gerenjianli; 
+  }
+}
+.icon-cha {
+  &:before {
+    content: $icon-cha; 
   }
 }
 .icon-sliderleft {
@@ -67,9 +77,14 @@ i {
     content: $icon-delete; 
   }
 }
-.icon-edit {
+.icon-fuzhi {
   &:before {
-    content: $icon-edit; 
+    content: $icon-fuzhi; 
+  }
+}
+.icon-edit1 {
+  &:before {
+    content: $icon-edit1; 
   }
 }
 .icon-remen {
@@ -120,16 +135,6 @@ i {
 .icon-word {
   &:before {
     content: $icon-word; 
-  }
-}
-.icon-fuzhi {
-  &:before {
-    content: $icon-fuzhi; 
-  }
-}
-.icon-cha {
-  &:before {
-    content: $icon-cha; 
   }
 }
 
