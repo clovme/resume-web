@@ -27,14 +27,16 @@ watch(props, (newValue) => {
 
 const emit = defineEmits(['closed', 'save']);
 
-function getCropData() {
+function onGetCropData() {
   if (cropperRef.value) { // 确保 cropperRef.value 不为 null
     cropperRef.value.getCropData((data: string) => {
       emit("save", data);
     });
-  } else {
-    console.warn('cropperRef is null');
   }
+}
+
+function onDefaultPhoto() {
+  emit("save", null);
 }
 
 function closed() {
@@ -59,8 +61,13 @@ function closed() {
     ></vueCropper>
     <template #footer>
       <div class="dialog-footer">
-        <el-button @click="option.modelValue = false">取消</el-button>
-        <el-button type="primary" @click="getCropData">保存</el-button>
+        <div>
+          <el-button @click="onDefaultPhoto" type="primary">默认头像</el-button>
+        </div>
+        <div>
+          <el-button @click="option.modelValue = false">&nbsp;&nbsp;&nbsp;&nbsp;取消&nbsp;&nbsp;&nbsp;&nbsp;</el-button>
+          <el-button type="success" @click="onGetCropData">&nbsp;&nbsp;&nbsp;&nbsp;保存&nbsp;&nbsp;&nbsp;&nbsp;</el-button>
+        </div>
       </div>
     </template>
   </el-dialog>
@@ -69,5 +76,9 @@ function closed() {
 <style scoped lang="scss">
 .vue-cropper {
   height: 300px;
+}
+.dialog-footer {
+  display: flex;
+  justify-content: space-between;
 }
 </style>
