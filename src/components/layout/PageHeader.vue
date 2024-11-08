@@ -219,6 +219,7 @@ async function exportPDF() {
 
   let response = await axios.post('/pdf', { htmlContent: element.outerHTML })
   if (response.data.code && response.data.code !== 200) {
+    loadingInstance.close()
     return ElMessage.error({ message: response.data.message, offset: 55 })
   }
 
