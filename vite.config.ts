@@ -19,7 +19,7 @@ export default defineConfig({
     postcss: './postcss.config.js'
   },
   build: {
-    outDir: '../../go/src/resume-api/public',
+    outDir: '../../go/src/resume-api/public/static',
     emptyOutDir: true,
     sourcemap: false, // 关闭 sourcemap
     minify: 'terser', // 使用 terser 进行代码压缩
