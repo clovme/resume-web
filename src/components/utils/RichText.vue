@@ -1,46 +1,49 @@
 <script setup lang="ts">
-import {onMounted, watch} from 'vue';
-import Quill from "quill";
-import {IRichText} from "@/components/utils/interface/interface.ts";
-import {uuid} from "@/components/utils/options/richtext.ts";
+import { onMounted, watch } from 'vue'
+import Quill from 'quill'
+import { IRichText } from '@/components/utils/interface/interface.ts'
+import { uuid } from '@/components/utils/options/richtext.ts'
 
 const props = withDefaults(defineProps<IRichText>(), {
   id: uuid,
   height: '150px',
-  placeholder: '输入你的自定义内容'
+  placeholder: '输入你的自定义内容',
 })
-const emit = defineEmits(['update:modelValue']);
+const emit = defineEmits(['update:modelValue'])
 
 onMounted(() => {
   const quill = new Quill(`#${props.id}`, {
     modules: {
       toolbar: {
         container: [
-          [{'size': [false, 'large', 'huge']}],
-          [{'color': []}, 'bold', 'italic', 'underline', 'link', 'image'],
-          [{'list': 'ordered'}, {'list': 'bullet'}, {'align': []}],
-          ['clean']
+          [{ size: [false, 'large', 'huge'] }],
+          [{ color: [] }, 'bold', 'italic', 'underline', 'link', 'image'],
+          [{ list: 'ordered' }, { list: 'bullet' }, { align: [] }],
+          ['clean'],
         ],
-        handlers: {}
+        handlers: {},
       },
     },
     placeholder: props.placeholder,
-    theme: 'snow'
-  });
+    theme: 'snow',
+  })
 
   quill.on('text-change', () => {
-    emit('update:modelValue', quill.root.innerHTML);
-  });
+    emit('update:modelValue', quill.root.innerHTML)
+  })
 
-  watch(() => props.modelValue, (newValue) => {
-    if (quill.root.innerHTML !== newValue && newValue) {
-      quill.root.innerHTML = newValue ;
-    }
-  });
+  watch(
+    () => props.modelValue,
+    (newValue) => {
+      if (quill.root.innerHTML !== newValue && newValue) {
+        quill.root.innerHTML = newValue
+      }
+    },
+  )
   if (props.modelValue) {
-    quill.root.innerHTML = props.modelValue;
+    quill.root.innerHTML = props.modelValue
   }
-});
+})
 </script>
 
 <template>
@@ -61,7 +64,8 @@ onMounted(() => {
   :deep(.ql-editor) {
     padding: 5px 10px;
 
-    ol, ul {
+    ol,
+    ul {
       padding: 0;
     }
   }
@@ -127,7 +131,7 @@ onMounted(() => {
         }
 
         .ql-picker-options {
-          .ql-picker-item[data-value="small"]:before {
+          .ql-picker-item[data-value='small']:before {
             content: '小号';
           }
 
@@ -135,11 +139,11 @@ onMounted(() => {
             content: '默认';
           }
 
-          .ql-picker-item[data-value="large"]:before {
+          .ql-picker-item[data-value='large']:before {
             content: '中号';
           }
 
-          .ql-picker-item[data-value="huge"]:before {
+          .ql-picker-item[data-value='huge']:before {
             content: '大号';
           }
         }
@@ -153,7 +157,7 @@ onMounted(() => {
     }
 
     &:after {
-      content: "\529F\80FD\63D0\793A\FF1A\4F7F\7528\5DE5\5177\680F\4E4B\524D\FF0C\9700\8981\5148\9009\4E2D\8F93\5165\6846\7684\6587\5B57\3002";
+      content: '\529F\80FD\63D0\793A\FF1A\4F7F\7528\5DE5\5177\680F\4E4B\524D\FF0C\9700\8981\5148\9009\4E2D\8F93\5165\6846\7684\6587\5B57\3002';
       display: inline-block;
       vertical-align: middle;
       color: #999;

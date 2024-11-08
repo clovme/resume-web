@@ -31,12 +31,15 @@
   margin: 0;
 }
 
-html, body, #app {
+html,
+body,
+#app {
   background-color: #39394d;
 }
 
-.ql-editor ol, .ql-editor ul {
-    padding-left: 0 !important;
+.ql-editor ol,
+.ql-editor ul {
+  padding-left: 0 !important;
 }
 
 @for $i from 1 through 8 {
@@ -48,11 +51,10 @@ html, body, #app {
 .resume-list-box {
   .el-drawer__header {
     margin-bottom: 0 !important;
-    box-shadow: 0 0 5px rgba(57, 57, 77, .66);
+    box-shadow: 0 0 5px rgba(57, 57, 77, 0.66);
     padding: 10px !important;
   }
 }
-
 
 .el-message {
   left: unset;

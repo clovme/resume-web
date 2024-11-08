@@ -10,7 +10,7 @@ const closeIcon = ['icon-up', 'icon-down']
 
 const form = reactive({
   id: '',
-  title: ''
+  title: '',
 })
 const title = ref('')
 const isDialog = ref(false)
@@ -51,7 +51,7 @@ function setInitActiveName() {
 // 切换标签，存储当前激活标签标志
 function handleTabChange(paneName: TabPaneName) {
   if (switchActiveName.value.length > 0) {
-    const timer = setTimeout(function() {
+    const timer = setTimeout(function () {
       activeName.value = switchActiveName.value
       localStorage.setItem('activeName', switchActiveName.value)
       switchActiveName.value = ''
@@ -117,7 +117,7 @@ function handleClose(active: boolean) {
 function menuSore(idx1: number, flag: boolean) {
   const idx2 = flag ? idx1 - 1 : idx1 + 1
   swapArray(menus.value, idx1, idx2)
-  let dataId =  []
+  let dataId = []
   for (let i = 0; i < menus.value.length; i++) {
     dataId.push(menus.value[i].id)
   }
@@ -140,12 +140,20 @@ function onEditModuleItem(name: string, id: string) {
 // 编辑模块名称
 function onEditModuleName() {
   if (form.title.trim().length >= 5) {
-    ElNotification({ title: '修改提示', message: `名称（${form.title}）不能超过5个字！`, type: 'warning' })
+    ElNotification({
+      title: '修改提示',
+      message: `名称（${form.title}）不能超过5个字！`,
+      type: 'warning',
+    })
     return
   }
-  axios.put('/menus/edit/name', form).then(res => {
+  axios.put('/menus/edit/name', form).then((res) => {
     if (res.data.code !== 200) {
-      ElNotification({ title: '修改提示', message: res.data.message, type: 'warning' })
+      ElNotification({
+        title: '修改提示',
+        message: res.data.message,
+        type: 'warning',
+      })
       return
     }
     for (const menu of menus.value) {
@@ -158,12 +166,12 @@ function onEditModuleName() {
   })
 }
 
-window.onresize = function(e: Event) {
+window.onresize = function (e: Event) {
   if (isClose.value) {
     minMaxHeight((e.target as Window).innerHeight)
   }
 }
-window.onload = function() {
+window.onload = function () {
   if (isClose.value) {
     minMaxHeight(window.innerHeight)
   }
@@ -176,12 +184,33 @@ window.onload = function() {
       <div class="close" @click="handleClose(true)" :style="closeStyle">
         <i :class="[closeIcon[Number(isClose)]]"></i>
       </div>
-      <el-tabs v-model="activeName" @tab-change="handleTabChange" @tab-click="onTabClick">
-        <el-tab-pane :name="menu.name" v-for="(menu, index) in menus" :disabled="!menu.isChecked">
+      <el-tabs
+        v-model="activeName"
+        @tab-change="handleTabChange"
+        @tab-click="onTabClick"
+      >
+        <el-tab-pane
+          :name="menu.name"
+          v-for="(menu, index) in menus"
+          :disabled="!menu.isChecked"
+        >
           <template #label>
-            <CustomTabsLabel @edit="onEditModuleItem" :id="menu.id" @tab-sore="menuSore" @tab-click="handleClose(false)" v-model="menu.isChecked" :option="menu.isOption" :title="menu.title" :index="index" />
+            <CustomTabsLabel
+              @edit="onEditModuleItem"
+              :id="menu.id"
+              @tab-sore="menuSore"
+              @tab-click="handleClose(false)"
+              v-model="menu.isChecked"
+              :option="menu.isOption"
+              :title="menu.title"
+              :index="index"
+            />
           </template>
-          <component v-show="menu.isChecked" :is="menu.form" class="pane-form-item" />
+          <component
+            v-show="menu.isChecked"
+            :is="menu.form"
+            class="pane-form-item"
+          />
         </el-tab-pane>
       </el-tabs>
     </div>
@@ -192,12 +221,19 @@ window.onload = function() {
         <el-input v-model="form.title" placeholder="请输入新名称" clearable />
       </el-form-item>
       <el-form-item style="margin-bottom: 0">
-        <div style="display: flex;flex:1;justify-content: flex-end;">
+        <div style="display: flex; flex: 1; justify-content: flex-end">
           <div style="width: 200px; display: flex">
-            <el-button style="flex: 1" @click="onEditModuleName" :disabled="title.trim().length <= 0" type="primary">
+            <el-button
+              style="flex: 1"
+              @click="onEditModuleName"
+              :disabled="title.trim().length <= 0"
+              type="primary"
+            >
               确定
             </el-button>
-            <el-button style="flex: 1" @click="isDialog = false">取消</el-button>
+            <el-button style="flex: 1" @click="isDialog = false"
+              >取消</el-button
+            >
           </div>
         </div>
       </el-form-item>
@@ -236,32 +272,40 @@ window.onload = function() {
 }
 
 @-webkit-keyframes btn-show-edit-data {
-  56%, 66%, 74%, 80%, to {
-    transform: translateY(0)
+  56%,
+  66%,
+  74%,
+  80%,
+  to {
+    transform: translateY(0);
   }
   61% {
-    transform: translateY(-12px)
+    transform: translateY(-12px);
   }
   70% {
-    transform: translateY(-6px)
+    transform: translateY(-6px);
   }
   77% {
-    transform: translateY(-3px)
+    transform: translateY(-3px);
   }
 }
 
 @keyframes btn-show-edit-data {
-  56%, 66%, 74%, 80%, to {
-    transform: translateY(0)
+  56%,
+  66%,
+  74%,
+  80%,
+  to {
+    transform: translateY(0);
   }
   61% {
-    transform: translateY(-12px)
+    transform: translateY(-12px);
   }
   70% {
-    transform: translateY(-6px)
+    transform: translateY(-6px);
   }
   77% {
-    transform: translateY(-3px)
+    transform: translateY(-3px);
   }
 }
 
@@ -274,7 +318,7 @@ window.onload = function() {
   background-color: #fff;
   display: flex;
   justify-content: center;
-  box-shadow: 0 0 20px rgba(0, 0, 0, .2);
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
 
   .footer-box-container {
     position: relative;
@@ -368,9 +412,9 @@ window.onload = function() {
 
               i.icon-circle-with-minus {
                 color: red;
-                opacity: .6;
+                opacity: 0.6;
                 font-size: 18px;
-                transition: .3s;
+                transition: 0.3s;
                 cursor: pointer;
 
                 &:hover {
@@ -417,7 +461,7 @@ window.onload = function() {
 
             .is-active {
               color: #f60 !important;
-              @include item-block()
+              @include item-block();
             }
 
             .is-disabled {
@@ -432,12 +476,12 @@ window.onload = function() {
 
             .el-tabs__item:not(.is-disabled):hover {
               color: #f60 !important;
-              @include item-block()
+              @include item-block();
             }
 
             .el-tabs__item.is-disabled:hover {
               color: #a8abb2 !important;
-              @include item-block()
+              @include item-block();
             }
 
             .el-tabs__item {
@@ -462,7 +506,7 @@ window.onload = function() {
       width: 80px;
       height: 80px;
       border-radius: 50%;
-      box-shadow: 0 0 20px rgba(0, 0, 0, .2);
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
       position: absolute;
       left: calc(50% - 40px);
       top: -35px;
@@ -471,7 +515,7 @@ window.onload = function() {
       text-align: center;
       line-height: 35px;
       font-size: 20px;
-      transition: all .2s ease-out 0s;
+      transition: all 0.2s ease-out 0s;
       animation: btn-show-edit-data 4s linear 0s normal none infinite;
 
       &:hover {

@@ -1,71 +1,71 @@
 <script setup lang="ts">
 import { computed, ref, onMounted, onUnmounted } from 'vue'
-import LineBox from "@/components/utils/LineBox.vue";
-import {useStore} from "vuex";
-import {State} from "@/store/interface";
+import LineBox from '@/components/utils/LineBox.vue'
+import { useStore } from 'vuex'
+import { State } from '@/store/interface'
 import { IMenus } from '@/store/interface/menus.ts'
 import { calculatePageNumber, getStore } from '@/utils'
 import { ISlogan } from '@/store/interface/slogan.ts'
 import { ISetting } from '@/store/interface/setting.ts'
 
-const resumeBoxContent = ref(null);
-const resumeBoxContentStyle = ref({ height: '1122px' });
-let observer: ResizeObserver | null = null;
+const resumeBoxContent = ref(null)
+const resumeBoxContentStyle = ref({ height: '1122px' })
+let observer: ResizeObserver | null = null
 
-const setting = getStore<ISetting>("getSetting")
-const slogan = getStore<ISlogan>("getSlogan")
+const setting = getStore<ISetting>('getSetting')
+const slogan = getStore<ISlogan>('getSlogan')
 // 加载数据
-const store = useStore<State>();
+const store = useStore<State>()
 // 获取并过滤需要渲染的菜单项
 const menus = computed<IMenus[]>(() => {
-  return store.getters.getMenus.filter((menu: IMenus) => menu.isPage);
-});
+  return store.getters.getMenus.filter((menu: IMenus) => menu.isPage)
+})
 
 let pageNumTimer = 0
 
 const handleResize = (entries: any) => {
   clearTimeout(pageNumTimer)
   const pageHeight = 1120
-  const { height } = entries[0].contentRect;
+  const { height } = entries[0].contentRect
   const pageNum = calculatePageNumber(height, pageHeight)
-  resumeBoxContentStyle.value.height = `${pageNum * pageHeight}px`;
+  resumeBoxContentStyle.value.height = `${pageNum * pageHeight}px`
 
-  pageNumTimer = setTimeout(function() {
+  pageNumTimer = setTimeout(function () {
     const pageLine = document.querySelector('.page-line') as HTMLElement
     while (pageLine.firstChild) {
-      pageLine.removeChild(pageLine.firstChild);
+      pageLine.removeChild(pageLine.firstChild)
     }
     for (let i = 1; i <= pageNum; i++) {
       if (!document.getElementById(`#page-num-${i}`)) {
-        const li = document.createElement('li');
+        const li = document.createElement('li')
 
         // 给新子节点添加一些内容或样式
         li.id = `page-num-${i}`
-        li.className = "page-num"
-        li.innerHTML = `第${i}页(共<b class="orange">${pageNum}</b>页)`;
+        li.className = 'page-num'
+        li.innerHTML = `第${i}页(共<b class="orange">${pageNum}</b>页)`
         li.style.top = `${i * pageHeight}px`
 
         // 将新子节点添加到 pageLine 元素中
-        pageLine.appendChild(li);
+        pageLine.appendChild(li)
       }
     }
     clearTimeout(pageNumTimer)
   }, 500)
-};
+}
 
 onMounted(() => {
-  observer = new ResizeObserver(handleResize);
+  observer = new ResizeObserver(handleResize)
   if (resumeBoxContent.value) {
-    observer.observe(resumeBoxContent.value);
+    observer.observe(resumeBoxContent.value)
   }
-});
+})
 
 onUnmounted(() => {
   // 在组件销毁前取消观察
   if (observer) {
-    observer.disconnect();
+    observer.disconnect()
   }
-});
+})
 </script>
 
 <template>
@@ -78,16 +78,48 @@ onUnmounted(() => {
           Personal resume
         </div>
         <div class="right-box">
-          <i class="header-icon"><svg version="1.1" xmlns="http://www.w3.org/2000/svg" width="1024" height="1024" viewBox="0 0 1024 1024"><path d="M513.001 661.882c-19.688 0-38.822-4.632-53.88-13.034l-410.512-229.879c-22.074-12.284-34.746-32.027-34.746-54.074 0-22.102 12.672-41.845 34.773-54.184l410.484-229.796c30.031-16.831 77.644-16.859 107.785 0l410.512 229.796c22.074 12.367 34.718 32.11 34.718 54.212 0 22.074-12.672 41.789-34.746 54.129l-410.512 229.796c-15.030 8.429-34.162 13.061-53.88 13.061zM116.326 364.84l382.172 213.964c2.495 1.386 7.931 2.774 14.502 2.774 7.514 0 12.672-1.748 14.502-2.774l382.2-213.964-382.172-213.936c-2.495-1.386-7.959-2.774-14.53-2.774-7.486 0-12.644 1.72-14.475 2.774l-382.2 213.936zM513.14 955.597c-169.623 0-341.854-54.074-349.562-157.506-0.352-1.984-0.556-4.268-0.556-6.599 0-0.019 0-0.039 0-0.058v0.003-305.25c0-22.185 18.025-40.152 40.235-40.152 0.008 0 0.018 0 0.028 0 22.188 0 40.176 17.971 40.208 40.149v300.483c0.166 1.413 0.277 2.884 0.277 4.353 0.332 29.726 102.849 84.298 269.34 84.298 166.517 0 269.007-54.572 269.312-84.298l0.055-1.637v-303.226c0-22.185 18.025-40.152 40.235-40.152 22.24 0 40.235 17.998 40.235 40.152v305.305c0 1.054-0.028 2.080-0.111 3.133-4.049 105.706-178.22 160.999-349.729 160.999zM966.107 851.194c0 0 0 0 0 0-22.188 0-40.176-17.971-40.208-40.149v-318.702c0-22.185 17.998-40.152 40.208-40.152 22.24 0 40.235 17.97 40.235 40.152v318.699c0 22.185-18.025 40.152-40.208 40.152z"></path></svg></i>
-          <i class="header-icon"><svg version="1.1" xmlns="http://www.w3.org/2000/svg" width="1024" height="1024" viewBox="0 0 1024 1024"><path d="M393.985 160.445c0-19.494 15.904-35.398 35.398-35.398h163.648c19.494 0 35.398 15.904 35.398 35.398v97.47h62.074v-97.47c0-53.866-43.606-97.47-97.47-97.47h-163.648c-53.866 0-97.47 43.606-97.47 97.47v97.47h62.074v-97.47zM853.121 263.045h-683.318c-63.1 0-113.886 50.788-113.886 113.886v137.484h354.484c15.904-38.988 55.404-66.69 101.062-66.69 46.17 0 85.672 27.702 101.062 66.69h354.484v-137.484c0-63.1-50.788-113.886-113.886-113.886zM511.462 637.536c44.118 0 80.542-33.858 80.542-75.924s-35.91-75.924-80.542-75.924-80.542 33.858-80.542 75.924c0 42.066 35.91 75.924 80.542 75.924zM620.219 563.663c0 57.456-48.736 104.652-108.756 104.652s-108.756-46.684-108.756-104.652c0-3.592 0-7.182 0.514-11.286h-347.302v303.697c0 63.1 50.788 113.886 113.886 113.886h683.318c63.1 0 113.886-50.788 113.886-113.886v-303.697h-347.815c0.514 3.592 1.026 7.182 1.026 11.286z"></path></svg></i>
+          <i class="header-icon"
+            ><svg
+              version="1.1"
+              xmlns="http://www.w3.org/2000/svg"
+              width="1024"
+              height="1024"
+              viewBox="0 0 1024 1024"
+            >
+              <path
+                d="M513.001 661.882c-19.688 0-38.822-4.632-53.88-13.034l-410.512-229.879c-22.074-12.284-34.746-32.027-34.746-54.074 0-22.102 12.672-41.845 34.773-54.184l410.484-229.796c30.031-16.831 77.644-16.859 107.785 0l410.512 229.796c22.074 12.367 34.718 32.11 34.718 54.212 0 22.074-12.672 41.789-34.746 54.129l-410.512 229.796c-15.030 8.429-34.162 13.061-53.88 13.061zM116.326 364.84l382.172 213.964c2.495 1.386 7.931 2.774 14.502 2.774 7.514 0 12.672-1.748 14.502-2.774l382.2-213.964-382.172-213.936c-2.495-1.386-7.959-2.774-14.53-2.774-7.486 0-12.644 1.72-14.475 2.774l-382.2 213.936zM513.14 955.597c-169.623 0-341.854-54.074-349.562-157.506-0.352-1.984-0.556-4.268-0.556-6.599 0-0.019 0-0.039 0-0.058v0.003-305.25c0-22.185 18.025-40.152 40.235-40.152 0.008 0 0.018 0 0.028 0 22.188 0 40.176 17.971 40.208 40.149v300.483c0.166 1.413 0.277 2.884 0.277 4.353 0.332 29.726 102.849 84.298 269.34 84.298 166.517 0 269.007-54.572 269.312-84.298l0.055-1.637v-303.226c0-22.185 18.025-40.152 40.235-40.152 22.24 0 40.235 17.998 40.235 40.152v305.305c0 1.054-0.028 2.080-0.111 3.133-4.049 105.706-178.22 160.999-349.729 160.999zM966.107 851.194c0 0 0 0 0 0-22.188 0-40.176-17.971-40.208-40.149v-318.702c0-22.185 17.998-40.152 40.208-40.152 22.24 0 40.235 17.97 40.235 40.152v318.699c0 22.185-18.025 40.152-40.208 40.152z"
+              ></path></svg
+          ></i>
+          <i class="header-icon"
+            ><svg
+              version="1.1"
+              xmlns="http://www.w3.org/2000/svg"
+              width="1024"
+              height="1024"
+              viewBox="0 0 1024 1024"
+            >
+              <path
+                d="M393.985 160.445c0-19.494 15.904-35.398 35.398-35.398h163.648c19.494 0 35.398 15.904 35.398 35.398v97.47h62.074v-97.47c0-53.866-43.606-97.47-97.47-97.47h-163.648c-53.866 0-97.47 43.606-97.47 97.47v97.47h62.074v-97.47zM853.121 263.045h-683.318c-63.1 0-113.886 50.788-113.886 113.886v137.484h354.484c15.904-38.988 55.404-66.69 101.062-66.69 46.17 0 85.672 27.702 101.062 66.69h354.484v-137.484c0-63.1-50.788-113.886-113.886-113.886zM511.462 637.536c44.118 0 80.542-33.858 80.542-75.924s-35.91-75.924-80.542-75.924-80.542 33.858-80.542 75.924c0 42.066 35.91 75.924 80.542 75.924zM620.219 563.663c0 57.456-48.736 104.652-108.756 104.652s-108.756-46.684-108.756-104.652c0-3.592 0-7.182 0.514-11.286h-347.302v303.697c0 63.1 50.788 113.886 113.886 113.886h683.318c63.1 0 113.886-50.788 113.886-113.886v-303.697h-347.815c0.514 3.592 1.026 7.182 1.026 11.286z"
+              ></path></svg
+          ></i>
         </div>
       </div>
-      <LineBox size="0" color="#fff" style="display: flex;">
+      <LineBox size="0" color="#fff" style="display: flex">
         <div class="line-left"></div>
         <div class="line-right"></div>
       </LineBox>
-      <div class="resume-content-all" ref="resumeBoxContent" :style="`margin: 0 ${setting.page}px 0 ${setting.page+15}px`">
-        <component v-for="menu in menus" :is="menu.module" v-show="menu.isChecked" :id="menu.name" :title="menu.title"/>
+      <div
+        class="resume-content-all"
+        ref="resumeBoxContent"
+        :style="`margin: 0 ${setting.page}px 0 ${setting.page + 15}px`"
+      >
+        <component
+          v-for="menu in menus"
+          :is="menu.module"
+          v-show="menu.isChecked"
+          :id="menu.name"
+          :title="menu.title"
+        />
       </div>
       <ul class="page-line"></ul>
     </div>
@@ -122,7 +154,7 @@ onUnmounted(() => {
 
   .page-line {
     list-style: none;
-    color: #FFF;
+    color: #fff;
 
     li {
       position: absolute;
@@ -136,18 +168,18 @@ onUnmounted(() => {
     }
   }
 
-  .ql-editor ol, .ql-editor ul {
+  .ql-editor ol,
+  .ql-editor ul {
     padding-left: 0 !important;
   }
 
-  .ql-editor li[data-list="bullet"] {
+  .ql-editor li[data-list='bullet'] {
     padding-left: 1em;
   }
 
-  .ql-editor li[data-list="ordered"] {
+  .ql-editor li[data-list='ordered'] {
     padding-left: 1.3em;
   }
-
 
   @for $i from 1 through 8 {
     .ql-editor li.ql-indent-#{$i}:not(.ql-direction-rtl) {
@@ -267,7 +299,7 @@ onUnmounted(() => {
       position: relative;
       font-size: 14px;
 
-      .resume-content-main{
+      .resume-content-main {
         ul.title-content-header {
           display: flex;
           justify-content: space-between;
@@ -337,7 +369,7 @@ onUnmounted(() => {
           &:after {
             border: 2px solid #fff;
             display: block;
-            content: "";
+            content: '';
             width: 3px;
             height: 50px;
             position: absolute;
@@ -347,7 +379,7 @@ onUnmounted(() => {
           }
 
           &:before {
-            content: "";
+            content: '';
             display: block;
             width: 27px;
             height: 50px;
@@ -363,7 +395,7 @@ onUnmounted(() => {
         }
 
         &:after {
-          content: "";
+          content: '';
           display: block;
           width: 0;
           height: 0;
@@ -411,7 +443,7 @@ onUnmounted(() => {
             margin-right: 8px;
 
             &:after {
-              content: ":";
+              content: ':';
               right: -4px;
               position: absolute;
             }

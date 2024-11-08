@@ -1,46 +1,45 @@
 <script setup lang="ts">
-import {onMounted, ref} from "vue";
-import axios from "axios";
+import { onMounted, ref } from 'vue'
+import axios from 'axios'
 
 let icons = ref<string[]>([])
 
-
 let dialog = ref(false)
-let dialogIcon = ref("icon-remen")
-let copyStatus = ref("")
+let dialogIcon = ref('icon-remen')
+let copyStatus = ref('')
 
 onMounted(async () => {
-  const response = await axios.get('http://localhost:8080/api/icon');
-  for (const item of response.data.split("\n")) {
-    const regex = /\$icon-([a-zA-Z0-9-]+):/;
-    const match = item.match(regex);
+  const response = await axios.get('http://localhost:8080/api/icon')
+  for (const item of response.data.split('\n')) {
+    const regex = /\$icon-([a-zA-Z0-9-]+):/
+    const match = item.match(regex)
     if (match) {
-      const iconName = match[1];
-      icons.value.push(`icon-${iconName}`);
+      const iconName = match[1]
+      icons.value.push(`icon-${iconName}`)
     }
   }
 })
 
 async function copyTextToClipboard(icon: string) {
   try {
-    await navigator.clipboard.writeText(`<i class="${icon}" />`);
-    copyStatus.value = '已复制';
+    await navigator.clipboard.writeText(`<i class="${icon}" />`)
+    copyStatus.value = '已复制'
   } catch (err) {
-    copyStatus.value = '复制失败';
+    copyStatus.value = '复制失败'
   }
   const timer = setTimeout(function () {
-    copyStatus.value = ""
-    clearTimeout(timer);
+    copyStatus.value = ''
+    clearTimeout(timer)
   }, 2000)
 }
 
 function iconsBoxStatus() {
   if (dialog.value) {
-    dialog.value = false;
-    dialogIcon.value = "icon-remen"
+    dialog.value = false
+    dialogIcon.value = 'icon-remen'
   } else {
-    dialog.value = true;
-    dialogIcon.value = "icon-cha"
+    dialog.value = true
+    dialogIcon.value = 'icon-cha'
   }
 }
 </script>
@@ -53,7 +52,11 @@ function iconsBoxStatus() {
 
     <div class="icons-dialog" v-show="dialog">
       <ul class="icons-box">
-        <li class="icons-box-item" v-for="icon in icons" @click="copyTextToClipboard(icon)">
+        <li
+          class="icons-box-item"
+          v-for="icon in icons"
+          @click="copyTextToClipboard(icon)"
+        >
           <i :class="`${icon}`"></i>
         </li>
         <li class="icons-box-item">{{ copyStatus }}</li>
@@ -69,7 +72,7 @@ $wh: 75px;
   color: var(--el-button-hover-text-color);
   border-color: var(--el-button-hover-border-color);
   background-color: var(--el-button-hover-bg-color);
-  outline: none
+  outline: none;
 }
 
 .icons-box-click {
@@ -88,14 +91,14 @@ $wh: 75px;
   text-align: center;
   box-sizing: border-box;
   outline: none;
-  transition: .1s;
+  transition: 0.1s;
   font-weight: 500;
   user-select: none;
   vertical-align: middle;
   background-color: #ffffff;
   border: 1px solid #dcdfe6;
   font-size: 14px;
-  border-radius: 100%
+  border-radius: 100%;
 }
 
 .icons-dialog {
@@ -106,8 +109,10 @@ $wh: 75px;
   background-color: #303133;
   border-radius: 4px;
   overflow: hidden;
-  transition: .3s;
-  box-shadow: 0 12px 32px 4px rgba(0, 0, 0, .04), 0 8px 20px rgba(0, 0, 0, .08);
+  transition: 0.3s;
+  box-shadow:
+    0 12px 32px 4px rgba(0, 0, 0, 0.04),
+    0 8px 20px rgba(0, 0, 0, 0.08);
   padding: 10px;
 
   .icons-box {
@@ -117,7 +122,7 @@ $wh: 75px;
     grid-template-columns: repeat(7, 1fr);
     border-left: 1px solid #dcdfe6;
 
-    .icons-box-item:nth-child(-n+7) {
+    .icons-box-item:nth-child(-n + 7) {
       border-top: 1px solid #dcdfe6;
     }
 
@@ -133,7 +138,7 @@ $wh: 75px;
       font-size: 13px;
       border-right: 1px solid #dcdfe6;
       border-bottom: 1px solid #dcdfe6;
-      transition: background-color .3s;
+      transition: background-color 0.3s;
       justify-content: center;
       align-items: center;
 

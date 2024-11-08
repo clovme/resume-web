@@ -1,23 +1,23 @@
 <script setup lang="ts">
-import {IResumes} from "@/store/interface/resume.ts";
+import { IResumes } from '@/store/interface/resume.ts'
 
 const props = defineProps<{
   data: IResumes[]
 }>()
 
 // 事件发射器
-const emit = defineEmits(['NewResume', 'selectItem', 'edit', 'remove', 'copy']);
+const emit = defineEmits(['NewResume', 'selectItem', 'edit', 'remove', 'copy'])
 
 function onNewResume(e: Event) {
-  emit("NewResume", e)
+  emit('NewResume', e)
 }
 
 function onClickEdit(data: IResumes) {
-  emit("edit", data)
+  emit('edit', data)
 }
 
 function onClickRemove(data: IResumes) {
-  emit("remove", data)
+  emit('remove', data)
 }
 
 function href(uri: string) {
@@ -39,14 +39,17 @@ function onClickCopy(data: IResumes) {
           <i class="icon-delete" @click="onClickRemove(item)" />
         </div>
         <a @click.prevent="href(item.id)" :href="`?rid=${item.id}`">
-          <div class="resume-list-item-icon" style="background-image: url(/assets/1004.png);"></div>
+          <div
+            class="resume-list-item-icon"
+            style="background-image: url(/assets/1004.png)"
+          ></div>
           <div class="resume-list-item-option-name" v-text="item.name"></div>
         </a>
       </div>
     </el-col>
     <el-col :span="3">
       <div class="resume-list-item" @click="onNewResume">
-        <div class="resume-list-item-icon"><i class="icon-plus"/></div>
+        <div class="resume-list-item-icon"><i class="icon-plus" /></div>
         <span>新建简历</span>
       </div>
     </el-col>
@@ -70,19 +73,19 @@ function onClickCopy(data: IResumes) {
       margin: 0 5px 5px 0;
       border-radius: 2px;
       border: 1px solid #dcdfe6;
-      transition: all .3s;
+      transition: all 0.3s;
       display: flex;
       justify-content: center;
       align-items: center;
       flex-direction: column;
 
       a {
-        color:#13a783;
-        text-decoration:none;
-        display:flex;
-        flex-direction:column;
-        align-items:center;
-        transition: all .3s;
+        color: #13a783;
+        text-decoration: none;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        transition: all 0.3s;
 
         &:hover {
           color: #409eff;
@@ -105,7 +108,7 @@ function onClickCopy(data: IResumes) {
         justify-content: flex-end;
         opacity: 0;
         gap: 10px;
-        transition: all .3s;
+        transition: all 0.3s;
         border-bottom: 1px solid #ecedf1;
         padding: 3px 5px;
         background-color: #fff;
@@ -115,13 +118,13 @@ function onClickCopy(data: IResumes) {
         }
 
         i:first-child {
-          opacity: .7;
+          opacity: 0.7;
           color: #13a783;
         }
 
         i:last-child {
           color: #f56c6c;
-          opacity: .7;
+          opacity: 0.7;
         }
 
         i:first-child:hover,
@@ -133,7 +136,7 @@ function onClickCopy(data: IResumes) {
       .resume-list-item-option-name {
         display: flex;
         width: 120px;
-        transition: all .3s;
+        transition: all 0.3s;
         border-bottom: 1px solid #ecedf1;
         padding: 3px 5px;
         font-size: 13px;

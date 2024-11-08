@@ -1,6 +1,5 @@
 <script setup lang="ts">
-
-import LineBox from "@/components/utils/LineBox.vue";
+import LineBox from '@/components/utils/LineBox.vue'
 import { getStore } from '@/utils'
 import { ISetting } from '@/store/interface/setting.ts'
 
@@ -8,7 +7,7 @@ defineProps<{
   title: string
 }>()
 
-const setting = getStore<ISetting>("getSetting")
+const setting = getStore<ISetting>('getSetting')
 </script>
 
 <template>
@@ -18,12 +17,13 @@ const setting = getStore<ISetting>("getSetting")
       <div class="title-icon"></div>
     </div>
     <LineBox color="#4e7282" margin="0" />
-    <div class="resume-content-main" :style="`padding: ${setting.module}px 15px;`">
+    <div
+      class="resume-content-main"
+      :style="`padding: ${setting.module}px 15px;`"
+    >
       <slot></slot>
     </div>
   </div>
 </template>
 
-<style scoped lang="scss">
-
-</style>
+<style scoped lang="scss"></style>

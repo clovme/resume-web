@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import ModuleTitle from "@/components/utils/ModuleTitle.vue";
-import TitleContent from "@/components/utils/TitleContent.vue";
+import ModuleTitle from '@/components/utils/ModuleTitle.vue'
+import TitleContent from '@/components/utils/TitleContent.vue'
 import { getStore } from '@/utils'
 import { IIntentions } from '@/store/interface/intentions.ts'
 
@@ -8,7 +8,7 @@ defineProps<{
   title: string
 }>()
 
-const data = getStore<IIntentions>("getIntentions")
+const data = getStore<IIntentions>('getIntentions')
 </script>
 
 <template>
@@ -17,5 +17,4 @@ const data = getStore<IIntentions>("getIntentions")
   </ModuleTitle>
 </template>
 
-<style scoped lang="scss">
-</style>
+<style scoped lang="scss"></style>

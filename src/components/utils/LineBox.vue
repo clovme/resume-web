@@ -1,12 +1,12 @@
 <script setup lang="ts">
-import {CSSProperties, ref} from "vue";
-import {ILineBox} from "@/components/utils/interface/interface.ts";
-import VLineBox from "@/components/utils/options/linebox.ts";
+import { CSSProperties, ref } from 'vue'
+import { ILineBox } from '@/components/utils/interface/interface.ts'
+import VLineBox from '@/components/utils/options/linebox.ts'
 
 const props = withDefaults(defineProps<ILineBox>(), {
   size: '1',
   margin: '0',
-  lineStyle: "solid",
+  lineStyle: 'solid',
   color: VLineBox.color,
   position: 'bottom',
 })
@@ -17,7 +17,7 @@ const lineBoxStyle = ref<CSSProperties>({
   [`border-${props.position}`]: `${props.size}px ${props.lineStyle} ${props.color}`,
   margin: mp.margin,
   padding: mp.padding,
-  position: 'relative'
+  position: 'relative',
 })
 </script>
 
@@ -27,5 +27,4 @@ const lineBoxStyle = ref<CSSProperties>({
   </div>
 </template>
 
-<style scoped lang="scss">
-</style>
+<style scoped lang="scss"></style>

@@ -9,7 +9,7 @@ import { ElMessage } from 'element-plus'
 
 let timer = 0
 const isNewWorkItem = ref<boolean>(false)
-const datas = getStore<IWorksExperience[]>('getInternship');
+const datas = getStore<IWorksExperience[]>('getInternship')
 
 watch(datas.value, (newValue) => {
   clearTimeout(timer)
@@ -19,7 +19,7 @@ watch(datas.value, (newValue) => {
     return
   }
 
-  timer = setTimeout(function() {
+  timer = setTimeout(function () {
     saveForm('/internship', newValue)
     clearTimeout(timer)
   }, 1000)
@@ -29,13 +29,28 @@ function onPlusWork() {
   for (const data of datas.value) {
     if (data.title || data.name || data.content) {
       if (data.title.trim().length <= 0) {
-        ElMessage({ message: "请先填写完表单关键信息！", offset: 55, grouping: true, type: 'error' })
+        ElMessage({
+          message: '请先填写完表单关键信息！',
+          offset: 55,
+          grouping: true,
+          type: 'error',
+        })
         return
       } else if (data.name.trim().length <= 0) {
-        ElMessage({ message: "请先填写完表单关键信息！", offset: 55, grouping: true, type: 'error' })
+        ElMessage({
+          message: '请先填写完表单关键信息！',
+          offset: 55,
+          grouping: true,
+          type: 'error',
+        })
         return
       } else if (data.content.trim().length <= 0) {
-        ElMessage({ message: "请先填写完表单关键信息！", offset: 55, grouping: true, type: 'error' })
+        ElMessage({
+          message: '请先填写完表单关键信息！',
+          offset: 55,
+          grouping: true,
+          type: 'error',
+        })
         return
       }
     }
@@ -43,7 +58,12 @@ function onPlusWork() {
 
   axios.post('/internship').then((response) => {
     if (response.data.code !== 200) {
-      ElMessage({ message: response.data.message, offset: 55, grouping: true, type: 'error' })
+      ElMessage({
+        message: response.data.message,
+        offset: 55,
+        grouping: true,
+        type: 'error',
+      })
       return
     }
     datas.value.push(response.data.data)
@@ -54,7 +74,12 @@ function onPlusWork() {
 function onRemoveWorkItem(id: string) {
   axios.delete(`/internship?id=${id}`).then((response) => {
     if (response.data.code !== 200) {
-      ElMessage({ message: response.data.message, offset: 55, grouping: true, type: 'error' })
+      ElMessage({
+        message: response.data.message,
+        offset: 55,
+        grouping: true,
+        type: 'error',
+      })
       return
     }
     for (let i = 0; i < datas.value.length; i++) {
@@ -71,13 +96,18 @@ function onUpDownMove(index: number, flag: boolean) {
   swapArray(datas.value, index, index2)
   isNewWorkItem.value = true
 
-  let dataId =  []
+  let dataId = []
   for (let i = 0; i < datas.value.length; i++) {
     isNewWorkItem.value = true
     dataId.push(datas.value[i].id)
   }
-  axios.put('/internship/sort', dataId).then(res => {
-    ElMessage({ message: res.data.message, offset: 55, grouping: true, type: 'success' })
+  axios.put('/internship/sort', dataId).then((res) => {
+    ElMessage({
+      message: res.data.message,
+      offset: 55,
+      grouping: true,
+      type: 'success',
+    })
   })
 }
 </script>
@@ -89,49 +119,102 @@ function onUpDownMove(index: number, flag: boolean) {
         <el-col :span="5">
           <div class="split-1">
             <label>公司名称</label>
-            <el-input v-model="data.name" placeholder="请输入公司名称" clearable />
+            <el-input
+              v-model="data.name"
+              placeholder="请输入公司名称"
+              clearable
+            />
           </div>
         </el-col>
         <el-col :span="4">
           <div class="split-1">
             <label>职位</label>
-            <el-input v-model="data.title" placeholder="请输入职位名称" clearable />
+            <el-input
+              v-model="data.title"
+              placeholder="请输入职位名称"
+              clearable
+            />
           </div>
         </el-col>
         <el-col :span="8">
           <div class="split-1">
             <label>实习时间</label>
-            <el-date-picker :clearable="false" value-format="YYYY-MM" v-model="data.startAt" style="width: 130px" type="month" placeholder="开始时间" />-
-            <el-date-picker :clearable="false" value-format="YYYY-MM" v-if="!data.toNow" v-model="data.endAt" style="width: 130px" type="month" placeholder="结束时间" />
+            <el-date-picker
+              :clearable="false"
+              value-format="YYYY-MM"
+              v-model="data.startAt"
+              style="width: 130px"
+              type="month"
+              placeholder="开始时间"
+            />-
+            <el-date-picker
+              :clearable="false"
+              value-format="YYYY-MM"
+              v-if="!data.toNow"
+              v-model="data.endAt"
+              style="width: 130px"
+              type="month"
+              placeholder="结束时间"
+            />
             <el-checkbox v-model="data.toNow" label="至今" />
           </div>
         </el-col>
         <el-col :span="7">
           <div class="split-1" style="justify-content: flex-end">
-            <el-button @click="onUpDownMove(index, true)" class="el-c-button" type="success" round>上移</el-button>
-            <el-button @click="onUpDownMove(index, false)" class="el-c-button" type="success" round>下移</el-button>
-            <el-button @click="onRemoveWorkItem(data.id)" class="el-c-button" type="danger" round>删除</el-button>
+            <el-button
+              @click="onUpDownMove(index, true)"
+              class="el-c-button"
+              type="success"
+              round
+              >上移</el-button
+            >
+            <el-button
+              @click="onUpDownMove(index, false)"
+              class="el-c-button"
+              type="success"
+              round
+              >下移</el-button
+            >
+            <el-button
+              @click="onRemoveWorkItem(data.id)"
+              class="el-c-button"
+              type="danger"
+              round
+              >删除</el-button
+            >
           </div>
         </el-col>
       </el-row>
       <el-row class="split-row-1">
         <el-col>
           <div class="split-1">
-            <RichText v-model="data.content" placeholder="请输入项目内容、成果和感悟，简洁突出重点。" />
+            <RichText
+              v-model="data.content"
+              placeholder="请输入项目内容、成果和感悟，简洁突出重点。"
+            />
           </div>
         </el-col>
         <el-col>
-          <el-divider border-style="dashed" style="border-color: #ffc69f"></el-divider>
+          <el-divider
+            border-style="dashed"
+            style="border-color: #ffc69f"
+          ></el-divider>
         </el-col>
       </el-row>
     </div>
     <el-row>
       <el-col>
-        <el-button @click="onPlusWork" type="success" size="large" :icon="plus" round>新增一条实习经历</el-button>
+        <el-button
+          @click="onPlusWork"
+          type="success"
+          size="large"
+          :icon="plus"
+          round
+          >新增一条实习经历</el-button
+        >
       </el-col>
     </el-row>
   </div>
 </template>
 
-<style scoped lang="scss">
-</style>
+<style scoped lang="scss"></style>

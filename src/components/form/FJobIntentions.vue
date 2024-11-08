@@ -1,16 +1,16 @@
 <script setup lang="ts">
-import RichText from "@/components/utils/RichText.vue";
+import RichText from '@/components/utils/RichText.vue'
 import { getStore, saveForm } from '@/utils'
 import { IIntentions } from '@/store/interface/intentions.ts'
 import { watch } from 'vue'
 
 let timer = 0
-const data = getStore<IIntentions>("getIntentions")
+const data = getStore<IIntentions>('getIntentions')
 
 watch(data.value, (newValue) => {
   clearTimeout(timer)
 
-  timer = setTimeout(function() {
+  timer = setTimeout(function () {
     saveForm('/intentions', [newValue])
     clearTimeout(timer)
   }, 1000)
@@ -23,7 +23,10 @@ watch(data.value, (newValue) => {
       <el-row class="split-row-1">
         <el-col>
           <div class="split-1">
-            <RichText v-model="data.content" placeholder="请输入您的自定义内容" />
+            <RichText
+              v-model="data.content"
+              placeholder="请输入您的自定义内容"
+            />
           </div>
         </el-col>
       </el-row>
@@ -31,5 +34,4 @@ watch(data.value, (newValue) => {
   </div>
 </template>
 
-<style scoped lang="scss">
-</style>
+<style scoped lang="scss"></style>

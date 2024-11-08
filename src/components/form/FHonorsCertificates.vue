@@ -1,17 +1,17 @@
 <script setup lang="ts">
 import { getStore, saveForm } from '@/utils'
-import RichText from "@/components/utils/RichText.vue";
-import CheckButton from "@/components/utils/CheckButton.vue";
-import plus from "@/components/icon/plus.vue";
-import {ref, watch} from "vue";
-import {ElNotification} from "element-plus";
+import RichText from '@/components/utils/RichText.vue'
+import CheckButton from '@/components/utils/CheckButton.vue'
+import plus from '@/components/icon/plus.vue'
+import { ref, watch } from 'vue'
+import { ElNotification } from 'element-plus'
 import { ITags } from '@/store/interface/Tags.ts'
 import { IHonors } from '@/store/interface/honors.ts'
 
-let timer = 0;
+let timer = 0
 const customTag = ref('')
-const tags = getStore<ITags[]>('getHonorsTags');
-const data = getStore<IHonors>('getHonors');
+const tags = getStore<ITags[]>('getHonorsTags')
+const data = getStore<IHonors>('getHonors')
 
 // 监听 tags 属性的变化
 watch(tags.value, (newValue) => {
@@ -29,18 +29,24 @@ watch(tags.value, (newValue) => {
 
 watch(data.value, (newValue) => {
   clearTimeout(timer)
-  timer = setTimeout(function() {
-    saveForm("/honors", [{
-      ...newValue,
-      tagsName: Object.keys(data.value.checkedTags)
-    }])
+  timer = setTimeout(function () {
+    saveForm('/honors', [
+      {
+        ...newValue,
+        tagsName: Object.keys(data.value.checkedTags),
+      },
+    ])
     clearTimeout(timer)
   }, 1000)
 })
 
 function addCustomTag() {
   if (!customTag.value || customTag.value.trim() === '') {
-    ElNotification({title: '提示信息', message: '荣誉证书名称不能为空。', type: 'warning'})
+    ElNotification({
+      title: '提示信息',
+      message: '荣誉证书名称不能为空。',
+      type: 'warning',
+    })
     return
   }
   data.value.checkedTags[customTag.value] = true
@@ -62,18 +68,38 @@ function removeCustomTag(tag: string) {
     <el-row class="split-row-2">
       <el-col :span="24">
         <div class="split-2">
-          <RichText placeholder="荣誉证书内容描述，非必填。" v-model="data.content"/>
+          <RichText
+            placeholder="荣誉证书内容描述，非必填。"
+            v-model="data.content"
+          />
         </div>
       </el-col>
       <el-col :span="24">
         <div class="split-2">
-          <CheckButton class="el-c-button" v-for="item in tags" v-model="item.isChecked" :title="item.name" :key="item.id" />
+          <CheckButton
+            class="el-c-button"
+            v-for="item in tags"
+            v-model="item.isChecked"
+            :title="item.name"
+            :key="item.id"
+          />
         </div>
       </el-col>
       <el-col :span="8">
         <div class="split-2">
-          <el-input v-model="customTag" @keyup.enter="addCustomTag" placeholder="请输入荣誉证书名称" clearable/>
-          <el-button class="el-c-button" :icon="plus" plain @click="addCustomTag">添加自定义荣誉证书</el-button>
+          <el-input
+            v-model="customTag"
+            @keyup.enter="addCustomTag"
+            placeholder="请输入荣誉证书名称"
+            clearable
+          />
+          <el-button
+            class="el-c-button"
+            :icon="plus"
+            plain
+            @click="addCustomTag"
+            >添加自定义荣誉证书</el-button
+          >
         </div>
       </el-col>
     </el-row>
@@ -81,8 +107,8 @@ function removeCustomTag(tag: string) {
       <el-col :span="24">
         <ul class="f-honorsc-ertificates-box split-2">
           <li v-for="key in Object.keys(data.checkedTags)">
-            {{key}}
-            <i class="icon-circle-with-minus" @click="removeCustomTag(key)"/>
+            {{ key }}
+            <i class="icon-circle-with-minus" @click="removeCustomTag(key)" />
           </li>
         </ul>
       </el-col>
@@ -115,7 +141,7 @@ function removeCustomTag(tag: string) {
       vertical-align: top;
       margin-left: 6px;
       color: red;
-      opacity: .6;
+      opacity: 0.6;
       cursor: pointer;
 
       &:hover {
