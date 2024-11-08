@@ -110,7 +110,7 @@ function onUpDownMove(index: number, flag: boolean) {
         <el-col :span="4">
           <div class="split-1">
             <label>学历</label>
-            <el-select-v2 v-model="data.degree" :options="form.degree" placeholder="请选择学历" />
+            <el-select-v2 style="width: 120px" v-model="data.degree" :options="form.degree" placeholder="请选择学历" />
           </div>
         </el-col>
         <el-col :span="2">

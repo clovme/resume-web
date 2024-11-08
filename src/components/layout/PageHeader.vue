@@ -2,7 +2,7 @@
 import {ref, h, reactive, watch} from "vue";
 import ResumeList from "@/components/utils/ResumeList.vue";
 import axios from "@/utils/axios.ts";
-import {ElMessage, ElMessageBox} from "element-plus";
+import { ElLoading, ElMessage, ElMessageBox } from 'element-plus'
 import {IResumes} from "@/store/interface/resume.ts";
 import form from '@/utils/form.ts'
 import { elemRect, getStore, saveForm } from '@/utils'
@@ -213,6 +213,7 @@ function onHeaderTitle() {
 }
 
 async function exportPDF() {
+  const loadingInstance = ElLoading.service({ fullscreen: true, lock: true, text: "正在导出PDF文件，请稍等..." })
   const element = (document.querySelector('.resume-box-content') as HTMLElement).cloneNode(true) as HTMLElement;
   (element.querySelector('.page-line') as HTMLElement).remove()
 
@@ -234,8 +235,10 @@ async function exportPDF() {
 
       response = await axios.delete("/pdf/delete")
       if (response.data.code && response.data.code !== 200) {
+        loadingInstance.close()
         return ElMessage.error({ message: response.data.message, offset: 55 })
       }
+      loadingInstance.close()
     })
 }
 
@@ -321,8 +324,6 @@ if (!rid) {
           </div>
         </li>
         <li class="header-toolbar-item" @click="onHeaderTitle"><i class="icon-title"></i><b>标题设置</b></li>
-<!--        <li class="header-toolbar-item"><i class="icon-tupian"></i><b>下载图片</b></li>-->
-<!--        <li class="header-toolbar-item"><i class="icon-word"></i><b>下载WORD</b></li>-->
         <li class="header-toolbar-item" @click="exportPDF"><i class="icon-pdf"></i><b>下载PDF</b></li>
         <li class="header-toolbar-item" @click="handleOk"><i class="icon-gerenjianli"/><b>简历列表</b></li>
       </ul>

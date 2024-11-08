@@ -78,3 +78,7 @@ input:-moz-autofill {
 input:-ms-input-placeholder {
   @include autofill-reset;
 }
+
+.el-checkbox__label {
+  padding-left: 2px !important;
+}
