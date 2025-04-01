@@ -25,8 +25,7 @@ function isContent(content: string | undefined): boolean {
 <template>
   <ul class="title-content-header" :style="headerStyle" v-if="name">
     <li v-if="startAt">
-      {{ startAt
-      }}<span v-if="toNow || endAt">~{{ toNow ? '至今' : endAt }}</span>
+      {{ startAt }}<span v-if="toNow || endAt">~{{ toNow ? '至今' : endAt }}</span>
     </li>
     <li v-if="name"><b v-text="name"></b></li>
     <li v-if="title"><b v-text="title"></b></li>

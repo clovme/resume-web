@@ -3,25 +3,18 @@ import ModuleTitle from '@/components/utils/ModuleTitle.vue'
 import TitleContent from '@/components/utils/TitleContent.vue'
 import { getStore } from '@/utils'
 import { IHonors } from '@/store/interface/honors.ts'
-import { ref } from 'vue'
 
 defineProps<{
   title: string
 }>()
 
-const isTags = ref(false)
 const data = getStore<IHonors>('getHonors')
-
-let timer = setTimeout(function () {
-  isTags.value = Object.keys(data.value.checkedTags).length > 0
-  clearTimeout(timer)
-}, 100)
 </script>
 
 <template>
   <ModuleTitle :title="title">
     <TitleContent v-if="data.id" :content="data.content" :margin="0" />
-    <el-row v-if="isTags" style="margin-top: 10px; font-size: 13px">
+    <el-row v-if="Object.keys(data.checkedTags).length > 0" style="margin-top: 10px; font-size: 13px">
       <el-col>
         <span
           v-for="key in Object.keys(data.checkedTags)"
@@ -34,9 +27,7 @@ let timer = setTimeout(function () {
             position: relative;
             border: 1px solid rgba(78, 114, 130, 0.3);
             background-color: rgba(78, 114, 130, 0.04);
-          "
-          >{{ key }}</span
-        >
+          " :key="key">{{ key }}</span>
       </el-col>
     </el-row>
   </ModuleTitle>

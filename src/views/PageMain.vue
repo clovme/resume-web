@@ -119,11 +119,12 @@ onUnmounted(() => {
           v-show="menu.isChecked"
           :id="menu.name"
           :title="menu.title"
+          :key="menu.id"
         />
       </div>
       <ul class="page-line"></ul>
     </div>
-    <div class="page-footer"></div>
+    <div class="page-footer">空白页、不算</div>
   </div>
 </template>
 
@@ -139,9 +140,9 @@ onUnmounted(() => {
     flex-direction: column;
     color: #4e7282;
     user-select: none;
-    gap: 5px;
-    height: 100px;
-    background-color: #39394d;
+    height: 800px;
+    font-size: 40px;
+    background-color: #fff;
   }
 }
 

@@ -21,6 +21,7 @@ const datas = getStore<IWorksExperience[]>('getCampus')
       :end-at="data.endAt"
       :name="data.name"
       :title="data.title"
+      :key="data.id"
     />
   </ModuleTitle>
 </template>

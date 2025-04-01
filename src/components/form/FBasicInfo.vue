@@ -39,6 +39,10 @@ function addCustomInfo() {
     })
     return
   }
+
+  if (!data.value.customInfo) {
+    data.value.customInfo = {}
+  }
   data.value.customInfo[customInfo.value.key] = customInfo.value.value
   customInfo.value = { key: '', value: '' }
 }

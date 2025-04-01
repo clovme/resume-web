@@ -114,7 +114,7 @@ function onUpDownMove(index: number, flag: boolean) {
 
 <template>
   <div>
-    <div class="split-row-module" v-for="(data, index) in datas">
+    <div class="split-row-module" v-for="(data, index) in datas" :key="index">
       <el-row class="split-row-1">
         <el-col :span="5">
           <div class="split-1">
@@ -145,6 +145,7 @@ function onUpDownMove(index: number, flag: boolean) {
               style="width: 130px"
               type="month"
               placeholder="开始时间"
+              value-format="YYYY-MM"
             />-
             <el-date-picker
               :clearable="false"
@@ -153,6 +154,7 @@ function onUpDownMove(index: number, flag: boolean) {
               style="width: 130px"
               type="month"
               placeholder="结束时间"
+              value-format="YYYY-MM"
             />
             <el-checkbox v-model="data.toNow" label="至今" />
           </div>

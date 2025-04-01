@@ -31,7 +31,7 @@ function format(tag: ICheckedTags) {
       :gutter="20"
       style="margin-top: 10px; font-size: 13px"
     >
-      <el-col v-for="key in Object.keys(data.checkedTags)" :span="8">
+      <el-col v-for="key in Object.keys(data.checkedTags)" :span="8" :key="key">
         <label v-text="key"></label>
         <el-progress
           :percentage="data.checkedTags[key].level"

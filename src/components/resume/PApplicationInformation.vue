@@ -46,10 +46,10 @@ watch(data.value, (newValue) => {
     <table class="baokao-table" v-if="courseGrade.length > 0">
       <tr>
         <td rowspan="2">{{ data.cname }}</td>
-        <td v-for="item in courseGrade">{{ item.name }}</td>
+        <td v-for="item in courseGrade" :key="item.id">{{ item.name }}</td>
       </tr>
       <tr>
-        <td v-for="item in courseGrade">{{ item.score }}</td>
+        <td v-for="item in courseGrade" :key="item.id">{{ item.score }}</td>
       </tr>
     </table>
   </ModuleTitle>

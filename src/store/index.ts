@@ -177,7 +177,7 @@ const store = createStore<State>({
           }
         })
         commit('setMenus', menus)
-      } catch (error) {}
+      } catch (error) {console.log(error)}
     },
     async fetchBasicInfo({ commit }) {
       try {
@@ -187,25 +187,25 @@ const store = createStore<State>({
         delete response.data.data.updatedAt
 
         commit('setBasicInfo', response.data.data)
-      } catch (error) {}
+      } catch (error) {console.log(error)}
     },
     async fetchSkillsTags({ commit }) {
       try {
         const response = await axios.get('/tags?type=0')
         commit('setSkillsTags', response.data.data)
-      } catch (error) {}
+      } catch (error) {console.log(error)}
     },
     async fetchHonorsTags({ commit }) {
       try {
         const response = await axios.get('/tags?type=1')
         commit('setHonorsTags', response.data.data)
-      } catch (error) {}
+      } catch (error) {console.log(error)}
     },
     async fetchHobbiesTags({ commit }) {
       try {
         const response = await axios.get('/tags?type=2')
         commit('setHobbiesTags', response.data.data)
-      } catch (error) {}
+      } catch (error) {console.log(error)}
     },
     async fetchSkills({ commit }) {
       try {
@@ -218,7 +218,7 @@ const store = createStore<State>({
         }
 
         commit('setSkills', response.data.data)
-      } catch (error) {}
+      } catch (error) {console.log(error)}
     },
     async fetchHonors({ commit }) {
       try {
@@ -230,7 +230,7 @@ const store = createStore<State>({
           response.data.data.checkedTags = []
         }
         commit('setHonors', response.data.data)
-      } catch (error) {}
+      } catch (error) {console.log(error)}
     },
     async fetchHobbies({ commit }) {
       try {
@@ -242,7 +242,7 @@ const store = createStore<State>({
           response.data.data.checkedTags = []
         }
         commit('setHobbies', response.data.data)
-      } catch (error) {}
+      } catch (error) {console.log(error)}
     },
     async fetchWorks({ commit }) {
       try {
@@ -252,67 +252,67 @@ const store = createStore<State>({
         delete response.data.data.updatedAt
 
         commit('setWorks', response.data.data)
-      } catch (error) {}
+      } catch (error) {console.log(error)}
     },
     async fetchInternship({ commit }) {
       try {
         const response = await axios.get('/internship')
         commit('setInternship', response.data.data)
-      } catch (error) {}
+      } catch (error) {console.log(error)}
     },
     async fetchCampus({ commit }) {
       try {
         const response = await axios.get('/campus')
         commit('setCampus', response.data.data)
-      } catch (error) {}
+      } catch (error) {console.log(error)}
     },
     async fetchProject({ commit }) {
       try {
         const response = await axios.get('/project')
         commit('setProject', response.data.data)
-      } catch (error) {}
+      } catch (error) {console.log(error)}
     },
     async fetchEducation({ commit }) {
       try {
         const response = await axios.get('/education')
         commit('setEducation', response.data.data)
-      } catch (error) {}
+      } catch (error) {console.log(error)}
     },
     async fetchEvaluation({ commit }) {
       try {
         const response = await axios.get('/evaluation')
         commit('setEvaluation', response.data.data)
-      } catch (error) {}
+      } catch (error) {console.log(error)}
     },
     async fetchIntentions({ commit }) {
       try {
         const response = await axios.get('/intentions')
         commit('setIntentions', response.data.data)
-      } catch (error) {}
+      } catch (error) {console.log(error)}
     },
     async fetchApplicationInfo({ commit }) {
       try {
         const response = await axios.get('/applicationinfo')
         commit('setApplicationInfo', response.data.data)
-      } catch (error) {}
+      } catch (error) {console.log(error)}
     },
     async fetchCourseGrade({ commit }) {
       try {
         const response = await axios.get('/applicationinfo/grade')
         commit('setCourseGrade', response.data.data)
-      } catch (error) {}
+      } catch (error) {console.log(error)}
     },
     async fetchSlogan({ commit }) {
       try {
         const response = await axios.get('/slogan')
         commit('setSlogan', response.data.data)
-      } catch (error) {}
+      } catch (error) {console.log(error)}
     },
     async fetchSetting({ commit }) {
       try {
         const response = await axios.get('/setting')
         commit('setSetting', response.data.data)
-      } catch (error) {}
+      } catch (error) {console.log(error)}
     },
     async fetchResumesName() {
       try {
@@ -322,7 +322,7 @@ const store = createStore<State>({
           return
         }
         document.title = `${response.data.data.name}的简历 - 个人简历`
-      } catch (error) {}
+      } catch (error) {console.log(error)}
     },
   },
 })

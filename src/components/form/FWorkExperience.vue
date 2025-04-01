@@ -114,7 +114,7 @@ function onUpDownMove(index: number, flag: boolean) {
 
 <template>
   <div>
-    <div class="split-row-module" v-for="(data, index) in datas">
+    <div class="split-row-module" v-for="(data, index) in datas" :key="index">
       <el-row class="split-row-1">
         <el-col :span="6">
           <div class="split-1">

@@ -28,6 +28,7 @@ function degree(data: string) {
       :end-at="data.endAt"
       :name="data.name"
       :title="`${data.major}${degree(data.degree)}`"
+      :key="data.id"
     />
   </ModuleTitle>
 </template>
