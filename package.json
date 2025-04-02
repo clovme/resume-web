@@ -47,9 +47,11 @@
     "vue-tsc": "^2.0.21"
   },
   "browserslist": [
-    "> 0.5%",
-    "last 2 versions",
-    "Firefox ESR",
-    "not dead"
+    "ie >= 8",
+    "Firefox >= 20",
+    "Safari >= 5",
+    "Android >= 4",
+    "Ios >= 6",
+    "last 4 version"
   ]
 }

@@ -4,6 +4,7 @@ import AutoImport from 'unplugin-auto-import/vite'
 import Components from 'unplugin-vue-components/vite'
 import { ElementPlusResolver } from 'unplugin-vue-components/resolvers'
 import { resolve } from 'path'
+import autoprefixer from 'autoprefixer'
 
 export default defineConfig({
   plugins: [
@@ -16,7 +17,13 @@ export default defineConfig({
     }),
   ],
   css: {
-    postcss: './postcss.config.js'
+    postcss: {
+      plugins: [
+        autoprefixer({
+          overrideBrowserslist: ['last 2 versions', '> 1%', 'ie 11']
+        })
+      ]
+    }
   },
   build: {
     outDir: '../../go/resume-api/public',

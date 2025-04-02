@@ -8,6 +8,17 @@ const instance = axios.create({
 // 请求拦截器
 instance.interceptors.request.use(
   (config) => {
+    const userAgent = navigator.userAgent
+    if (/Edg\//.test(userAgent)) {
+      config.headers.Edge = true
+      config.headers.Chrome = false
+    } else if (/Chrome\//.test(userAgent) && !/Edg\//.test(userAgent)) {
+      config.headers.Edge = false
+      config.headers.Chrome = true
+    }
+    config.headers.browser = {
+      'Content-Type': 'application/json',
+    }
     const token = localStorage.getItem('token')
     const expires = localStorage.getItem('expires')
     if (token) {
@@ -16,7 +27,7 @@ instance.interceptors.request.use(
     const params = new URLSearchParams(location.search)
     const rid = params.get('rid') ? params.get('rid') : 0
     if (config.url && rid !== 0) {
-      let ridUri = config.url.includes('?') ? `&rid=${rid}` : `?rid=${rid}`
+      const ridUri = config.url.includes('?') ? `&rid=${rid}` : `?rid=${rid}`
       config.url = `${config.url}${ridUri}`
     }
     if (expires && new Date(expires).getTime() < new Date().getTime()) {
