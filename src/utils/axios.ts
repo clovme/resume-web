@@ -10,14 +10,9 @@ instance.interceptors.request.use(
   (config) => {
     const userAgent = navigator.userAgent
     if (/Edg\//.test(userAgent)) {
-      config.headers.Edge = true
-      config.headers.Chrome = false
+      config.headers['Browser-Type'] = 'Edge'
     } else if (/Chrome\//.test(userAgent) && !/Edg\//.test(userAgent)) {
-      config.headers.Edge = false
-      config.headers.Chrome = true
-    }
-    config.headers.browser = {
-      'Content-Type': 'application/json',
+      config.headers['Browser-Type'] = 'Chrome'
     }
     const token = localStorage.getItem('token')
     const expires = localStorage.getItem('expires')

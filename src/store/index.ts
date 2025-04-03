@@ -161,6 +161,10 @@ const store = createStore<State>({
     async fetchMenus({ commit }) {
       try {
         const response = await axios.get('/menus')
+        if (!response.data.data) {
+          commit('setMenus', [])
+          return
+        }
         const menus: IMenus[] = response.data.data.map((menu: IMenus) => {
           return {
             ...menu,
@@ -182,10 +186,6 @@ const store = createStore<State>({
     async fetchBasicInfo({ commit }) {
       try {
         const response = await axios.get('/basicinfo')
-
-        delete response.data.data.createdAt
-        delete response.data.data.updatedAt
-
         commit('setBasicInfo', response.data.data)
       } catch (error) {console.log(error)}
     },
@@ -247,10 +247,6 @@ const store = createStore<State>({
     async fetchWorks({ commit }) {
       try {
         const response = await axios.get('/works')
-
-        delete response.data.data.createdAt
-        delete response.data.data.updatedAt
-
         commit('setWorks', response.data.data)
       } catch (error) {console.log(error)}
     },
